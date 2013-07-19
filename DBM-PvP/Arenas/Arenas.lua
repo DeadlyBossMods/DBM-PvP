@@ -2,21 +2,22 @@
 -- rewrite by Tandanu
 --
 
-local Arenas	= DBM:NewMod("Arenas", "DBM-PvP", 1)
-local L			= Arenas:GetLocalizedStrings()
+local mod		= DBM:NewMod("Arenas", "DBM-PvP", 1)
+local L			= mod:GetLocalizedStrings()
 
-Arenas:RemoveOption("HealthFrame")
-Arenas:RemoveOption("SpeedKillTimer")
-Arenas:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:RemoveOption("HealthFrame")
+mod:RemoveOption("SpeedKillTimer")
 
-Arenas:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
+mod:SetRevision(("$Revision: 9938 $"):sub(12, -3))
+mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-local timerShadow	= Arenas:NewTimer(90, "TimerShadow", 34709)
+mod:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 
-function Arenas:CHAT_MSG_BG_SYSTEM_NEUTRAL(args)
+local timerShadow	= mod:NewTimer(90, "TimerShadow", 34709)
+
+function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(args)
 	if not IsActiveBattlefieldArena() then return end
 	if args == L.Start15 then
 		timerShadow:Schedule(16)
 	end
 end
-
