@@ -12,6 +12,7 @@ local winTimer 		= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_Pock
 local capTimer 		= mod:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
 local bgzone = false
+local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
 mod:AddBoolOption("ShowAbEstimatedPoints", true, nil, function()
 	if mod.Options.ShowAbEstimatedPoints and bgzone then
 		mod:ShowEstimatedPoints()
@@ -135,6 +136,7 @@ do
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"UPDATE_WORLD_STATES"
 			)
+			print("DBM Debug: Registering events for "..GetRealZoneText(529))
 			update_gametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)

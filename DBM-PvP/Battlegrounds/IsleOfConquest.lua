@@ -19,6 +19,7 @@ local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
 mod:AddBoolOption("ShowGatesHealth", true)
 
+local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
 local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
@@ -68,6 +69,7 @@ do
 				"UNIT_DIED",
 				"SPELL_BUILDING_DAMAGE"
 			)
+			print("DBM Debug: Registering events for "..GetRealZoneText(628))
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
