@@ -47,6 +47,7 @@ do
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"UPDATE_BATTLEFIELD_SCORE"
 			)
+			print("DBM Debug: Registering events for "..GetRealZoneText(726))
 			if mod.Options.ShowFlagCarrier then
 				mod:ShowFlagCarrier()
 				mod:CreateFlagCarrierButton()

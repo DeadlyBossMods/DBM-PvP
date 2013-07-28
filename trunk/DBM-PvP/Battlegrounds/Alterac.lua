@@ -15,6 +15,7 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
 )
 
+local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
 local towerTimer = mod:NewTimer(243, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
 local gyTimer = mod:NewTimer(243, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
 
@@ -73,6 +74,7 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
+			print("DBM Debug: Registering events for "..GetRealZoneText(30))
 			bgzone = true
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)

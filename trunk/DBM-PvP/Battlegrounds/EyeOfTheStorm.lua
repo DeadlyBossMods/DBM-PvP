@@ -17,6 +17,7 @@ mod:RegisterEvents(
 )
 
 local bgzone = false
+local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
 local ResPerSec = {
 	[0] = 1e-300, -- blah
 	[1] = 0.5,
@@ -112,6 +113,7 @@ do
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 				"UPDATE_WORLD_STATES"
 			)
+			print("DBM Debug: Registering events for "..GetRealZoneText(566))
 			updateGametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
