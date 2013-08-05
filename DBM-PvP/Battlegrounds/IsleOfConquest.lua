@@ -84,7 +84,7 @@ do
 			mod:UnregisterShortTermEvents()
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:Hide()
-			self:Stop()
+			mod:Stop()
 			bgzone = false
 		end
 	end
