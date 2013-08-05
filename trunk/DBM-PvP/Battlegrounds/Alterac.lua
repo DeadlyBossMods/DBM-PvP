@@ -74,7 +74,6 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			print("DBM Debug: Registering events for "..GetRealZoneText(30))
 			bgzone = true
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)

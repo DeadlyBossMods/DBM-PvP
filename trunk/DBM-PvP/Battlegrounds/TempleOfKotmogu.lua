@@ -119,7 +119,6 @@ function mod:OnInitialize()
 			"CHAT_MSG_RAID_BOSS_EMOTE",
 			"UPDATE_WORLD_STATES"
 		)
-		print("DBM Debug: Registering events for "..GetRealZoneText(998))
 		table.wipe(orbs)
 		update_gametime()
 		if self.Options.ShowKotmoguEstimatedPoints then

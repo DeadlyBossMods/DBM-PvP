@@ -69,7 +69,6 @@ do
 				"UNIT_DIED",
 				"SPELL_BUILDING_DAMAGE"
 			)
-			print("DBM Debug: Registering events for "..GetRealZoneText(628))
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then

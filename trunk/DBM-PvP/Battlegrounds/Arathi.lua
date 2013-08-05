@@ -136,7 +136,6 @@ do
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"UPDATE_WORLD_STATES"
 			)
-			print("DBM Debug: Registering events for "..GetRealZoneText(529))
 			update_gametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
