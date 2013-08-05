@@ -26,7 +26,6 @@ function mod:OnInitialize()
 			"CHAT_MSG_RAID_BOSS_EMOTE",
 			"UPDATE_WORLD_STATES"
 		)
-		print("DBM Debug: Registering events for "..GetRealZoneText(727))
 	elseif bgzone then
 		bgzone = false
 		self:UnregisterShortTermEvents()
