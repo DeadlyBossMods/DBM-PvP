@@ -68,7 +68,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z529")
 
 L:SetTimerLocalization({
-	TimerCap	= "%s",
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
@@ -145,7 +145,7 @@ L = DBM:GetModLocalization("z628")
 
 L:SetWarningLocalization({
 	WarnSiegeEngine		= "Belagerungsmaschine bereit!",
-	WarnSiegeEngineSoon	= "Belagerungsmaschine in ~10 Sekunden",
+	WarnSiegeEngineSoon	= "Belagerungsmaschine in ~10 Sekunden"
 })
 
 L:SetTimerLocalization({

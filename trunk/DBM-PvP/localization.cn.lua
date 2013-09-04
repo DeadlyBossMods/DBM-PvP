@@ -57,7 +57,7 @@ L = DBM:GetModLocalization("z30")
 
 L:SetTimerLocalization({
 	TimerTower = "%s",
-	TimerGY = "%s",
+	TimerGY = "%s"
 })
 
 L:SetOptionLocalization({
@@ -81,7 +81,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCap = "%s",
+	TimerCap = "%s"
 })
 
 L:SetOptionLocalization({
@@ -109,13 +109,13 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFlag = "旗帜重置",
+	TimerFlag = "旗帜重置"
 })
 
 L:SetOptionLocalization({
 	TimerWin 		= "计时条：获胜",
 	TimerFlag 		= "计时条：旗帜重置",
-	ShowPointFrame 	= "显示旗帜携带着和预计获胜点数",
+	ShowPointFrame 	= "显示旗帜携带着和预计获胜点数"
 })
 
 ---------------------
@@ -134,19 +134,19 @@ L:SetMiscLocalization({
 	ExprFlagReturn = "(.+)的旗帜被(.+)还到了它的基地中！",
 	FlagAlliance = "联盟: ",
 	FlagHorde = "部落: ",
-	FlagBase = "基地",
+	FlagBase = "基地"
 })
 
 L:SetTimerLocalization({
 	TimerStart = "战斗即将开始",
-	TimerFlag = "旗帜重置",
+	TimerFlag = "旗帜重置"
 })
 
 L:SetOptionLocalization({
 	TimerStart  = "计时条：战斗开始",
 	TimerFlag = "计时条：旗帜重置",
 	ShowFlagCarrier = "显示旗帜携带者",
-	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息",
+	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息"
 })
 
 ------------------------
@@ -208,14 +208,14 @@ L:SetMiscLocalization({
 
 L:SetTimerLocalization({
 	TimerStart = "战斗即将开始",
-	TimerFlag = "旗帜重置",
+	TimerFlag = "旗帜重置"
 })
 
 L:SetOptionLocalization({
 	TimerStart  = "计时条：战斗开始",
 	TimerFlag = "计时条：旗帜重置",
 	ShowFlagCarrier = "显示旗帜携带者",
-	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息",
+	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息"
 })
 
 --------------------------
@@ -233,7 +233,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCap = "%s",
+	TimerCap = "%s"
 })
 
 L:SetOptionLocalization({
