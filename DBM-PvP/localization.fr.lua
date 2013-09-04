@@ -56,7 +56,7 @@ L = DBM:GetModLocalization("z30")
 
 L:SetTimerLocalization({
 	TimerTower		= "%s",
-	TimerGY			= "%s",
+	TimerGY			= "%s"
 })
 
 L:SetOptionLocalization({
@@ -80,7 +80,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCap 				= "%s",
+	TimerCap 				= "%s"
 })
 
 L:SetOptionLocalization({
@@ -108,13 +108,13 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFlag 			= "Respawn du drapeau",
+	TimerFlag 			= "Respawn du drapeau"
 })
 
 L:SetOptionLocalization({
 	TimerWin 			= "Montre le timer de la victoire",
 	TimerFlag 			= "Montre le timer du respawn du drapeau",
-	ShowPointFrame 		= "Montre les porteurs des drapeaux et les points estimés",
+	ShowPointFrame 		= "Montre les porteurs des drapeaux et les points estimés"
 })
 
 --------------------
@@ -133,19 +133,19 @@ L:SetMiscLocalization({
 	ExprFlagReturn 				= "Le Drapeau (%w+) a été renvoyé à la base par (.+) !",
 	FlagAlliance 				= "Drapeau de l'alliance: ",
 	FlagHorde					= "Drapeau de la horde: ",
-	FlagBase					= "Base",
+	FlagBase					= "Base"
 })
 
 L:SetTimerLocalization({
 	TimerStart 					= "Début de la bataille dans",
-	TimerFlag 					= "Respawn du drapeau",
+	TimerFlag 					= "Respawn du drapeau"
 })
 
 L:SetOptionLocalization({
 	TimerStart  				= "Voir: Temps de départ du BG",
 	TimerFlag 					= "Montre le timer du respawn du drapeau",
 	ShowFlagCarrier				= "Montre le porteur du drapeau",
-	ShowFlagCarrierErrorNote 	= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
+	ShowFlagCarrierErrorNote 	= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat"
 })
 
 ------------------------
@@ -240,7 +240,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCap 				= "%s",
+	TimerCap 				= "%s"
 })
 
 L:SetOptionLocalization({
