@@ -236,7 +236,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Capture = "수레를 차지"
+	Capture = "수레를 빼앗았습니다!"
 })
 
 -------------------------
@@ -245,8 +245,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z998")
 
 L:SetMiscLocalization({
-	OrbTaken 	= "차지했습니다!",
-	OrbReturn 	= "공이 돌아왔습니다!",
+	OrbTaken 	= "(.+)|1이;가; (.+) 공을 차지했습니다!",
+	OrbReturn 	= "(.+) 공이 돌아왔습니다!",
 	ScoreExpr	= "(%d+)/1600",
 	WinBarText	= "%s 승리",
 	OrbsToWin	= "역전하기 위해 필요한 공 수: %d"

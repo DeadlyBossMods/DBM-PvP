@@ -248,7 +248,11 @@ function mod:UPDATE_WORLD_STATES()
 	elseif AllyTime > HordeTime then -- Horde wins
 		winTimer:Update(getGametime(), getGametime()+HordeTime)
 		winTimer:DisableEnlarge()
-		winTimer:UpdateName(L.WinBarText:format(L.Horde or FACTION_HORDE))
+		if GetLocale() == "koKR" then
+			winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
+		else
+			winTimer:UpdateName(L.WinBarText:format(L.Horde or FACTION_HORDE))
+		end
 		winTimer:SetColor(hordeColor)
 
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
@@ -261,7 +265,11 @@ function mod:UPDATE_WORLD_STATES()
 	elseif HordeTime > AllyTime then -- Alliance wins
 		winTimer:Update(getGametime(), getGametime()+AllyTime)
 		winTimer:DisableEnlarge()
-		winTimer:UpdateName(L.WinBarText:format(L.Alliance or FACTION_ALLIANCE))
+		if GetLocale() == "koKR" then
+			winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
+		else
+			winTimer:UpdateName(L.WinBarText:format(L.Alliance or FACTION_ALLIANCE))
+		end
 		winTimer:SetColor(allyColor)
 
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
