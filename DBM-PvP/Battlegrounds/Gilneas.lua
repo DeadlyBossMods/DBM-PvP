@@ -259,11 +259,8 @@ do
 			winner_is = 2
 			winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 			winTimer:DisableEnlarge()
-			if GetLocale() == "koKR" then
-				winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
-			else
-				winTimer:UpdateName(L.WinBarText:format(L.Horde or FACTION_HORDE))
-			end
+			local title = L.Horde or FACTION_HORDE--L.Horde is nil in english local, unless it's added to non english local, FACTION_HORDE will be used
+			winTimer:UpdateName(L.WinBarText:format(title))
 			winTimer:SetColor(hordeColor)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
 
@@ -277,11 +274,8 @@ do
 			winner_is = 1
 			winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 			winTimer:DisableEnlarge()
-			if GetLocale() == "koKR" then
-				winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
-			else
-				winTimer:UpdateName(L.WinBarText:format(L.Alliance or FACTION_ALLIANCE))
-			end
+			local title = L.Alliance or FACTION_ALLIANCE--L.Alliance is nil in english local, unless it's added to non english local, FACTION_ALLIANCE will be used
+			winTimer:UpdateName(L.WinBarText:format(title))
 			winTimer:SetColor(allyColor)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
 		end
