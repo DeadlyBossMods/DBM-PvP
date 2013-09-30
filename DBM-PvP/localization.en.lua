@@ -135,7 +135,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
 	FlagAlliance		= "Alliance Flag: ",
 	FlagHorde			= "Horde Flag: ",
-	FlagBase			= "Base"
+	FlagBase			= "Base",
+	Vulnerable1		= "The flag carriers have become vulnerable to attack!",
+	Vulnerable2		= "The flag carriers have become increasingly vulnerable to attack!"
 })
 
 ------------------------
