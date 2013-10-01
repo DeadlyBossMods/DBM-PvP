@@ -10,6 +10,7 @@ L:SetGeneralLocalization({
 	name = "Allgemeine Einstellungen"
 })
 
+
 L:SetTimerLocalization({
 	TimerInvite = "%s"
 })
@@ -135,7 +136,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
 	FlagAlliance		= "Allianz-Flagge: ",
 	FlagHorde			= "Horde-Flagge: ",
-	FlagBase			= "Basis"
+	FlagBase			= "Basis",
+	Vulnerable1		= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
+	Vulnerable2		= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
 })
 
 ------------------------
