@@ -81,8 +81,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
 	WinBarText 		= "%s 승리",
-	BasesToWin		= "역전하기 위해 필요한 거점 수: %d",
-	Flag 			= "깃발"
+	BasesToWin		= "역전하기 위해 필요한 거점 수: %d"
 })
 
 -----------------------
@@ -103,6 +102,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
 	WinBarText		= "%s 승리",
+	Flag 			= "깃발",
 	FlagReset 		= "깃발이 다시 제자리로 돌아갔습니다.",
 	FlagTaken 		= "^(.+)|1이;가; 깃발을 차지했습니다!",
 	FlagCaptured 	= "(.+)|1이;가; 깃발을 차지했습니다!",
