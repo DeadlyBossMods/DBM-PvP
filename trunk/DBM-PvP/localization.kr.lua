@@ -220,8 +220,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/2000",
 	WinBarText 		= "%s 승리",
-	BasesToWin		= "역전하기 위해 필요한 거점 수: %d",
-	Flag 			= "깃발"
+	BasesToWin		= "역전하기 위해 필요한 거점 수: %d"
 })
 
 -------------------------
