@@ -226,8 +226,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/2000",
 	WinBarText	= "%s wins",
-	BasesToWin	= "Bases to win: %d",
-	Flag		= "Flag"
+	BasesToWin	= "Bases to win: %d"
 })
 
 -------------------------
