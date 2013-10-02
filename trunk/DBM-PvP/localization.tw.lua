@@ -135,7 +135,9 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "(.+)的旗幟被(.+)還到了它的基地",
 	FlagAlliance		= "聯盟旗幟: ",
 	FlagHorde			= "部落旗幟: ",
-	FlagBase			= "基地"
+	FlagBase			= "基地",
+	Vulnerable1			= "旗幟攜帶者變得脆弱了!",
+	Vulnerable2			= "旗幟攜帶者變得更加的脆弱了!"
 })
 
 ------------------------
