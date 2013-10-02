@@ -82,7 +82,6 @@ L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1600",
 	WinBarText	= "%s wins",
 	BasesToWin	= "Bases to win: %d",
-	Flag		= "Flag"
 })
 
 ------------------------
@@ -103,6 +102,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1600",
 	WinBarText 		= "%s wins",
+	Flag			= "Flag",
 	FlagReset 		= "The flag has been reset!",
 	FlagTaken 		= "(.+) has taken the flag!",
 	FlagCaptured	= "The .+ ha%w+ captured the flag!",
