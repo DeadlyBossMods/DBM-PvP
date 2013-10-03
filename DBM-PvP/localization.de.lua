@@ -82,8 +82,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1600",
 	WinBarText	= "%s gewinnt",
-	BasesToWin	= "benötigte Basen für Sieg: %d",
-	Flag		= "Flagge"
+	BasesToWin	= "benötigte Basen für Sieg: %d"
 })
 
 ------------------------
@@ -104,6 +103,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1600",
 	WinBarText 		= "%s gewinnt",
+	Flag			= "Flagge",
 	FlagReset 		= "Die Flagge wurde zurückgesetzt.",
 	FlagTaken 		= "(.+) hat die Flagge aufgenommen.",
 	FlagCaptured	= "Die %w+ hat die Flagge erobert!",
@@ -227,8 +227,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/2000",
 	WinBarText	= "%s gewinnt",
-	BasesToWin	= "benötigte Basen für Sieg: %d",
-	Flag		= "Flagge"
+	BasesToWin	= "benötigte Basen für Sieg: %d"
 })
 
 -------------------------
