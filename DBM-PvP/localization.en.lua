@@ -131,7 +131,7 @@ L:SetMiscLocalization({
 	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
+	ExprFlagCaptured	= "(.+) captured the (%w+) .lag!",
 	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
 	FlagAlliance		= "Alliance Flag: ",
 	FlagHorde			= "Horde Flag: ",
