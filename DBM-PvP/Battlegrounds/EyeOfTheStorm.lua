@@ -280,11 +280,12 @@ function mod:UpdateFlagDisplay()
 		
 		local newText
 		local oldText = self.ScoreFrame1Text:GetText()
+		local flagName = L.Flag or "Flag"
 		if self.AllyFlag then
 			if not oldText or oldText == "" then
 				newText = "Flag: "..self.AllyFlag
 			else
-				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.AllyFlag)
+				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..flagName..": "..self.AllyFlag)
 			end
 		elseif oldText and oldText ~= "" then
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
@@ -297,7 +298,7 @@ function mod:UpdateFlagDisplay()
 			if not oldText or oldText == "" then
 				newText = "Flag: "..self.HordeFlag
 			else
-				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.HordeFlag)
+				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..flagName..": "..self.HordeFlag)
 			end
 		elseif oldText and oldText ~= "" then
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
