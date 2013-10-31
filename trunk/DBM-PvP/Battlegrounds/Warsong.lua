@@ -32,7 +32,7 @@ mod:AddBoolOption("ShowFlagCarrier", true, nil, function()
 		mod:CreateFlagCarrierButton()
 	else
 		mod:HideFlagCarrier()
-	end	
+	end
 end)
 mod:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
@@ -67,7 +67,7 @@ do
 		end
 	end
 	mod.OnInitialize = WSG_Initialize
-	
+
 	function mod:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, WSG_Initialize)
 	end
@@ -101,7 +101,7 @@ function mod:ShowFlagCarrier()
 			self.FlagCarrierFrame2Text:SetAllPoints(self.FlagCarrierFrame2)
 			self.FlagCarrierFrame2Text:SetJustifyH("LEFT")
 		end
-		self.FlagCarrierFrame1:Show()		
+		self.FlagCarrierFrame1:Show()
 		self.FlagCarrierFrame2:Show()
 	end
 end
@@ -122,7 +122,7 @@ function mod:CreateFlagCarrierButton()
 		self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
 		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame3", "RIGHT", 28, 4)
 	end
-	self.FlagCarrierFrame1Button:Show()		
+	self.FlagCarrierFrame1Button:Show()
 	self.FlagCarrierFrame2Button:Show()
 end
 
@@ -161,12 +161,12 @@ do
 				end
 				if name == carrier then
 					if faction == 0 then
-						self.FlagCarrierFrame2Text:SetTextColor(RAID_CLASS_COLORS[classToken].r, 
-											RAID_CLASS_COLORS[classToken].g, 
+						self.FlagCarrierFrame2Text:SetTextColor(RAID_CLASS_COLORS[classToken].r,
+											RAID_CLASS_COLORS[classToken].g,
 											RAID_CLASS_COLORS[classToken].b)
 					elseif faction == 1 then
-						self.FlagCarrierFrame1Text:SetTextColor(RAID_CLASS_COLORS[classToken].r, 
-											RAID_CLASS_COLORS[classToken].g, 
+						self.FlagCarrierFrame1Text:SetTextColor(RAID_CLASS_COLORS[classToken].r,
+											RAID_CLASS_COLORS[classToken].g,
 											RAID_CLASS_COLORS[classToken].b)
 					end
 					found = true
@@ -178,7 +178,7 @@ do
 			lastCarrier = carrier
 		end
 	end
-	
+
 	function mod:UPDATE_BATTLEFIELD_SCORE()
 		if lastCarrier then
 			self:ColorFlagCarrier(lastCarrier)
@@ -223,8 +223,8 @@ do
 				if not nickLong then
 					nickLong = mNick
 				end
-				
-				if (mSide == L.Alliance) or (mSide == FACTION_ALLIANCE) then
+
+				if mSide == (L.Alliance or FACTION_ALLIANCE) then
 					FlagCarrier[2] = nickLong
 					self.FlagCarrierFrame2Text:SetText(mNick)
 					self.FlagCarrierFrame2:Show()
@@ -235,9 +235,9 @@ do
 						end
 					else
 						self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. nickLong )
-					end					
+					end
 
-				elseif (mSide == L.Horde) or (mSide == FACTION_HORDE) then
+				elseif mSide == (L.Horde or FACTION_HORDE) then
 					FlagCarrier[1] = nickLong
 					self.FlagCarrierFrame1Text:SetText(mNick)
 					self.FlagCarrierFrame1:Show()
@@ -254,7 +254,7 @@ do
 				if FlagCarrier[1] and FlagCarrier[2] and not vulnerableTimer:IsStarted() then
 					vulnerableTimer:Start(180)
 				end
-				
+
 			elseif string.match(arg1, L.ExprFlagReturn) then
 				local _, mSide
 				if( GetLocale() == "ruRU") then
@@ -262,12 +262,12 @@ do
 				else
 					_, _, mSide =  string.find(arg1, L.ExprFlagReturn)
 				end
-				
-				if (mSide == L.Alliance) or (mSide == FACTION_ALLIANCE) then
+
+				if mSide == (L.Alliance or FACTION_ALLIANCE) then
 					self.FlagCarrierFrame2:Hide()
 					FlagCarrier[2] = nil
 
-				elseif (mSide == L.Horde) or (mSide == FACTION_HORDE) then
+				elseif mSide == (L.Horde or FACTION_HORDE) then
 					self.FlagCarrierFrame1:Hide()
 					FlagCarrier[1] = nil
 				end
