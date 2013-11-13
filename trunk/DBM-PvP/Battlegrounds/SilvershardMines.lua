@@ -11,6 +11,7 @@ mod:RegisterEvents(
 local cartTimer		= mod:NewTimer(9.5, "TimerCart", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 
 local bgzone = false
+local cartCount = 0
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
@@ -18,6 +19,7 @@ mod:RemoveOption("SpeedKillTimer")
 function mod:OnInitialize()
 	if DBM:GetCurrentArea() == 727 then
 		bgzone = true
+		cartCount = 0
 		self:RegisterShortTermEvents(
 			"CHAT_MSG_MONSTER_YELL",
 			"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -38,8 +40,9 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if not bgzone then return end
-	if msg:find(L.Capture) then	
-		cartTimer:Start()
+	if msg:find(L.Capture) then
+		cartCount = cartCount + 1
+		cartTimer:Start(cartCount)
 	end
 end
 
