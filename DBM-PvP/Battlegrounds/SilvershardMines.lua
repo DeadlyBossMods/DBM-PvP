@@ -42,7 +42,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if not bgzone then return end
 	if msg:find(L.Capture) then
 		cartCount = cartCount + 1
-		cartTimer:Start(cartCount)
+		cartTimer:Start(nil, cartCount)
 	end
 end
 
