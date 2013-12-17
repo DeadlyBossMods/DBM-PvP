@@ -159,7 +159,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:SPELL_BUILDING_DAMAGE(sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount)
+function mod:SPELL_BUILDING_DAMAGE(sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, amount)
 	if sourceGUID == nil or destName == nil or destGUID == nil or amount == nil or not bgzone then
 		return
 	end
