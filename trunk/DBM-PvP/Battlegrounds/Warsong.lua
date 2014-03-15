@@ -252,7 +252,7 @@ do
 				end
 
 				if FlagCarrier[1] and FlagCarrier[2] and not vulnerableTimer:IsStarted() then
-					vulnerableTimer:Start(180)
+					vulnerableTimer:Start()
 				end
 
 			elseif string.match(arg1, L.ExprFlagReturn) then
