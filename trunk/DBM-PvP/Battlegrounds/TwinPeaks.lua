@@ -23,7 +23,7 @@ local FlagCarrier = {
 }
 
 --local startTimer 	= mod:NewTimer(62, "TimerStart", 2457)
-local flagTimer 	= mod:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
+local flagTimer 	= mod:NewTimer(20, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
 mod:AddBoolOption("ShowFlagCarrier", true, nil, function()
