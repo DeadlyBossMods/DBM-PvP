@@ -16,8 +16,8 @@ mod:RegisterEvents(
 )
 
 local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
-local towerTimer = mod:NewTimer(243, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
-local gyTimer = mod:NewTimer(243, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
+local towerTimer = mod:NewTimer(240, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
+local gyTimer = mod:NewTimer(240, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
 local allyColor = {
