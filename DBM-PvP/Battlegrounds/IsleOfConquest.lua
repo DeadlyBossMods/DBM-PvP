@@ -14,7 +14,7 @@ mod:RemoveOption("SpeedKillTimer")
 local warnSiegeEngine 		= mod:NewAnnounce("WarnSiegeEngine", 3)
 local warnSiegeEngineSoon 	= mod:NewAnnounce("WarnSiegeEngineSoon", 2) 
 
-local POITimer 			= mod:NewTimer(61, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
+local POITimer 			= mod:NewTimer(60, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
 local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
 mod:AddBoolOption("ShowGatesHealth", true)
