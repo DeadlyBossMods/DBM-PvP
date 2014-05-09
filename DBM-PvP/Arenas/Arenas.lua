@@ -14,10 +14,15 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 
 local timerShadow	= mod:NewTimer(90, "TimerShadow", 34709)
+local timerDamp		= mod:NewCastTimer(300, 110310)
 
-function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(args)
+local countdownMatchStart	= mod:NewCountdown(15, 91344)
+
+function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 	if not IsActiveBattlefieldArena() then return end
-	if args == L.Start15 then
+	if msg == L.Start15 then
 		timerShadow:Schedule(16)
+		timerDamp:Schedule(16)
+		countdownMatchStart:Start()
 	end
 end
