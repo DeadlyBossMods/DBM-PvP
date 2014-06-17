@@ -52,6 +52,7 @@ localization.br.lua
 Battlegrounds\Battlegrounds.lua
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua
+Battlegrounds\Deepwind.lua
 Battlegrounds\Gilneas.lua
 Battlegrounds\EyeOfTheStorm.lua
 Battlegrounds\IsleOfConquest.lua
