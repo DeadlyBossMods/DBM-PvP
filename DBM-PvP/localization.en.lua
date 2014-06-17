@@ -81,7 +81,26 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1600",
 	WinBarText	= "%s wins",
-	BasesToWin	= "Bases to win: %d",
+	BasesToWin	= "Bases to win: %d"
+})
+
+---------------------
+--  Deepwind Gorge --
+---------------------
+L = DBM:GetModLocalization("z1105")
+
+L:SetTimerLocalization({
+       TimerCap        = "%s"
+})
+
+L:SetOptionLocalization({
+       TimerCap        = "Show capture timer",
+       TimerWin        = "Show win timer"
+})
+
+L:SetMiscLocalization({
+       ScoreExpr       = "(%d+)/1600",
+       WinBarText      = "%s wins"
 })
 
 ------------------------
