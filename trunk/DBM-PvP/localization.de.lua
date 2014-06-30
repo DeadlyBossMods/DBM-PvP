@@ -85,6 +85,25 @@ L:SetMiscLocalization({
 	BasesToWin	= "benötigte Basen für Sieg: %d"
 })
 
+---------------------
+--  Deepwind Gorge --
+---------------------
+L = DBM:GetModLocalization("z1105")
+
+L:SetTimerLocalization({
+       TimerCap        = "%s"
+})
+
+L:SetOptionLocalization({
+       TimerCap        = "Zeige Eroberungsdauer für Basen",
+       TimerWin        = "Zeige Zeit bis eine Fraktion gewinnt"
+})
+
+L:SetMiscLocalization({
+       ScoreExpr       = "(%d+)/1600",
+       WinBarText      = "%s gewinnt"
+})
+
 ------------------------
 --  Eye of the Storm  --
 ------------------------
@@ -137,8 +156,8 @@ L:SetMiscLocalization({
 	FlagAlliance		= "Allianz-Flagge: ",
 	FlagHorde			= "Horde-Flagge: ",
 	FlagBase			= "Basis",
-	Vulnerable1		= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
-	Vulnerable2		= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
+	Vulnerable1			= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
+	Vulnerable2			= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
 })
 
 ------------------------
@@ -204,8 +223,8 @@ L:SetMiscLocalization({
 	FlagAlliance		= "Allianz-Flagge: ",
 	FlagHorde			= "Horde-Flagge: ",
 	FlagBase			= "Basis",
-	Vulnerable1		= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
-	Vulnerable2		= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
+	Vulnerable1			= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
+	Vulnerable2			= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
 })
 
 ------------------------------
