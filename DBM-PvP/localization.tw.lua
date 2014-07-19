@@ -81,8 +81,26 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr 	= "(%d+)/1600",
 	WinBarText 	= "%s勝利",
-	BasesToWin 	= "勝利需要基地:%d",
-	Flag 		= "旗幟"
+	BasesToWin 	= "勝利需要基地:%d"
+})
+
+---------------------
+--  Deepwind Gorge --
+---------------------
+L = DBM:GetModLocalization("z1105")
+
+L:SetTimerLocalization({
+       TimerCap        = "%s"
+})
+
+L:SetOptionLocalization({
+       TimerCap        = "顯示奪取計時器",
+       TimerWin        = "顯示勝利計時器"
+})
+
+L:SetMiscLocalization({
+       ScoreExpr       = "(%d+)/1600",
+       WinBarText      = "%s勝利"
 })
 
 ------------------------
@@ -103,6 +121,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1600",
 	WinBarText 		= "%s勝利",
+	Flag 			= "旗幟",
 	FlagReset 		= "旗幟已重置!",
 	FlagTaken 		= "(.+)已經奪走了旗幟!",
 	FlagCaptured	= "(.+)已奪得旗幟!",
@@ -226,8 +245,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr 	= "(%d+)/2000",
 	WinBarText 	= "%s勝利",
-	BasesToWin 	= "勝利需要基地: %d",
-	Flag 		= "旗幟"
+	BasesToWin 	= "勝利需要基地: %d"
 })
 
 ------------------------
