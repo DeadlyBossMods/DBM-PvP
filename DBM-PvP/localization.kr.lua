@@ -84,6 +84,25 @@ L:SetMiscLocalization({
 	BasesToWin		= "역전하기 위해 필요한 거점 수: %d"
 })
 
+---------------------
+--  Deepwind Gorge --
+---------------------
+L = DBM:GetModLocalization("z1105")
+
+L:SetTimerLocalization({
+       TimerCap        = "%s"
+})
+
+L:SetOptionLocalization({
+       TimerCap        = "거점 점령 바 보기",
+       TimerWin        = "전장 승리까지 남은시간 바 보기"
+})
+
+L:SetMiscLocalization({
+       ScoreExpr       = "(%d+)/1600",
+       WinBarText      = "%s 승리"
+})
+
 -----------------------
 --  Eye of the Storm --
 -----------------------
