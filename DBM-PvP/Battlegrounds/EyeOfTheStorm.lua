@@ -232,8 +232,8 @@ function mod:UPDATE_WORLD_STATES()
 	local last_alliance_score, last_horde_score = getScore()
 
 	-- calculate new times
-	local AllyTime = (1600 - last_alliance_score) / ResPerSec[last_alliance_bases]
-	local HordeTime = (1600 - last_horde_score) / ResPerSec[last_horde_bases]
+	local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_bases]
+	local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_bases]
 	
 	if AllyTime > 5000 then		AllyTime = 5000 end
 	if HordeTime > 5000 then	HordeTime = 5000 end
@@ -255,7 +255,7 @@ function mod:UPDATE_WORLD_STATES()
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			local AllyPoints = math.floor((HordeTime * ResPerSec[last_alliance_bases]) + last_alliance_score)
 			self.ScoreFrame1Text:SetText("("..AllyPoints..")")
-			self.ScoreFrame2Text:SetText("(1600)")
+			self.ScoreFrame2Text:SetText("(1500)")
 			self:UpdateFlagDisplay()
 		end
 
@@ -268,7 +268,7 @@ function mod:UPDATE_WORLD_STATES()
 
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			local HordePoints = math.floor((HordeTime * ResPerSec[last_horde_bases]) + last_horde_score)
-			self.ScoreFrame1Text:SetText("(1600)")
+			self.ScoreFrame1Text:SetText("(1500)")
 			self.ScoreFrame2Text:SetText("("..HordePoints..")")
 			self:UpdateFlagDisplay()
 		end		

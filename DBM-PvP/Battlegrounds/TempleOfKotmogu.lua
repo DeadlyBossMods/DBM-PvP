@@ -211,8 +211,8 @@ do
 	end
 
 	function mod:UpdateWinTimer()
-		local AllyTime = (1600 - last_alliance_score) / ResPerSec[last_alliance_orbs]
-		local HordeTime = (1600 - last_horde_score) / ResPerSec[last_horde_orbs]
+		local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_orbs]
+		local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_orbs]
 		
 		if AllyTime > 5000 then AllyTime = 5000 end
 		if HordeTime > 5000 then HordeTime = 5000 end
@@ -229,7 +229,7 @@ do
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_orbs]) + last_alliance_score) / 10) * 10)
 				self.ScoreFrame1Text:SetText("("..AllyPoints..")")
-				self.ScoreFrame2Text:SetText("(1600)")
+				self.ScoreFrame2Text:SetText("(1500)")
 			end
 
 			winner_is = 2
@@ -244,7 +244,7 @@ do
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[last_horde_orbs]) + last_horde_score) / 10) * 10)
 				self.ScoreFrame2Text:SetText("("..HordePoints..")")
-				self.ScoreFrame1Text:SetText("(1600)")		
+				self.ScoreFrame1Text:SetText("(1500)")		
 			end
 
 			winner_is = 1
@@ -269,10 +269,10 @@ do
 				FriendlyOrbs = last_horde_orbs
 				EnemyOrbs = last_alliance_orbs
 			end
-			if ((1600 - FriendlyLast) / ResPerSec[FriendlyOrbs]) > ((1600 - EnemyLast) / ResPerSec[EnemyOrbs]) then
+			if ((1500 - FriendlyLast) / ResPerSec[FriendlyOrbs]) > ((1500 - EnemyLast) / ResPerSec[EnemyOrbs]) then
 				for i=1, 4 do
-					local EnemyTime = (1600 - EnemyLast) / ResPerSec[ 4 - i ]
-					local FriendlyTime = (1600 - FriendlyLast) / ResPerSec[ i ]
+					local EnemyTime = (1500 - EnemyLast) / ResPerSec[ 4 - i ]
+					local FriendlyTime = (1500 - FriendlyLast) / ResPerSec[ i ]
 					if( FriendlyTime < EnemyTime ) then
 						baseLowest = FriendlyTime
 					else
@@ -281,7 +281,7 @@ do
 					
 					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * ResPerSec[ 5 - i ] + 0.5 ) ) / 10 ) * 10
 					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
-					if( FriendlyFinal >= 1600 and EnemyFinal < 1600 ) then
+					if( FriendlyFinal >= 1500 and EnemyFinal < 1500 ) then
 						self.ScoreFrameToWinText:SetText(L.OrbsToWin:format(i))
 						break
 					end
