@@ -70,7 +70,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
-	ScoreExpr 		= "(%d+)/1600",
+	ScoreExpr 		= "(%d+)/1500",
 	Alliance 		= "Alianza",
 	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
@@ -95,7 +95,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
-	ScoreExpr		= "(%d+)/1600",
+	ScoreExpr		= "(%d+)/1500",
 	Alliance 		= "Alianza",
 	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
@@ -222,7 +222,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
-	ScoreExpr 		= "(%d+)/2000",
+	ScoreExpr 		= "(%d+)/1500",
 	Alliance 		= "Alianza",
 	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",

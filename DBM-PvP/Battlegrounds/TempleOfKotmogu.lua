@@ -87,8 +87,8 @@ end
 
 local function GetScore()
 	if not bgzone then return 0,0 end
-	local alliance = tonumber(string.match((select(4, GetWorldStateUIInfo(1)) or ""), L.ScoreExpr)) or 0
-	local horde = tonumber(string.match((select(4, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	local alliance = tonumber(string.match((select(4, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	local horde = tonumber(string.match((select(4, GetWorldStateUIInfo(3)) or ""), L.ScoreExpr)) or 0
 	return alliance, horde
 end
 

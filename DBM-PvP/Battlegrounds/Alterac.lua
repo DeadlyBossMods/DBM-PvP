@@ -75,13 +75,17 @@ do
 				"QUEST_COMPLETE"
 			)
 			bgzone = true
-			for i=1, GetNumMapLandmarks(), 1 do
+			for i = 1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
+				-- work-around for a bug in the german localization of WoW: the graveyard seems to change its name depending on the state
+				if name == "Friedhof des Sturmlanzen" then
+					name = "Friedhof der Sturmlanzen"
+				end
 				if name and textureIndex then
 					if is_graveyard(textureIndex) then
-						graveyards[i] = textureIndex
+						graveyards[name] = gy_state(textureIndex)
 					elseif is_tower(textureIndex) then
-						towers[i] = textureIndex
+						towers[name] = tower_state(textureIndex)
 					end
 				end
 			end
@@ -99,50 +103,44 @@ end
 do
 	local function check_for_updates()
 		if not bgzone then return end
-		for k,v in pairs(graveyards) do
-			local name, _, textureIndex = GetMapLandmarkInfo(k)
+		for i = 1, GetNumMapLandmarks(), 1 do
+			local name, _, textureIndex = GetMapLandmarkInfo(i)
 			if name and textureIndex then
-				-- work-around for a bug in the german localization of WoW: the graveyard seems to change its name depending on the state
-				if name == "Friedhof des Sturmlanzen" then
-					name = "Friedhof der Sturmlanzen"
-				end
-				local curState = gy_state(textureIndex)
-				if curState and gy_state(v) ~= curState then
-					gyTimer:Stop(name)
-					if curState > 2 then
-						gyTimer:Start(nil, name)
-						if curState == 3 then
-							gyTimer:SetColor(allyColor, name)
-						else
-							gyTimer:SetColor(hordeColor, name)
+				if is_graveyard(textureIndex) then
+					local curState = gy_state(textureIndex)
+					if curState and (graveyards[name] ~= curState) then
+						gyTimer:Stop(name)
+						if curState > 2 then
+							gyTimer:Start(nil, name)
+							if curState == 3 then
+								gyTimer:SetColor(allyColor, name)
+							else
+								gyTimer:SetColor(hordeColor, name)
+							end
 						end
+						graveyards[name] = curState
+					end
+				elseif is_tower(textureIndex) then
+					local curState = tower_state(textureIndex)
+					if curState and (towers[name] ~= curState) then
+						towerTimer:Stop(name)
+						if curState > 2 then
+							towerTimer:Start(nil, name)
+							if curState == 3 then
+								towerTimer:SetColor(allyColor, name)
+								towerTimer:UpdateIcon(hordeTowerIcon, name)
+							else
+								towerTimer:SetColor(hordeColor, name)
+								towerTimer:UpdateIcon(allyTowerIcon, name)
+							end
+						end
+						towers[name] = curState
 					end
 				end
-				graveyards[k] = textureIndex
-			end		 
-		end
-		for k,v in pairs(towers) do
-			local name, _, textureIndex = GetMapLandmarkInfo(k)
-			if name and textureIndex then
-				local curState = tower_state(textureIndex)
-				if curState and tower_state(v) ~= curState then
-					towerTimer:Stop(name)
-					if curState > 2 then
-						towerTimer:Start(nil, name)
-						if curState == 3 then
-							towerTimer:SetColor(allyColor, name)
-							towerTimer:UpdateIcon(hordeTowerIcon, name)
-						else
-							towerTimer:SetColor(hordeColor, name)
-							towerTimer:UpdateIcon(allyTowerIcon, name)
-						end
-					end
-				end
-				towers[k] = textureIndex
-			end		 
+			end
 		end
 	end
-	
+
 	local function schedule_check(self)
 		self:Schedule(1, check_for_updates)
 	end

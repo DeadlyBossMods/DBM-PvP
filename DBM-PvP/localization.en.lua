@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s wins",
 	BasesToWin	= "Bases to win: %d"
 })
@@ -99,7 +99,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1600",
+       ScoreExpr       = "(%d+)/1500",
        WinBarText      = "%s wins"
 })
 
@@ -119,7 +119,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr		= "(%d+)/1600",
+	ScoreExpr		= "(%d+)/1500",
 	WinBarText 		= "%s wins",
 	Flag			= "Flag",
 	FlagReset 		= "The flag has been reset!",
@@ -243,7 +243,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/2000",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s wins",
 	BasesToWin	= "Bases to win: %d"
 })
@@ -279,7 +279,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) has taken the (%S+) orb!",
 	OrbReturn 	= "The (%S+) orb has been returned!",
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "Estimate %s wins",
 	OrbsToWin	= "Orbs to win: %d"
 })
