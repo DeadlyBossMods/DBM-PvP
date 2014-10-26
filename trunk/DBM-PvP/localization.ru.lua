@@ -80,7 +80,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s побеждает",
 	BasesToWin	= "Баз для победы: %d",
 	Flag		= "Флаг"
@@ -102,7 +102,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr		= "(%d+)/1600",
+	ScoreExpr		= "(%d+)/1500",
 	WinBarText 		= "%s побеждает",
 	FlagReset 		= "Флаг возвращен на базу.",
 	FlagTaken 		= "(.+) захватывает флаг!",
@@ -228,7 +228,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/2000",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s побеждает",
 	BasesToWin	= "Баз для победы: %d",
 	Flag		= "Флаг"
@@ -265,7 +265,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) захватывает (%S+) сферу!",
 	OrbReturn 	= "(%S+) сфера возвращена!",
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "Предположительно %s побеждает",
 	OrbsToWin	= "Сфер для победы: %d"
 })

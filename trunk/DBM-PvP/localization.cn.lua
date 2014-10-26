@@ -72,7 +72,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z529")
 
 L:SetMiscLocalization({
-	ScoreExpr 	= "(%d+)/1600",
+	ScoreExpr 	= "(%d+)/1500",
 	Alliance 	= "联盟",
 	Horde 		= "部落",
 	WinBarText 	= "%s 获胜",
@@ -97,7 +97,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z566")
 
 L:SetMiscLocalization({
-	ScoreExpr	 	= "(%d+)/1600",
+	ScoreExpr	 	= "(%d+)/1500",
 	Alliance 		= "联盟",
 	Horde 			= "部落",
 	WinBarText 		= "%s 获胜",
@@ -224,7 +224,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z761")
 
 L:SetMiscLocalization({
-	ScoreExpr = "(%d+)/2000",
+	ScoreExpr = "(%d+)/1500",
 	Alliance = "联盟",
 	Horde = "部落",
 	WinBarText = "%s 获胜",
@@ -275,7 +275,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+)取走了(%S+)的球！",
 	OrbReturn 	= "(%S+)宝珠被放回了！",
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	Alliance	= "联盟",
 	Horde		= "部落",
 	WinBarText	= "预计：%s获胜",

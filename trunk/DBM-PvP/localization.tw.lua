@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 	= "(%d+)/1600",
+	ScoreExpr 	= "(%d+)/1500",
 	WinBarText 	= "%s勝利",
 	BasesToWin 	= "勝利需要基地:%d"
 })
@@ -99,7 +99,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1600",
+       ScoreExpr       = "(%d+)/1500",
        WinBarText      = "%s勝利"
 })
 
@@ -119,7 +119,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr		= "(%d+)/1600",
+	ScoreExpr		= "(%d+)/1500",
 	WinBarText 		= "%s勝利",
 	Flag 			= "旗幟",
 	FlagReset 		= "旗幟已重置!",
@@ -243,7 +243,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 	= "(%d+)/2000",
+	ScoreExpr 	= "(%d+)/1500",
 	WinBarText 	= "%s勝利",
 	BasesToWin 	= "勝利需要基地: %d"
 })
@@ -279,7 +279,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+)奪走了(%S+)異能球!",
 	OrbReturn 	= "(%S+)異能球已回到初始位置!",
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "預計%s勝利",
 	OrbsToWin	= "獲勝異能球數量: %d"
 })

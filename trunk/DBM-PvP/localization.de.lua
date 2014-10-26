@@ -80,7 +80,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s gewinnt",
 	BasesToWin	= "benötigte Basen für Sieg: %d"
 })
@@ -100,7 +100,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1600",
+       ScoreExpr       = "(%d+)/1500",
        WinBarText      = "%s gewinnt"
 })
 
@@ -120,7 +120,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr		= "(%d+)/1600",
+	ScoreExpr		= "(%d+)/1500",
 	WinBarText 		= "%s gewinnt",
 	Flag			= "Flagge",
 	FlagReset 		= "Die Flagge wurde zurückgesetzt.",
@@ -244,7 +244,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr	= "(%d+)/2000",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s gewinnt",
 	BasesToWin	= "benötigte Basen für Sieg: %d"
 })
@@ -280,7 +280,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	OrbTaken 	= "(%S+) hat die (%S+) Kugel genommen!",
 	OrbReturn 	= "Die (%S+) Kugel wurde zurückgebracht!",
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s gewinnt (geschätzt)",
 	OrbsToWin	= "benötigte Kugeln für Sieg: %d"
 })

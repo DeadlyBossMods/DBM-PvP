@@ -94,8 +94,8 @@ end
 
 local function get_score()
 	if not bgzone then return 0,0 end
-	local AllyScore		= tonumber(string.match((select(4, GetWorldStateUIInfo(1)) or ""), L.ScoreExpr)) or 0
-	local HordeScore	= tonumber(string.match((select(4, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	local AllyScore		= tonumber(string.match((select(4, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	local HordeScore	= tonumber(string.match((select(4, GetWorldStateUIInfo(3)) or ""), L.ScoreExpr)) or 0
 	return AllyScore, HordeScore
 end
 
@@ -236,10 +236,10 @@ do
 		end
 	end
 	function mod:UpdateWinTimer()
-		local AllyTime = (2000 - last_alliance_score) / ResPerSec[last_alliance_bases]
-		local HordeTime = (2000 - last_horde_score) / ResPerSec[last_horde_bases]
-		if AllyTime > 2000 then		AllyTime = 2000 end
-		if HordeTime > 2000 then	HordeTime = 2000 end
+		local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_bases]
+		local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_bases]
+		if AllyTime > 1500 then		AllyTime = 1500 end
+		if HordeTime > 1500 then	HordeTime = 1500 end
 
 		if AllyTime == HordeTime then
 			winner_is = 0 
@@ -253,7 +253,7 @@ do
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_bases]) + last_alliance_score) / 10) * 10)
 				self.ScoreFrame1Text:SetText("("..AllyPoints..")")
-				self.ScoreFrame2Text:SetText("(2000)")
+				self.ScoreFrame2Text:SetText("(1500)")
 			end
 
 			winner_is = 2
@@ -268,7 +268,7 @@ do
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[last_horde_bases]) + last_horde_score) / 10) * 10)
 				self.ScoreFrame2Text:SetText("("..HordePoints..")")
-				self.ScoreFrame1Text:SetText("(2000)")		
+				self.ScoreFrame1Text:SetText("(1500)")		
 			end
 
 			winner_is = 1
@@ -293,10 +293,10 @@ do
 				FriendlyBases = last_horde_bases
 				EnemyBases = last_alliance_bases
 			end
-			if ((2000 - FriendlyLast) / ResPerSec[FriendlyBases]) > ((2000 - EnemyLast) / ResPerSec[EnemyBases]) then
+			if ((1500 - FriendlyLast) / ResPerSec[FriendlyBases]) > ((1500 - EnemyLast) / ResPerSec[EnemyBases]) then
 				for i=1, 3 do
-					local EnemyTime = (2000 - EnemyLast) / ResPerSec[ 3 - i ]
-					local FriendlyTime = (2000 - FriendlyLast) / ResPerSec[ i ]
+					local EnemyTime = (1500 - EnemyLast) / ResPerSec[ 3 - i ]
+					local FriendlyTime = (1500 - FriendlyLast) / ResPerSec[ i ]
 					if( FriendlyTime < EnemyTime ) then
 						baseLowest = FriendlyTime
 					else
@@ -305,7 +305,7 @@ do
 					
 					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * ResPerSec[ 3 - i ] + 0.5 ) ) / 10 ) * 10
 					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
-					if( FriendlyFinal >= 2000 and EnemyFinal < 2000 ) then
+					if( FriendlyFinal >= 1500 and EnemyFinal < 1500 ) then
 						self.ScoreFrameToWinText:SetText(L.BasesToWin:format(i))
 						break
 					end

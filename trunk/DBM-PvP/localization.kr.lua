@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 		= "(%d+)/1600",
+	ScoreExpr 		= "(%d+)/1500",
 	WinBarText 		= "%s 승리",
 	BasesToWin		= "역전하기 위해 필요한 거점 수: %d"
 })
@@ -99,7 +99,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1600",
+       ScoreExpr       = "(%d+)/1500",
        WinBarText      = "%s 승리"
 })
 
@@ -119,7 +119,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 		= "(%d+)/1600",
+	ScoreExpr 		= "(%d+)/1500",
 	WinBarText		= "%s 승리",
 	Flag 			= "깃발",
 	FlagReset 		= "깃발이 다시 제자리로 돌아갔습니다.",
@@ -237,7 +237,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 		= "(%d+)/2000",
+	ScoreExpr 		= "(%d+)/1500",
 	WinBarText 		= "%s 승리",
 	BasesToWin		= "역전하기 위해 필요한 거점 수: %d"
 })
@@ -267,7 +267,7 @@ L = DBM:GetModLocalization("z998")
 L:SetMiscLocalization({
 	OrbTaken 	= "(.+)|1이;가; (.+) 공을 차지했습니다!",
 	OrbReturn 	= "(.+) 공이 돌아왔습니다!",
-	ScoreExpr	= "(%d+)/1600",
+	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s 승리",
 	OrbsToWin	= "역전하기 위해 필요한 공 수: %d"
 })
