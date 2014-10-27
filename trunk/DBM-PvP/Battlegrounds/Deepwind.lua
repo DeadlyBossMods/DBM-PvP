@@ -177,7 +177,6 @@ function mod:UPDATE_WORLD_STATES()
 	if HordeTime > 5000 then	HordeTime = 5000 end
 
 	if AllyTime == HordeTime then
-		winner_is = 0
 		winTimer:Stop()
 		if self.ScoreFrame1Text then
 			self.ScoreFrame1Text:SetText("")
@@ -191,7 +190,6 @@ function mod:UPDATE_WORLD_STATES()
 			self.ScoreFrame2Text:SetText("(1500)")
 		end
 
-		winner_is = 2
 		winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 		winTimer:DisableEnlarge()
 		local title = L.Horde or FACTION_HORDE--L.Horde is nil in english local, unless it's added to non english local, FACTION_HORDE will be used
@@ -206,7 +204,6 @@ function mod:UPDATE_WORLD_STATES()
 			self.ScoreFrame1Text:SetText("(1500)")
 		end
 
-		winner_is = 1
 		winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 		winTimer:DisableEnlarge()
 		local title = L.Alliance or FACTION_ALLIANCE--L.Alliance is nil in english local, unless it's added to non english local, FACTION_ALLIANCE will be used
