@@ -20,10 +20,10 @@ local bgzone = false
 local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
 local ResPerSec = {
 	[0] = 1e-300, -- blah
-	[1] = 0.5,
-	[2] = 1,
-	[3] = 2.5,
-	[4] = 5,
+	[1] = 1,
+	[2] = 2,
+	[3] = 5,
+	[4] = 10,
 }
 local allyColor = {
 	r = 0,
