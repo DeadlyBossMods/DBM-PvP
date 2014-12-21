@@ -80,8 +80,18 @@ local function getScore()
 	if not bgzone then
 		return 0, 0
 	end
-	local allyScore	= tonumber(string.match((select(4, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
-	local hordeScore = tonumber(string.match((select(4, GetWorldStateUIInfo(3)) or ""), L.ScoreExpr)) or 0
+	local ally, horde = 2, 3
+	for i = 1, 3 do
+		if select(5, GetWorldStateUIInfo(i)) then
+			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then--find -- "Interface\\TargetingFrame\\UI-PVP-Alliance", must be alliance.
+				ally = i
+				horde = i + 1
+				break
+			end
+		end
+	end
+	local allyScore	= tonumber(string.match((select(4, GetWorldStateUIInfo(ally)) or ""), L.ScoreExpr)) or 0
+	local hordeScore = tonumber(string.match((select(4, GetWorldStateUIInfo(horde)) or ""), L.ScoreExpr)) or 0
 	return allyScore, hordeScore
 end
 
@@ -271,13 +281,12 @@ function mod:UPDATE_WORLD_STATES()
 			self.ScoreFrame1Text:SetText("(1500)")
 			self.ScoreFrame2Text:SetText("("..HordePoints..")")
 			self:UpdateFlagDisplay()
-		end		
+		end
 	end
 end
 
 function mod:UpdateFlagDisplay()
 	if self.ScoreFrame1Text and self.ScoreFrame2Text then
-		
 		local newText
 		local oldText = self.ScoreFrame1Text:GetText()
 		local flagName = L.Flag or "Flag"
@@ -304,17 +313,16 @@ function mod:UpdateFlagDisplay()
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
 		end
 		self.ScoreFrame2Text:SetText(newText)
-		
 	end
 end
 
 function mod:ShowEstimatedPoints()
-	if AlwaysUpFrame1Text and AlwaysUpFrame2Text then
+	if AlwaysUpFrame1 and AlwaysUpFrame2 then
 		if not self.ScoreFrame1 then
 			self.ScoreFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1)
 			self.ScoreFrame1:SetHeight(10)
 			self.ScoreFrame1:SetWidth(200)
-			self.ScoreFrame1:SetPoint("LEFT", "AlwaysUpFrame1Text", "RIGHT", 4, 0)
+			self.ScoreFrame1:SetPoint("LEFT", "AlwaysUpFrame1DynamicIconButton", "RIGHT", 4, 0)
 			self.ScoreFrame1Text = self.ScoreFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.ScoreFrame1Text:SetAllPoints(self.ScoreFrame1)
 			self.ScoreFrame1Text:SetJustifyH("LEFT")
@@ -323,7 +331,7 @@ function mod:ShowEstimatedPoints()
 			self.ScoreFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2)
 			self.ScoreFrame2:SetHeight(10)
 			self.ScoreFrame2:SetWidth(200)
-			self.ScoreFrame2:SetPoint("LEFT", "AlwaysUpFrame2Text", "RIGHT", 4, 0)
+			self.ScoreFrame2:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
 			self.ScoreFrame2Text= self.ScoreFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.ScoreFrame2Text:SetAllPoints(self.ScoreFrame2)
 			self.ScoreFrame2Text:SetJustifyH("LEFT")
