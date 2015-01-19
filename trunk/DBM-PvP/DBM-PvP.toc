@@ -13,7 +13,7 @@
 ## Author: Nitram/Tandanu/Arta
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMPvP_SavedVars
+## SavedVariables: DBMPvP_AllSavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: PvP
@@ -40,6 +40,7 @@
 ## X-DBM-Mod-Name-ptBR: JxJ
 ## X-DBM-Mod-MapID: 529,489,30,628,566,998,726,727,761,1105
 ## X-DBM-Mod-Sort: 999
+## X-DBM-Mod-MinCoreRevision: 12473
 localization.en.lua
 localization.de.lua
 localization.tw.lua
