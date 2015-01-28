@@ -32,11 +32,11 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		inviteTimer:Stop()
 		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
 		if self.Options.HideBossEmoteFrame then
-			DBM:ToggleRaidBossEmoteFrame(1, true)
+			DBM:HideBlizzardEvents(1, true)
 		end
 	else
 		if self.Options.HideBossEmoteFrame then
-			DBM:ToggleRaidBossEmoteFrame(0, true)
+			DBM:HideBlizzardEvents(0, true)
 		end
 	end
 	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end

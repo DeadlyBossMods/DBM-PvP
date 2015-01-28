@@ -18,7 +18,7 @@ L:SetOptionLocalization({
 	ColorByClass	= "Set name color to class color in the score frame",
 	ShowInviteTimer	= "Show battleground join timer",
 	AutoSpirit		= "Auto-release spirit",
-	HideBossEmoteFrame	= "Hide the raid boss emote frame"
+	HideBossEmoteFrame	= "Hide the raid boss emote frame & garrison/Guild toasts during battlegrounds"
 })
 
 L:SetMiscLocalization({
