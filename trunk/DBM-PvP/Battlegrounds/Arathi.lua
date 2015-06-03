@@ -29,7 +29,6 @@ mod:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 end)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local ResPerSec = {
 	[0] = 1e-300, -- work-around for the divions by zero foo (no, using DOUBLE_MIN is not possible here as it would overflow to infinity which is also an exception)

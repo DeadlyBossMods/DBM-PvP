@@ -14,7 +14,6 @@ local bgzone = false
 local cartCount = 0
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 function mod:OnInitialize()
 	if DBM:GetCurrentArea() == 727 then

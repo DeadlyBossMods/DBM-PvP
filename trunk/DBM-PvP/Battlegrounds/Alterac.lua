@@ -9,7 +9,6 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("AutoTurnIn")
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start

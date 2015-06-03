@@ -29,7 +29,6 @@ mod:AddBoolOption("ShowGilneasBasesToWin", false, nil, function()
 end)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 	
 local ResPerSec = {
 	[0] = 0.01,
