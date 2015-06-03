@@ -28,7 +28,6 @@ mod:AddBoolOption("ShowKotmoguOrbsToWin", false, nil, function()
 end)
 
 mod:RemoveOption("HealthFrame")
-mod:RemoveOption("SpeedKillTimer")
 
 local ResPerSec = {
 	[0] = 1e-300,
