@@ -26,7 +26,7 @@ local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Hol
 function mod:ZONE_CHANGED_NEW_AREA()
 	if select(2, IsInInstance()) == "pvp" then
 		-- hardcoded version sync as DBM only syncs if you join a raid and you technically don't join a new raid if you enter a battleground while you are already in a raid group
-		SendAddonMessage("H", "", "INSTANCE_CHAT")
+		SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 		self:Schedule(3, DBM.RequestTimers, DBM)
 		inviteTimer:Stop()
 		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
