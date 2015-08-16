@@ -26,6 +26,5 @@ function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 		countdownMatchStart:Start()
 	elseif msg == L.highmaulArena then
 		timerCombatStart:Start()
-		countdownMatchStart:Start(30)
 	end
 end
