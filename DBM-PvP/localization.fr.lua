@@ -24,6 +24,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 		= "Début de la bataille pour le goulet des Chanteguerres dans 1 minute.",
+	BgStart30 		= "Début de la bataille pour le goulet des Chanteguerres dans 30 secondes. Préparez-vous !",
 	ArenaInvite		= "Invitation d'arène"
 })
 
@@ -123,8 +125,6 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetMiscLocalization({
-	BgStart60 					= "Début de la bataille pour le goulet des Chanteguerres dans 1 minute.",
-	BgStart30 					= "Début de la bataille pour le goulet des Chanteguerres dans 30 secondes. Préparez-vous !",
 	Alliance 					= "Alliance",
 	Horde 						= "Horde",
 	InfoErrorText 				= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
@@ -174,9 +174,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "Début de la bataille dans 60 secondes.",
-	BgStart30				= "Début de la bataille dans 30 secondes.",
-	BgStart15				= "Début de la bataille dans 15 secondes.",
 	GatesHealthFrame		= "Portes endommagées",
 	SiegeEngine				= "Engin de Siège",
 	GoblinStartAlliance	= "Regarder ces Bombes d'hydroglycérine ? Utilisez-les sur les portes alors que je répare l'engin de siège !",
@@ -196,8 +193,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetMiscLocalization({
-	BgStart60 			= "Début de la bataille dans 60 secondes.",
-	BgStart30 			= "Début de la bataille dans 30 secondes. Préparez vous!",
 	Alliance 			= "Alliance",
 	Horde 				= "Horde",
 	InfoErrorText		= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",

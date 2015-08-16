@@ -22,6 +22,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 	= "The battle begins in 1 minute.",
+	BgStart30 	= "The battle begins in 30 seconds.  Prepare yourselves!",
 	ArenaInvite	= "Arena invite"
 })
 
@@ -43,7 +45,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Start15	= "Fifteen seconds until the Arena battle begins!"
+	Start15	= "Fifteen seconds until the Arena battle begins!",
+	highmaulArena = "The battle for supremacy begins in 30 seconds!"
 })
 
 ----------------------
@@ -146,11 +149,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "The battle begins in 1 minute.",
-	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured	= "(.+) captured the (%w+) .lag!",
+	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
 	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
 	FlagAlliance		= "Alliance Flag: ",
 	FlagHorde			= "Horde Flag: ",
@@ -213,8 +214,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "The battle begins in 1 minute.",
-	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
 	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",

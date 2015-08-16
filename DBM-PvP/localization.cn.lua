@@ -26,6 +26,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 = "战歌峡谷战斗将在1分钟内开始。",
+	BgStart30 = "战歌峡谷战斗将在30秒钟内开始。做好准备！",
 	ArenaInvite	= "竞技场邀请"
 })
 
@@ -124,8 +126,6 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetMiscLocalization({
-	BgStart60 = "战歌峡谷战斗将在1分钟内开始。",
-	BgStart30 = "战歌峡谷战斗将在30秒钟内开始。做好准备！",
 	Alliance = "联盟",
 	Horde = "部落",
 	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复。",
@@ -191,8 +191,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetMiscLocalization({
-	BgStart60 = "战斗将在1分钟内开始。",
-	BgStart30 = "战斗将在30秒钟内开始。做好准备！",
 	Alliance 			= "联盟",
 	Horde 				= "部落",
 	InfoErrorText		= "携带旗帜者目标功能会在你脱离战斗后恢复。",

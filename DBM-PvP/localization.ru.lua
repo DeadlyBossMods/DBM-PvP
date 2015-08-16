@@ -23,6 +23,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 			= "Битва начнется через 1 минуту.",
+	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
 	ArenaInvite	= "Приглашение на Арену"
 })
 
@@ -128,8 +130,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "Битва начнется через 1 минуту.",
-	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
 	Alliance 			= "Альянса",
 	Horde 				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца будет восстановлена после выхода из режима боя.",
@@ -196,8 +196,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "Битва начнется через 1 минуту.",
-	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
 	Alliance			= "Альянса",
 	Horde				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца будет восстановлена после выхода из режима боя.",
