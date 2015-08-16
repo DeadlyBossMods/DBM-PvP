@@ -22,6 +22,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 			= "A batalha começará em 1 minuto.",
+	BgStart30 			= "A batalha começará em 30 segundos. Preparem-se!",
 	ArenaInvite	= "Convite para Arena"
 })
 
@@ -120,8 +122,6 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetMiscLocalization({
-	BgStart60 			= "A batalha começará em 1 minuto.",
-	BgStart30 			= "A batalha começará em 30 segundos. Preparem-se!",
 	Alliance 			= "Aliança",
 	Horde 				= "Horda",
 	InfoErrorText		= "A funcionalidade de mirar portador da bandeira será restaurada quando você sair de combate.",
@@ -187,8 +187,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetMiscLocalization({
-	BgStart60 			= "The battle begins in 1 minute.",
-	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
 	Alliance 			= "Aliança",
 	Horde 				= "Horda",
 	InfoErrorText		= "A funcionalidade de portador de bandeira será restaurada quando você sair de combate.",
