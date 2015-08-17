@@ -22,6 +22,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60 	= "1분 후 전투가 시작됩니다!",
+	BgStart30 	= "30초 후 전투가 시작됩니다!",
 	ArenaInvite	= "전투 참여"
 })
 
@@ -43,7 +45,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Start15 	= "투기장 전투 시작 15초 전입니다!"
+	Start15 	= "투기장 전투 시작 15초 전입니다!",
+	highmaulArena = "최고의 투사를 가리는 전투가 30초 후 시작됩니다!"
 })
 
 ---------------
@@ -90,17 +93,17 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z1105")
 
 L:SetTimerLocalization({
-       TimerCap        = "%s"
+	TimerCap        = "%s"
 })
 
 L:SetOptionLocalization({
-       TimerCap        = "거점 점령 바 보기",
-       TimerWin        = "전장 승리까지 남은시간 바 보기"
+	TimerCap        = "거점 점령 바 보기",
+	TimerWin        = "전장 승리까지 남은시간 바 보기"
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1500",
-       WinBarText      = "%s 승리"
+	ScoreExpr       = "(%d+)/1500",
+	WinBarText      = "%s 승리"
 })
 
 -----------------------
