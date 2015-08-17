@@ -19,8 +19,7 @@ local timerCombatStart	= mod:NewCombatTimer(30)
 local countdownMatchStart	= mod:NewCountdown(15, 91344)
 
 function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-	if not IsActiveBattlefieldArena() then return end
-	if msg == L.Start15 then
+	if IsActiveBattlefieldArena() and msg == L.Start15 then
 		timerShadow:Schedule(16)
 		timerDamp:Schedule(16)
 		countdownMatchStart:Start()
