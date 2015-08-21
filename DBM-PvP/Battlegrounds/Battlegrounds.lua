@@ -10,7 +10,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("ColorByClass", true)
-mod:AddBoolOption("ShowInviteTimer", true)
+--mod:AddBoolOption("ShowInviteTimer", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 mod:RemoveOption("HealthFrame")
@@ -21,14 +21,14 @@ mod:RegisterEvents(
 	"PLAYER_DEAD"
 )
 
-local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
+--local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	if select(2, IsInInstance()) == "pvp" then
 		-- hardcoded version sync as DBM only syncs if you join a raid and you technically don't join a new raid if you enter a battleground while you are already in a raid group
 		SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 		self:Schedule(3, DBM.RequestTimers, DBM)
-		inviteTimer:Stop()
+		--inviteTimer:Stop()
 		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
 		if self.Options.HideBossEmoteFrame then
 			DBM:HideBlizzardEvents(1, true)
@@ -68,6 +68,7 @@ function mod:PLAYER_DEAD()
 	end
 end
 
+--[[
 mod:RegisterOnUpdateHandler(function(self, elapsed)
 	if self.Options.ShowInviteTimer and MAX_BATTLEFIELD_QUEUES and PVP_TEAMSIZE then
 		for i = 1, MAX_BATTLEFIELD_QUEUES do
@@ -84,7 +85,7 @@ mod:RegisterOnUpdateHandler(function(self, elapsed)
 			end
 		end
 	end
-end, 0.5)
+end, 0.5)--]]
 
 hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
 	if not mod.Options.ColorByClass then
