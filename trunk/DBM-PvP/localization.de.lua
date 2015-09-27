@@ -23,8 +23,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "Die Schlacht beginnt in 1 Minute.",
-	BgStart30 			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
+	BgStart60 	= "Die Schlacht beginnt in 1 Minute.",
+	BgStart30 	= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
 	ArenaInvite	= "Arena-Einladung"
 })
 
@@ -46,7 +46,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Start15 = "Noch fünfzehn Sekunden bis der Arenakampf beginnt!"
+	Start15	= "Noch fünfzehn Sekunden bis der Arenakampf beginnt!",
+	highmaulArena = "Der Kampf um die Vorherrschaft beginnt in 30 Sekunden!"
 })
 
 ----------------------
