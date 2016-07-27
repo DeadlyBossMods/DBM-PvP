@@ -56,7 +56,7 @@ end
 local function get_objectives()
 	local result = {}
 	for i=1, GetNumMapLandmarks(), 1 do
-		local name, _, texture = GetMapLandmarkInfo(i)
+		local _, name, _, texture = GetMapLandmarkInfo(i)
 		if name and texture then
 			result[name] = get_state_from_texture(texture)
 		end

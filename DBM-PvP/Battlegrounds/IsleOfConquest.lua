@@ -69,7 +69,7 @@ do
 				"SPELL_BUILDING_DAMAGE"
 			)
 			for i=1, GetNumMapLandmarks(), 1 do
-				local name, _, textureIndex = GetMapLandmarkInfo(i)
+				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
 					if isPoi(textureIndex) then
 						poi[i] = textureIndex
@@ -97,7 +97,7 @@ do
 	local function checkForUpdates()
 		if not bgzone then return end
 		for k,v in pairs(poi) do
-			local name, _, textureIndex = GetMapLandmarkInfo(k)
+			local _, name, _, textureIndex = GetMapLandmarkInfo(k)
 			if name and textureIndex then
 				local curState = getPoiState(textureIndex)
 				if curState and getPoiState(v) ~= curState then
