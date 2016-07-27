@@ -124,7 +124,7 @@ do
 			)
 			updateGametime()
 			for i=1, GetNumMapLandmarks(), 1 do
-				local name, _, textureIndex = GetMapLandmarkInfo(i)
+				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
 					if isTower(textureIndex) or isFlag(textureIndex) then
 						objectives[i] = textureIndex
@@ -155,7 +155,7 @@ do
 			return
 		end
 		for i = 1, GetNumMapLandmarks() do
-			local name, _, textureIndex = GetMapLandmarkInfo(i)
+			local _, name, _, textureIndex = GetMapLandmarkInfo(i)
 			if name and textureIndex then
 				if isTower(textureIndex) or isFlag(textureIndex) then
 					objectives[i] = textureIndex
