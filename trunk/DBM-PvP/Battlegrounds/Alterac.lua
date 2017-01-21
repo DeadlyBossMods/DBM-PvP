@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
 )
 
-local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
+local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo or GetMapLandmarkInfo, GetNumMapLandmarks
 local towerTimer	= mod:NewTimer(240, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
 local gyTimer		= mod:NewTimer(240, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
 
