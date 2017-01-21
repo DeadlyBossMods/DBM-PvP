@@ -15,7 +15,7 @@ local capTimer	= mod:NewTimer(60, "TimerCap", "Interface\\Icons\\Spell_Misc_Hell
 local winTimer	= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 
 local bgzone = false
-local GetMapLandmarkInfo, GetNumMapLandmarks = GetMapLandmarkInfo, GetNumMapLandmarks
+local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo or GetMapLandmarkInfo, GetNumMapLandmarks
 
 mod:RemoveOption("HealthFrame")
 
