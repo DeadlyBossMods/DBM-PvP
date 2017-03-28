@@ -18,7 +18,7 @@ local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
 mod:AddBoolOption("ShowGatesHealth", true)
 
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo or GetMapLandmarkInfo, GetNumMapLandmarks
+local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
 local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
