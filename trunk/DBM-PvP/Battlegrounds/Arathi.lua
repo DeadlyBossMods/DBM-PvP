@@ -138,7 +138,8 @@ end
 
 do
 	local function AB_Initialize()
-		if DBM:GetCurrentArea() == 529 then
+		local zoneID = DBM:GetCurrentArea()
+		if zoneID == 529 or == 1681 then
 			bgzone = true
 			mod:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
