@@ -27,8 +27,6 @@ mod:AddBoolOption("ShowKotmoguOrbsToWin", false, nil, function()
 	end
 end)
 
-mod:RemoveOption("HealthFrame")
-
 local ResPerSec = {
 	[0] = 1e-300,
 	[1] = 4.5/5,

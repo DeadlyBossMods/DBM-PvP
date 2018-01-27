@@ -27,8 +27,6 @@ mod:AddBoolOption("ShowGilneasBasesToWin", false, nil, function()
 		mod:HideBasesToWin()
 	end
 end)
-
-mod:RemoveOption("HealthFrame")
 	
 local ResPerSec = {
 	[0] = 0.01,
