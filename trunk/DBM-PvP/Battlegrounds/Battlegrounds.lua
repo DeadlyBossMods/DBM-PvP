@@ -13,7 +13,6 @@ mod:AddBoolOption("ColorByClass", true)
 --mod:AddBoolOption("ShowInviteTimer", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
-mod:RemoveOption("HealthFrame")
 
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",

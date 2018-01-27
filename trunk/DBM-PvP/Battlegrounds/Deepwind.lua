@@ -17,8 +17,6 @@ local winTimer	= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_Pocket
 local bgzone = false
 local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
 
-mod:RemoveOption("HealthFrame")
-
 local ResPerSec = {
 	[0] = 1e-300,
 	[1] = 8/5,

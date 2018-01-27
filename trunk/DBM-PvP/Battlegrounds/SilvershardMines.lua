@@ -13,8 +13,6 @@ local cartTimer		= mod:NewTimer(9.5, "TimerCart", "Interface\\Icons\\INV_Misc_Po
 local bgzone = false
 local cartCount = 0
 
-mod:RemoveOption("HealthFrame")
-
 function mod:OnInitialize()
 	if DBM:GetCurrentArea() == 727 then
 		bgzone = true

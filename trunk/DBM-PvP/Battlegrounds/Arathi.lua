@@ -28,8 +28,6 @@ mod:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 	end
 end)
 
-mod:RemoveOption("HealthFrame")
-
 local ResPerSec = {
 	[0] = 1e-300, -- work-around for the divions by zero foo (no, using DOUBLE_MIN is not possible here as it would overflow to infinity which is also an exception)
 	[1] = 10/12,
