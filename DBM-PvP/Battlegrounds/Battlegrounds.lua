@@ -25,7 +25,11 @@ mod:RegisterEvents(
 function mod:ZONE_CHANGED_NEW_AREA()
 	if select(2, IsInInstance()) == "pvp" then
 		-- hardcoded version sync as DBM only syncs if you join a raid and you technically don't join a new raid if you enter a battleground while you are already in a raid group
-		SendAddonMessage("D4", "H", "INSTANCE_CHAT")
+		if C_ChatInfo then
+			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
+		else
+			SendAddonMessage("D4", "H", "INSTANCE_CHAT")
+		end
 		self:Schedule(3, DBM.RequestTimers, DBM)
 		--inviteTimer:Stop()
 		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
