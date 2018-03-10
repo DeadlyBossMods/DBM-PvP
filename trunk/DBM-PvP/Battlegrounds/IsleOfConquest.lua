@@ -37,14 +37,8 @@ end
 local updateInfoFrame
 do
 	local lines = {}
-	local function addLine(key, value)
-		-- sort by insertion order
-		lines[key] = value
-		sortedLines[#sortedLines + 1] = key
-	end
 	updateInfoFrame = function()
 		table.wipe(lines)
-		table.wipe(sortedLines)
 		if #gateHP == 0 then
 			DBM.InfoFrame:Hide()
 		end
