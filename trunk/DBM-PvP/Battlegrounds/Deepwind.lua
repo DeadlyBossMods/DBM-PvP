@@ -111,10 +111,10 @@ do
 	end
 end
 
-local function Deepwind_Initialize()
+local function Deepwind_Initialize(self)
 	if 1105 == DBM:GetCurrentArea() then
 		bgzone = true
-		mod:RegisterShortTermEvents(
+		self:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
@@ -124,14 +124,14 @@ local function Deepwind_Initialize()
 		objectives = get_objectives()
 	elseif bgzone then
 		bgzone = false
-		mod:UnregisterShortTermEvents()
+		self:UnregisterShortTermEvents()
 	end
 end
 
 mod.OnInitialize = Deepwind_Initialize
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	self:Schedule(1, Deepwind_Initialize)
+	self:Schedule(1, Deepwind_Initialize, self)
 end
 
 

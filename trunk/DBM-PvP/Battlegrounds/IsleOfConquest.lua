@@ -14,7 +14,7 @@ local warnSiegeEngineSoon 	= mod:NewAnnounce("WarnSiegeEngineSoon", 2)
 local POITimer 			= mod:NewTimer(60, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
 local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
-mod:AddBoolOption("ShowGatesHealth", true)
+--mod:AddBoolOption("ShowGatesHealth", true)
 
 local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
@@ -22,7 +22,7 @@ local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
 local hordeColor = {r = 1, g = 0, b = 0}
 
-local gateHP = {}
+--local gateHP = {}
 
 local function isInArgs(val, ...)	-- search for val in all args (...)
 	for i=1, select("#", ...), 1 do
@@ -34,6 +34,7 @@ local function isInArgs(val, ...)	-- search for val in all args (...)
 	return false
 end
 
+--[[
 local updateInfoFrame
 do
 	local lines = {}
@@ -49,6 +50,7 @@ do
 		return lines
 	end
 end
+--]]
 
 local poi = {}
 local function isPoi(id)
@@ -74,13 +76,13 @@ do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 628 then
 			bgzone = true
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_RAID_BOSS_EMOTE",
-				"UNIT_DIED",
-				"SPELL_BUILDING_DAMAGE"
+				"UNIT_DIED"
+				--"SPELL_BUILDING_DAMAGE"
 			)
 			for i=1, GetNumMapLandmarks(), 1 do
 				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
@@ -92,18 +94,18 @@ do
 			end
 			gateHP = {}
 		elseif bgzone then
-			mod:UnregisterShortTermEvents()
-			mod:Stop()
+			self:UnregisterShortTermEvents()
+			self:Stop()
 			bgzone = false
-			if self.Options.ShowGatesHealth then
-				DBM.InfoFrame:Hide()
-			end
+			--if self.Options.ShowGatesHealth then
+			--	DBM.InfoFrame:Hide()
+			--end
 		end
 	end
 	
 	mod.OnInitialize = initialize
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, initialize)
+		self:Schedule(1, initialize, self)
 	end
 end
 
@@ -172,6 +174,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
+--[[
 function mod:SPELL_BUILDING_DAMAGE(sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, amount)
 	if sourceGUID == nil or destName == nil or destGUID == nil or amount == nil or not bgzone then
 		return
@@ -196,6 +199,7 @@ function mod:SPELL_BUILDING_DAMAGE(sourceGUID, _, _, _, destGUID, destName, _, _
 		DBM.InfoFrame:Update()
 	end
 end
+--]]
 
 function mod:OnSync(msg, arg)
 	if msg == "SEStart" then
