@@ -111,10 +111,10 @@ do
 end
 
 do
-	local function initialize()
+	local function initialize(self)
 		if DBM:GetCurrentArea() == 566 then
 			bgzone = true
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
@@ -129,26 +129,26 @@ do
 					end
 				end
 			end
-			if mod.Options.ShowPointFrame then
-				mod:ShowEstimatedPoints()
+			if self.Options.ShowPointFrame then
+				self:ShowEstimatedPoints()
 			end
 
 		elseif bgzone then
 			bgzone = false
-			mod:UnregisterShortTermEvents()
-			if mod.Options.ShowPointFrame then
-				mod:HideEstimatedPoints()
+			self:UnregisterShortTermEvents()
+			if self.Options.ShowPointFrame then
+				self:HideEstimatedPoints()
 			end
 		end
 	end
 	mod.OnInitialize = initialize
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, initialize)
+		self:Schedule(1, initialize, self)
 	end
 end
 
 do
-	local function checkForUpdates()
+	local function checkForUpdates(self)
 		if not bgzone then
 			return
 		end
@@ -160,11 +160,11 @@ do
 				end
 			end
 		end
-		mod:UPDATE_WORLD_STATES()
+		self:UPDATE_WORLD_STATES()
 	end
 	
 	local function scheduleCheck(self)
-		self:Schedule(1, checkForUpdates)
+		self:Schedule(1, checkForUpdates, self)
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)

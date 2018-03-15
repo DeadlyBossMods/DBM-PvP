@@ -60,9 +60,9 @@ end
 
 local bgzone = false
 do
-	local function AV_Initialize()
+	local function AV_Initialize(self)
 		if DBM:GetCurrentArea() == 30 then
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -89,12 +89,12 @@ do
 			end
 		elseif bgzone then
 			bgzone = false
-			mod:UnregisterShortTermEvents()
+			self:UnregisterShortTermEvents()
 		end
 	end
 	mod.OnInitialize = AV_Initialize
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, AV_Initialize)
+		self:Schedule(1, AV_Initialize, self)
 	end
 end
 

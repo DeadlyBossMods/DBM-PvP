@@ -125,10 +125,10 @@ do
 	end
 end
 
-local function Gilneas_Initialize()
+local function Gilneas_Initialize(self)
 	if DBM:GetCurrentArea() == 761 then--Two Ids? GilneasBattleground2 is one we been using, but what is BattleforGilneas (id instance id 728)
 		bgzone = true
-		mod:RegisterShortTermEvents(
+		self:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
@@ -145,20 +145,20 @@ local function Gilneas_Initialize()
 				end
 			end
 		end
-		if mod.Options.ShowGilneasEstimatedPoints then
-			mod:ShowEstimatedPoints()
+		if self.Options.ShowGilneasEstimatedPoints then
+			self:ShowEstimatedPoints()
 		end
-		if mod.Options.ShowGilneasBasesToWin then
-			mod:ShowBasesToWin()
+		if self.Options.ShowGilneasBasesToWin then
+			self:ShowBasesToWin()
 		end
 	elseif bgzone then
 		bgzone = false
-		mod:UnregisterShortTermEvents()
-		if mod.Options.ShowGilneasEstimatedPoints then
-			mod:HideEstimatedPoints()
+		self:UnregisterShortTermEvents()
+		if self.Options.ShowGilneasEstimatedPoints then
+			self:HideEstimatedPoints()
 		end
-		if mod.Options.ShowGilneasBasesToWin then
-			mod:HideBasesToWin()
+		if self.Options.ShowGilneasBasesToWin then
+			self:HideBasesToWin()
 		end
 	end
 end
@@ -166,7 +166,7 @@ end
 mod.OnInitialize = Gilneas_Initialize
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	self:Schedule(1, Gilneas_Initialize)
+	self:Schedule(1, Gilneas_Initialize, self)
 end
 
 do

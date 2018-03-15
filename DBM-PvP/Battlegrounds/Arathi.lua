@@ -135,11 +135,11 @@ do
 end
 
 do
-	local function AB_Initialize()
+	local function AB_Initialize(self)
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 529 or zoneID == 1681 then
 			bgzone = true
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
@@ -157,28 +157,28 @@ do
 				end
 			end
 
-			if mod.Options.ShowAbEstimatedPoints then
-				mod:ShowEstimatedPoints()
+			if self.Options.ShowAbEstimatedPoints then
+				self:ShowEstimatedPoints()
 			end
-			if mod.Options.ShowAbBasesToWin then
-				mod:ShowBasesToWin()
+			if self.Options.ShowAbBasesToWin then
+				self:ShowBasesToWin()
 			end
 
 		elseif bgzone then
 			bgzone = false
-			mod:UnregisterShortTermEvents()
+			self:UnregisterShortTermEvents()
 
-			if mod.Options.ShowAbEstimatedPoints then
-				mod:HideEstimatedPoints()
+			if self.Options.ShowAbEstimatedPoints then
+				self:HideEstimatedPoints()
 			end
-			if mod.Options.ShowAbBasesToWin then
-				mod:HideBasesToWin()
+			if self.Options.ShowAbBasesToWin then
+				self:HideBasesToWin()
 			end
 		end
 	end
 	mod.OnInitialize = AB_Initialize
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, AB_Initialize)
+		self:Schedule(1, AB_Initialize, self)
 	end
 end
 

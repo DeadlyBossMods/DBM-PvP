@@ -34,10 +34,10 @@ end)
 mod:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
-	local function WSG_Initialize()
+	local function WSG_Initialize(self)
 		if DBM:GetCurrentArea() == 489 then
 			bgzone = true
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"PLAYER_REGEN_ENABLED",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -45,11 +45,11 @@ do
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"UPDATE_BATTLEFIELD_SCORE"
 			)
-			if mod.Options.ShowFlagCarrier then
-				mod:ShowFlagCarrier()
-				mod:CreateFlagCarrierButton()
-				mod.FlagCarrierFrame1Text:SetText("")
-				mod.FlagCarrierFrame2Text:SetText("")
+			if self.Options.ShowFlagCarrier then
+				self:ShowFlagCarrier()
+				self:CreateFlagCarrierButton()
+				self.FlagCarrierFrame1Text:SetText("")
+				self.FlagCarrierFrame2Text:SetText("")
 			end
 
 			FlagCarrier[1] = nil
@@ -57,16 +57,16 @@ do
 
 		elseif bgzone then
 			bgzone = false
-			mod:UnregisterShortTermEvents()
-			if mod.Options.ShowFlagCarrier then
-				mod:HideFlagCarrier()
+			self:UnregisterShortTermEvents()
+			if self.Options.ShowFlagCarrier then
+				self:HideFlagCarrier()
 			end
 		end
 	end
 	mod.OnInitialize = WSG_Initialize
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, WSG_Initialize)
+		self:Schedule(1, WSG_Initialize, self)
 	end
 end
 
