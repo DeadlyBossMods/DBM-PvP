@@ -47,8 +47,12 @@ do
 			if self.Options.ShowFlagCarrier then
 				self:ShowFlagCarrier()
 				self:CreateFlagCarrierButton()
-				self.FlagCarrierFrame1Text:SetText("")
-				self.FlagCarrierFrame2Text:SetText("")
+				if self.FlagCarrierFrame1Text then
+					self.FlagCarrierFrame1Text:SetText("")
+				end
+				if self.FlagCarrierFrame2Text then
+					self.FlagCarrierFrame2Text:SetText("")
+				end
 			end
 
 			FlagCarrier[1] = nil
