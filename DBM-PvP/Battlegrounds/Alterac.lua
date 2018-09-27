@@ -3,6 +3,7 @@
 
 local mod	= DBM:NewMod("z30", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
+local mapId = 91
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -13,7 +14,7 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
 )
 
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
+local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 local towerTimer	= mod:NewTimer(240, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
 local gyTimer		= mod:NewTimer(240, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
 
@@ -32,7 +33,7 @@ local hordeColor = {
 
 local graveyards = {}
 local function is_graveyard(id)
-	return id == 15 or id == 4 or id == 13 or id == 14 or id == 8 
+	return id == 8 or id == 15 or id == 13 or id == 4 or id == 14 
 end
 local function gy_state(id)
 	if id == 8 then			return -1	-- Neutral
@@ -46,7 +47,7 @@ end
 
 local towers = {}
 local function is_tower(id)
-	return id == 10 or id == 12 or id == 11 or id == 9 or id == 6
+	return id == 6 or id == 11 or id == 10 or id == 9 or id == 12
 end
 local function tower_state(id)
 	if id == 6 then			return -1	-- Neutral / Destroyed
@@ -62,6 +63,7 @@ local bgzone = false
 do
 	local function AV_Initialize(self)
 		if DBM:GetCurrentArea() == 30 then
+			WorldMapFrame:SetMapID(mapId)
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -73,8 +75,10 @@ do
 				"QUEST_COMPLETE"
 			)
 			bgzone = true
-			for i = 1, GetNumMapLandmarks(), 1 do
-				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+				local name = areaPOIInfo.name
+				local textureIndex = areaPOIInfo.textureIndex
 				-- work-around for a bug in the german localization of WoW: the graveyard seems to change its name depending on the state
 				if name == "Friedhof des Sturmlanzen" then
 					name = "Friedhof der Sturmlanzen"
@@ -101,8 +105,10 @@ end
 do
 	local function check_for_updates()
 		if not bgzone then return end
-		for i = 1, GetNumMapLandmarks(), 1 do
-			local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			local name = areaPOIInfo.name
+			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
 				if is_graveyard(textureIndex) then
 					local curState = gy_state(textureIndex)
