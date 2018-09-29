@@ -22,8 +22,8 @@ function mod:OnInitialize()
 			"CHAT_MSG_BG_SYSTEM_HORDE",
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-			"CHAT_MSG_RAID_BOSS_EMOTE",
-			"UPDATE_WORLD_STATES"
+			"CHAT_MSG_RAID_BOSS_EMOTE"
+			--"UPDATE_UI_WIDGET"
 		)
 	elseif bgzone then
 		bgzone = false

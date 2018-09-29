@@ -123,7 +123,7 @@ local function Deepwind_Initialize(self)
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 			"CHAT_MSG_RAID_BOSS_EMOTE",
-			"UPDATE_WORLD_STATES"
+			"UPDATE_UI_WIDGET"
 		)
 		objectives = get_objectives()
 	elseif bgzone then
@@ -177,7 +177,7 @@ end
 -- winTimer
 --
 
-function mod:UPDATE_WORLD_STATES()
+function mod:UPDATE_UI_WIDGET()
 	if not bgzone then return end
 
 	local last_alliance_bases, last_horde_bases = get_basecount()

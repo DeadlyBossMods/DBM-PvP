@@ -120,7 +120,7 @@ do
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-				"UPDATE_WORLD_STATES"
+				"UPDATE_UI_WIDGET"
 			)
 			updateGametime()
 			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
@@ -166,7 +166,7 @@ do
 				end
 			end
 		end
-		self:UPDATE_WORLD_STATES()
+		self:UPDATE_UI_WIDGET()
 	end
 	
 	local function scheduleCheck(self)
@@ -238,7 +238,7 @@ do
 end
 
 
-function mod:UPDATE_WORLD_STATES()
+function mod:UPDATE_UI_WIDGET()
 	if not bgzone then return end
 
 	local last_alliance_bases, last_horde_bases = getBasecount()
