@@ -1,5 +1,6 @@
 local mod		= DBM:NewMod("z761", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
+local mapId = 0--Placeholder
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -12,7 +13,7 @@ local winTimer 		= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_Pock
 local capTimer 		= mod:NewTimer(60, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
 local bgzone = false
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
+local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 mod:AddBoolOption("ShowGilneasEstimatedPoints", true, nil, function()
 	if mod.Options.ShowGilneasEstimatedPoints and bgzone then
 		mod:ShowEstimatedPoints()
@@ -127,6 +128,7 @@ end
 
 local function Gilneas_Initialize(self)
 	if DBM:GetCurrentArea() == 761 then--Two Ids? GilneasBattleground2 is one we been using, but what is BattleforGilneas (id instance id 728)
+		WorldMapFrame:SetMapID(mapId)
 		bgzone = true
 		self:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -136,8 +138,10 @@ local function Gilneas_Initialize(self)
 			"UPDATE_WORLD_STATES"
 		)
 		update_gametime()
-		for i=1, GetNumMapLandmarks(), 1 do
-			local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			local name = areaPOIInfo.name
+			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
 				local type = getObjectiveType(textureIndex)
 				if type then
@@ -172,8 +176,10 @@ end
 do
 	local function check_for_updates()
 		if not bgzone then return end
-		for i=1, GetNumMapLandmarks(), 1 do
-			local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			local name = areaPOIInfo.name
+			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
 				local type = getObjectiveType(textureIndex)		-- name of the objective without spaces
 				local state = getObjectiveState(textureIndex)	-- state of the objective

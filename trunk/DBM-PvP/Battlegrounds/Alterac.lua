@@ -64,6 +64,7 @@ do
 	local function AV_Initialize(self)
 		if DBM:GetCurrentArea() == 30 then
 			WorldMapFrame:SetMapID(mapId)
+			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -74,7 +75,6 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			bgzone = true
 			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
 				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
 				local name = areaPOIInfo.name

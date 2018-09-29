@@ -1,5 +1,6 @@
 local mod		= DBM:NewMod("z628", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
+local mapId = 0--Obviously not 0
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -16,7 +17,7 @@ local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
 --mod:AddBoolOption("ShowGatesHealth", true)
 
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
+local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
 local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
@@ -75,6 +76,7 @@ local bgzone = false
 do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 628 then
+			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
@@ -84,8 +86,10 @@ do
 				"UNIT_DIED"
 				--"SPELL_BUILDING_DAMAGE"
 			)
-			for i=1, GetNumMapLandmarks(), 1 do
-				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+				local name = areaPOIInfo.name
+				local textureIndex = areaPOIInfo.textureIndex
 				if name and textureIndex then
 					if isPoi(textureIndex) then
 						poi[i] = textureIndex
@@ -112,8 +116,10 @@ end
 do
 	local function checkForUpdates()
 		if not bgzone then return end
-		for k,v in pairs(poi) do
-			local _, name, _, textureIndex = GetMapLandmarkInfo(k)
+		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			local name = areaPOIInfo.name
+			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
 				local curState = getPoiState(textureIndex)
 				if curState and getPoiState(v) ~= curState then

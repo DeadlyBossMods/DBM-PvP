@@ -32,7 +32,6 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		end
 		self:Schedule(3, DBM.RequestTimers, DBM)
 		--inviteTimer:Stop()
-		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
 		if self.Options.HideBossEmoteFrame then
 			DBM:HideBlizzardEvents(1, true)
 		end

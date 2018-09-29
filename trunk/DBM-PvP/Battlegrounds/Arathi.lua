@@ -3,6 +3,7 @@ local L			= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+local mapId = 0--Placeholder
 
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
@@ -12,7 +13,7 @@ local winTimer 		= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_Pock
 local capTimer 		= mod:NewTimer(60, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
 local bgzone = false
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
+local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 mod:AddBoolOption("ShowAbEstimatedPoints", true, nil, function()
 	if mod.Options.ShowAbEstimatedPoints and bgzone then
 		mod:ShowEstimatedPoints()
@@ -138,6 +139,7 @@ do
 	local function AB_Initialize(self)
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 529 or zoneID == 1681 then
+			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -147,8 +149,10 @@ do
 				"UPDATE_WORLD_STATES"
 			)
 			update_gametime()
-			for i=1, GetNumMapLandmarks(), 1 do
-				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+				local name = areaPOIInfo.name
+				local textureIndex = areaPOIInfo.textureIndex
 				if name and textureIndex then
 					local type = getObjectiveType(textureIndex)
 					if type then
@@ -185,8 +189,10 @@ end
 do
 	local function check_for_updates()
 		if not bgzone then return end
-		for i=1, GetNumMapLandmarks(), 1 do
-			local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			local name = areaPOIInfo.name
+			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
 				local type = getObjectiveType(textureIndex)		-- name of the objective without spaces
 				local state = getObjectiveState(textureIndex)	-- state of the objective
