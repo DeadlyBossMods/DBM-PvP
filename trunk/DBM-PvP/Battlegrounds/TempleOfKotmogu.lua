@@ -126,7 +126,7 @@ function mod:OnInitialize()
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 			"CHAT_MSG_RAID_BOSS_EMOTE",
-			"UPDATE_WORLD_STATES"
+			"UPDATE_UI_WIDGET"
 		)
 		table.wipe(orbs)
 		update_gametime()
@@ -184,7 +184,7 @@ do
 	local last_horde_orbs = 0
 	local last_alliance_orbs= 0
 
-	function mod:UPDATE_WORLD_STATES()
+	function mod:UPDATE_UI_WIDGET()
 		if not bgzone then return end
 	
 		local AllyOrbs, HordeOrbs, TotalOrbs = GetNumOrbs()

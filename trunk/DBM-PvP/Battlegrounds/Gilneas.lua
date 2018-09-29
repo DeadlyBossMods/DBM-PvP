@@ -135,7 +135,7 @@ local function Gilneas_Initialize(self)
 			"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 			"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 			"CHAT_MSG_RAID_BOSS_EMOTE",
-			"UPDATE_WORLD_STATES"
+			"UPDATE_UI_WIDGET"
 		)
 		update_gametime()
 		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
@@ -219,7 +219,7 @@ do
 	local last_horde_bases = 0
 	local last_alliance_bases = 0
 
-	function mod:UPDATE_WORLD_STATES()
+	function mod:UPDATE_UI_WIDGET()
 		if not bgzone then return end
 
 		local AllyBases, HordeBases = get_basecount()
