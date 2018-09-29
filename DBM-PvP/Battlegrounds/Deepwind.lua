@@ -3,6 +3,7 @@
 
 local mod		= DBM:NewMod("z1105", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
+local mapId = 0--Placeholder
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -15,7 +16,7 @@ local capTimer	= mod:NewTimer(60, "TimerCap", "Interface\\Icons\\Spell_Misc_Hell
 local winTimer	= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 
 local bgzone = false
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
+local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 
 local ResPerSec = {
 	[0] = 1e-300,
@@ -53,10 +54,12 @@ end
 
 local function get_objectives()
 	local result = {}
-	for i=1, GetNumMapLandmarks(), 1 do
-		local _, name, _, texture = GetMapLandmarkInfo(i)
-		if name and texture then
-			result[name] = get_state_from_texture(texture)
+	for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+		local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+		local name = areaPOIInfo.name
+		local textureIndex = areaPOIInfo.textureIndex
+		if name and textureIndex then
+			result[name] = get_state_from_texture(textureIndex)
 		end
 	end
 	return result
@@ -113,6 +116,7 @@ end
 
 local function Deepwind_Initialize(self)
 	if 1105 == DBM:GetCurrentArea() then
+		WorldMapFrame:SetMapID(mapId)
 		bgzone = true
 		self:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",

@@ -5,6 +5,7 @@
 
 local mod	= DBM:NewMod("z566", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
+local mapId = 0--Placeholder
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -14,7 +15,7 @@ mod:RegisterEvents(
 )
 
 local bgzone = false
-local GetMapLandmarkInfo, GetNumMapLandmarks = C_WorldMap.GetMapLandmarkInfo, GetNumMapLandmarks
+local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 local ResPerSec = {
 	[0] = 1e-300, -- blah
 	[1] = 1,
@@ -113,6 +114,7 @@ end
 do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 566 then
+			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -121,8 +123,10 @@ do
 				"UPDATE_WORLD_STATES"
 			)
 			updateGametime()
-			for i=1, GetNumMapLandmarks(), 1 do
-				local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+				local name = areaPOIInfo.name
+				local textureIndex = areaPOIInfo.textureIndex
 				if name and textureIndex then
 					if isTower(textureIndex) or isFlag(textureIndex) then
 						objectives[i] = textureIndex
@@ -152,8 +156,10 @@ do
 		if not bgzone then
 			return
 		end
-		for i = 1, GetNumMapLandmarks() do
-			local _, name, _, textureIndex = GetMapLandmarkInfo(i)
+		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
+			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			local name = areaPOIInfo.name
+			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
 				if isTower(textureIndex) or isFlag(textureIndex) then
 					objectives[i] = textureIndex
