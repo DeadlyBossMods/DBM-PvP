@@ -5,7 +5,7 @@ local mod	= DBM:NewMod("z30", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 local mapId = 91
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(string.sub("@file-date-integer@", 1, -5))
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("AutoTurnIn")
