@@ -1,0 +1,5 @@
+package-as: DBM-PvP
+enable-nolib-creation: no
+
+move-folders:
+    DBM-PvP/DBM-PvP: PvP 
