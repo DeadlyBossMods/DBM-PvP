@@ -2,7 +2,7 @@ local mod		= DBM:NewMod("z761", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
 local mapId = 0--Placeholder
 
-mod:SetRevision(string.sub("@file-date-integer@", 1, -5))
+mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
