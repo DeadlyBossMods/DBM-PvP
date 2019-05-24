@@ -9,7 +9,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:AddBoolOption("ColorByClass", true)
+--mod:AddBoolOption("ColorByClass", true)
 --mod:AddBoolOption("ShowInviteTimer", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
@@ -25,11 +25,7 @@ mod:RegisterEvents(
 function mod:ZONE_CHANGED_NEW_AREA()
 	if select(2, IsInInstance()) == "pvp" then
 		-- hardcoded version sync as DBM only syncs if you join a raid and you technically don't join a new raid if you enter a battleground while you are already in a raid group
-		if C_ChatInfo then
-			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
-		else
-			SendAddonMessage("D4", "H", "INSTANCE_CHAT")
-		end
+		C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 		self:Schedule(3, DBM.RequestTimers, DBM)
 		--inviteTimer:Stop()
 		if self.Options.HideBossEmoteFrame then
@@ -40,26 +36,26 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			DBM:HideBlizzardEvents(0, true)
 		end
 	end
-	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z489").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z529").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
-	DBM:GetModByName("z30"):Unschedule()
-	DBM:GetModByName("z489"):Unschedule()
-	DBM:GetModByName("z529"):Unschedule()
-	DBM:GetModByName("z566"):Unschedule()
-	DBM:GetModByName("z628"):Unschedule()
-	DBM:GetModByName("z726"):Unschedule()
-	DBM:GetModByName("z727"):Unschedule()
-	DBM:GetModByName("z761"):Unschedule()
-	DBM:GetModByName("z998"):Unschedule()
-	DBM:GetModByName("z1105"):Unschedule()
+--	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
+--	for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
+--	DBM:GetModByName("z30"):Unschedule()
+	DBM:GetModByName("z2106"):Unschedule()
+	DBM:GetModByName("z2107"):Unschedule()
+--	DBM:GetModByName("z566"):Unschedule()
+--	DBM:GetModByName("z628"):Unschedule()
+--	DBM:GetModByName("z726"):Unschedule()
+--	DBM:GetModByName("z727"):Unschedule()
+--	DBM:GetModByName("z761"):Unschedule()
+--	DBM:GetModByName("z998"):Unschedule()
+--	DBM:GetModByName("z1105"):Unschedule()
 end
 mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
@@ -87,7 +83,7 @@ mod:RegisterOnUpdateHandler(function(self, elapsed)
 			end
 		end
 	end
-end, 0.5)--]]
+end, 0.5)
 
 hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
 	if not mod.Options.ColorByClass then
@@ -121,6 +117,4 @@ hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players 
 		end
 	end
 end)
-
-
-
+--]]

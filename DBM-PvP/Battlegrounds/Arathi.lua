@@ -1,4 +1,4 @@
-local mod		= DBM:NewMod("z529", "DBM-PvP", 2)
+local mod		= DBM:NewMod("z2107", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
@@ -138,7 +138,7 @@ end
 do
 	local function AB_Initialize(self)
 		local zoneID = DBM:GetCurrentArea()
-		if zoneID == 529 or zoneID == 1681 then
+		if zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then--Classic Arathi, Winter, New, AI
 			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
