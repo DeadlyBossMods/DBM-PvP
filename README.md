@@ -1,4 +1,4 @@
-<h2><span style="color: #ff0000;"><strong>8.x not supported yet</strong></span></h2>
+<h2><span style="color: #ff0000;"><strong>8.x and Classic are not supported</strong></span></h2>
 <h6>https://www.deadlybossmods.com/forum/viewtopic.php?f=3&amp;p=1126&amp;sid=48e276ac0b0ef7ed7cc3ac394f85f8fc#p1126</h6>
 <h6 id="w-description">Description:</h6>
 <p>This mod adds support for PvP battlegrounds and arena to Deadly Boss Mods (DBM).</p>
