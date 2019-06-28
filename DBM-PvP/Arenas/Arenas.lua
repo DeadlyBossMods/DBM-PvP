@@ -14,8 +14,6 @@ local timerShadow	= mod:NewTimer(90, "TimerShadow", 34709)
 local timerDamp		= mod:NewCastTimer(300, 110310)
 local timerCombatStart	= mod:NewCombatTimer(30)
 
-local countdownMatchStart	= mod:NewCountdown(15, 91344)
-
 function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 	if IsActiveBattlefieldArena() and msg == L.Start15 then
 		timerShadow:Schedule(16)
