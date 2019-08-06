@@ -43,14 +43,14 @@
 ## X-Curse-Project-ID: 61882
 
 localization.en.lua
-localization.de.lua
-localization.tw.lua
+localization.br.lua
 localization.cn.lua
+localization.de.lua
 localization.es.lua
-localization.ru.lua
 localization.fr.lua
 localization.kr.lua
-localization.br.lua
+localization.ru.lua
+localization.tw.lua
 Battlegrounds\Battlegrounds.lua
 Battlegrounds\TwinPeaks.lua
 Battlegrounds\Warsong.lua
