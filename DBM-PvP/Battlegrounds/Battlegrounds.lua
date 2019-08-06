@@ -1,7 +1,8 @@
 local mod	= DBM:NewMod("Battlegrounds", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
-local ipairs = ipairs
+local format, ipairs, tostring = format, ipairs, tostring
+local IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration = IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -15,23 +16,22 @@ mod:AddBoolOption("AutoSpirit", false)
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
-	"PLAYER_DEAD"
+	"PLAYER_DEAD",
+	"START_TIMER",
+	"UPDATE_BATTLEFIELD_STATUS"
 )
 
-local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
+local inviteTimer		= mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
 local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
 
 function mod:ZONE_CHANGED_NEW_AREA()
-	if select(2, IsInInstance()) == "pvp" then
+	local _, instanceType = IsInInstance()
+	if instanceType == "pvp" then
 		C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 		self:Schedule(3, DBM.RequestTimers, DBM)
-		if self.Options.HideBossEmoteFrame then
-			DBM:HideBlizzardEvents(1, true)
-		end
-	else
-		if self.Options.HideBossEmoteFrame then
-			DBM:HideBlizzardEvents(0, true)
-		end
+	end
+	if self.Options.HideBossEmoteFrame then
+		DBM:HideBlizzardEvents(instanceType == "pvp" and 1 or 0, true)
 	end
 	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
@@ -54,18 +54,19 @@ function mod:ZONE_CHANGED_NEW_AREA()
 	DBM:GetModByName("z998"):Unschedule()
 	DBM:GetModByName("z1105"):Unschedule()
 end
-mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
-mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
+mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
 
 function mod:PLAYER_DEAD()
-	if select(2, IsInInstance()) == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
+	local _, instanceType = IsInInstance()
+	if instanceType == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
 		RepopMe()
 	end
 end
 
 function mod:START_TIMER(_, timeSeconds)
-	local _, instance = GetInstanceInfo()
-	if (instance == "pvp" or instance == "arena") and self.Options.ShowStartTimer then
+	local _, instanceType = IsInInstance()
+	if (instanceType == "pvp" or instanceType == "arena") and self.Options.ShowStartTimer then
 		for _, bar in ipairs(TimerTracker.timerList) do
 			bar.bar:Hide()
 		end
