@@ -1,6 +1,6 @@
 Deadly Boss Mods: PvP
 =====================
-[https://www.deadlybossmods.com/forum/viewtopic.php?f=3&amp;p=1126&amp;sid=48e276ac0b0ef7ed7cc3ac394f85f8fc#p1126]
+https://www.deadlybossmods.com/forum/viewtopic.php?f=3&amp;p=1126&amp;sid=48e276ac0b0ef7ed7cc3ac394f85f8fc#p1126
 
 Description
 -----------
@@ -16,7 +16,7 @@ Requires [Deadly Boss Mods](http://wow.curse.com/downloads/wow-addons/details/de
 
 Support
 -------
-[http://www.deadlybossmods.com]
+http://www.deadlybossmods.com
 
 Notes
 -----
