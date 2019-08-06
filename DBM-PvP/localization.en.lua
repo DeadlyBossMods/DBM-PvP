@@ -10,7 +10,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerInvite	= "%s"
+	TimerInvite		= "%s"
+	TimerRemaining	= "Time Remaining: "
 })
 
 L:SetOptionLocalization({

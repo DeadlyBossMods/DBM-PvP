@@ -1,16 +1,14 @@
--- Battleground mod v3.0
--- rewrite by Tandanu
---
--- thanks to LeoLeal and DiabloHu
-
 local mod	= DBM:NewMod("Battlegrounds", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
+
+local ipairs = ipairs
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 --mod:AddBoolOption("ColorByClass", true)
---mod:AddBoolOption("ShowInviteTimer", true)
+mod:AddBoolOption("ShowInviteTimer", true)
+mod:AddBoolOption("ShowStartTimer", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 
@@ -20,14 +18,13 @@ mod:RegisterEvents(
 	"PLAYER_DEAD"
 )
 
---local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
+local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
+local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	if select(2, IsInInstance()) == "pvp" then
-		-- hardcoded version sync as DBM only syncs if you join a raid and you technically don't join a new raid if you enter a battleground while you are already in a raid group
 		C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 		self:Schedule(3, DBM.RequestTimers, DBM)
-		--inviteTimer:Stop()
 		if self.Options.HideBossEmoteFrame then
 			DBM:HideBlizzardEvents(1, true)
 		end
@@ -36,26 +33,26 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			DBM:HideBlizzardEvents(0, true)
 		end
 	end
---	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
---	for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
---	DBM:GetModByName("z30"):Unschedule()
+	for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
+	DBM:GetModByName("z30"):Unschedule()
 	DBM:GetModByName("z2106"):Unschedule()
 	DBM:GetModByName("z2107"):Unschedule()
---	DBM:GetModByName("z566"):Unschedule()
---	DBM:GetModByName("z628"):Unschedule()
---	DBM:GetModByName("z726"):Unschedule()
---	DBM:GetModByName("z727"):Unschedule()
---	DBM:GetModByName("z761"):Unschedule()
---	DBM:GetModByName("z998"):Unschedule()
---	DBM:GetModByName("z1105"):Unschedule()
+	DBM:GetModByName("z566"):Unschedule()
+	DBM:GetModByName("z628"):Unschedule()
+	DBM:GetModByName("z726"):Unschedule()
+	DBM:GetModByName("z727"):Unschedule()
+	DBM:GetModByName("z761"):Unschedule()
+	DBM:GetModByName("z998"):Unschedule()
+	DBM:GetModByName("z1105"):Unschedule()
 end
 mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
@@ -66,25 +63,34 @@ function mod:PLAYER_DEAD()
 	end
 end
 
---[[
-mod:RegisterOnUpdateHandler(function(self, elapsed)
-	if self.Options.ShowInviteTimer and MAX_BATTLEFIELD_QUEUES and PVP_TEAMSIZE then
-		for i = 1, MAX_BATTLEFIELD_QUEUES do
-			local status, mapName, instanceID, _, _, teamSize = GetBattlefieldStatus(i)
-			if mapName and (instanceID > 0 or teamSize > 0) then
-				if (teamSize > 0) then
-					mapName = L.ArenaInvite.." "..format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
-				else
-					mapName = mapName.." "..instanceID
-				end
+function mod:START_TIMER(_, timeSeconds)
+	local _, instance = GetInstanceInfo()
+	if (instance == "pvp" or instance == "arena") and self.Options.ShowStartTimer then
+		for _, bar in ipairs(TimerTracker.timerList) do
+			bar.bar:Hide()
+		end
+		remainingTimer:SetTimer(timeSeconds)
+		remainingTimer:Start()
+	end
+end
+
+function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
+	if self.Options.ShowInviteTimer then
+		local status, mapName, _, _, _, teamSize = GetBattlefieldStatus(queueID)
+		if status == "confirm"
+			if size == "ARENASKIRMISH" then
+				mapName = L.ArenaInvite .. " " .. format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
 			end
-			if status == "confirm" and inviteTimer:GetTime(mapName) == 0 and GetBattlefieldPortExpiration(i) >= 3 then	-- do not start a bar if less then 3 secs
-				inviteTimer:Start(GetBattlefieldPortExpiration(i), mapName)
+			local expiration = GetBattlefieldPortExpiration(queueID)
+			if inviteTimer:GetTime(mapName) == 0 and expiration >= 3 then
+				inviteTimer:Start(expiration, mapName)
 			end
+		elseif status == "none" then
+			inviteTimer:Stop()
 		end
 	end
-end, 0.5)
-
+end
+--[[
 hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
 	if not mod.Options.ColorByClass then
 		return
