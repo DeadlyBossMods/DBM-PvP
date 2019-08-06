@@ -1,6 +1,6 @@
 Deadly Boss Mods: PvP
 =====================
-https://www.deadlybossmods.com/forum/viewtopic.php?f=3&amp;p=1126&amp;sid=48e276ac0b0ef7ed7cc3ac394f85f8fc#p1126
+[Forum Thread](https://www.deadlybossmods.com/forum/viewtopic.php?f=3&p=1126&sid=48e276ac0b0ef7ed7cc3ac394f85f8fc#p1126)
 
 Description
 -----------
