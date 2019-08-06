@@ -10,7 +10,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerInvite		= "%s"
+	TimerInvite		= "%s",
 	TimerRemaining	= "Time Remaining: "
 })
 
@@ -202,12 +202,12 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts",
-	TimerFlag	= "Flag respawn"
+	TimerStart		= "Game starts",
+	TimerFlag		= "Flag respawn",
+	TimerRemaining	= "Time Remaining: "
 })
 
 L:SetOptionLocalization({
-	TimerStart					= "Show start timer",
 	TimerFlag					= "Show flag respawn timer",
 	ShowFlagCarrier				= "Show flag carrier",
 	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
