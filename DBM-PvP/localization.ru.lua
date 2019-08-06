@@ -1,5 +1,4 @@
 ﻿if GetLocale() ~= "ruRU" then return end
-
 local L
 
 --------------------------
@@ -23,8 +22,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "Битва начнется через 1 минуту.",
-	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
+	BgStart60	= "Битва начнется через 1 минуту.",
+	BgStart30	= "Битва начнется через 30 секунд. Приготовиться!",
 	ArenaInvite	= "Приглашение на Арену"
 })
 
@@ -42,11 +41,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShadow = "Отсчет времени до сумеречного зрения"
+	TimerShadow	= "Отсчет времени до сумеречного зрения"
 })
 
 L:SetMiscLocalization({
-	Start15	= "Пятнадцать секунд до начала боя на арене!"
+	Start15	= "Пятнадцать секунд до начала боя на арене!",
+	highmaulArena	= "The battle for supremacy begins in 30 seconds!"
 })
 
 ----------------------
@@ -84,8 +84,26 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s побеждает",
-	BasesToWin	= "Баз для победы: %d",
-	Flag		= "Флаг"
+	BasesToWin	= "Баз для победы: %d"
+})
+
+---------------------
+--  Deepwind Gorge --
+---------------------
+L = DBM:GetModLocalization("z1105")
+
+L:SetTimerLocalization({
+	TimerCap	= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerCap	= "Show capture timer",
+	TimerWin	= "Show win timer"
+})
+
+L:SetMiscLocalization({
+	ScoreExpr	= "(%d+)/1500",
+	WinBarText	= "%s wins"
 })
 
 ------------------------
@@ -94,21 +112,22 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z566")
 
 L:SetTimerLocalization({
-	TimerFlag		= "Восстановление флага"
+	TimerFlag	= "Восстановление флага"
 })
 
 L:SetOptionLocalization({
-	TimerWin 		= "Отсчет времени до победы",
-	TimerFlag 		= "Отсчет времени до восстановления флага",
+	TimerWin		= "Отсчет времени до победы",
+	TimerFlag		= "Отсчет времени до восстановления флага",
 	ShowPointFrame	= "Отображать флагоносца и предполагаемые очки"
 })
 
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1500",
-	WinBarText 		= "%s побеждает",
-	FlagReset 		= "Флаг возвращен на базу.",
-	FlagTaken 		= "(.+) захватывает флаг!",
-	FlagCaptured	= "(.+) захватил флаг!", --"Орда захватила флаг!"
+	WinBarText		= "%s побеждает",
+	Flag			= "Flag",
+	FlagReset		= "Флаг возвращен на базу.",
+	FlagTaken		= "(.+) захватывает флаг!",
+	FlagCaptured	= "(.+) захватил флаг!",
 	FlagDropped		= "Флаг уронили!"
 })
 
@@ -130,16 +149,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Alliance 			= "Альянса",
-	Horde 				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца будет восстановлена после выхода из режима боя.",
 	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
-	ExprFlagPickUp2		= "Флаг (%w+) у (.+)!", -- only used for Russian language
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
 	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
 	FlagAlliance		= "Флаг Альянса: ",
 	FlagHorde			= "Флаг Орды: ",
-	FlagBase			= "База"
+	FlagBase			= "База",
+	Vulnerable1			= "Персонажи, несущие флаг, стали более уязвимы!",
+	Vulnerable2			= "Персонажи, несущие флаг, стали еще более уязвимы!"
 })
 
 ------------------------
@@ -170,7 +188,7 @@ L:SetMiscLocalization({
 	SiegeEngine				= "Осадная машина",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
 	GoblinStartHorde		= "Я буду работать над осадной машиной, я ты меня прикрывай. Вот, можешь пользоваться этими сефориевыми бомбами, если тебе надо взорвать ворота.",
-	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
+	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here. They don't teach fighting in engineering school!",
 	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
 	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
 	GoblinFinishedHorde		= "The siege engine is ready to roll!",
@@ -196,10 +214,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Alliance			= "Альянса",
-	Horde				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца будет восстановлена после выхода из режима боя.",
-	ExprFlagPickUp		= "(.+) несет флаг (%w+)!", --"Флаг (%w+) у (.+)!"
+	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
 	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
 	FlagAlliance		= "Флаг Альянса: ",
@@ -228,8 +244,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s побеждает",
-	BasesToWin	= "Баз для победы: %d",
-	Flag		= "Флаг"
+	BasesToWin	= "Баз для победы: %d"
 })
 
 -------------------------
@@ -261,8 +276,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	OrbTaken 	= "(%S+) захватывает (%S+) сферу!",
-	OrbReturn 	= "(%S+) сфера возвращена!",
+	OrbTaken	= "(%S+) захватывает (%S+) сферу!",
+	OrbReturn	= "(%S+) сфера возвращена!",
 	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "Предположительно %s побеждает",
 	OrbsToWin	= "Сфер для победы: %d"

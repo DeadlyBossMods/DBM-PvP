@@ -1,5 +1,5 @@
-﻿## Interface: 70300
-## X-Min-Interface: 50001
+﻿## Interface: 80200
+## X-Min-Interface: 80200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
@@ -40,7 +40,6 @@
 ## X-DBM-Mod-Name-ptBR: JxJ
 ## X-DBM-Mod-MapID: 529,489,30,628,566,998,726,727,761,1105,1431,1681,2106,2107,2177
 ## X-DBM-Mod-Sort: 599
-## X-DBM-Mod-MinCoreRevision: 12473
 ## X-Curse-Project-ID: 61882
 
 localization.en.lua

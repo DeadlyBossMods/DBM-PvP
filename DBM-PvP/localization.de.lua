@@ -7,24 +7,23 @@ local L
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "Allgemeine Einstellungen"
+	name	= "Allgemeine Einstellungen"
 })
 
-
 L:SetTimerLocalization({
-	TimerInvite = "%s"
+	TimerInvite	= "%s"
 })
 
 L:SetOptionLocalization({
-	ColorByClass	= "Einfärbung der Spielernamen nach Klasse in der Schlachtfeld-Punktetafel",
-	ShowInviteTimer	= "Zeige Zeit für Schlachtfeld-Beitrittsmöglichkeit",
-	AutoSpirit		= "Automatisch Geist freilassen",
+	ColorByClass		= "Einfärbung der Spielernamen nach Klasse in der Schlachtfeld-Punktetafel",
+	ShowInviteTimer		= "Zeige Zeit für Schlachtfeld-Beitrittsmöglichkeit",
+	AutoSpirit			= "Automatisch Geist freilassen",
 	HideBossEmoteFrame	= "Verberge das Fenster \"RaidBossEmoteFrame\" und Garnisons-/Gildenerfolgsmeldungen während Schlachtfeldern"
 })
 
 L:SetMiscLocalization({
-	BgStart60 	= "Die Schlacht beginnt in 1 Minute.",
-	BgStart30 	= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
+	BgStart60	= "Die Schlacht beginnt in 1 Minute.",
+	BgStart30	= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
 	ArenaInvite	= "Arena-Einladung"
 })
 
@@ -34,7 +33,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name = "Arenas"
+	name	= "Arenas"
 })
 
 L:SetTimerLocalization({
@@ -42,12 +41,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShadow = "Zeige Zeit bis $spell:34709 verfügbar"
+	TimerShadow	= "Zeige Zeit bis $spell:34709 verfügbar"
 })
 
 L:SetMiscLocalization({
-	Start15	= "Noch fünfzehn Sekunden bis der Arenakampf beginnt!",
-	highmaulArena = "Der Kampf um die Vorherrschaft beginnt in 30 Sekunden!"
+	Start15			= "Noch fünfzehn Sekunden bis der Arenakampf beginnt!",
+	highmaulArena	= "Der Kampf um die Vorherrschaft beginnt in 30 Sekunden!"
 })
 
 ----------------------
@@ -94,17 +93,17 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z1105")
 
 L:SetTimerLocalization({
-       TimerCap        = "%s"
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-       TimerCap        = "Zeige Eroberungsdauer für Basen",
-       TimerWin        = "Zeige Zeit bis eine Fraktion gewinnt"
+	TimerCap	= "Zeige Eroberungsdauer für Basen",
+	TimerWin	= "Zeige Zeit bis eine Fraktion gewinnt"
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1500",
-       WinBarText      = "%s gewinnt"
+	ScoreExpr	= "(%d+)/1500",
+	WinBarText	= "%s gewinnt"
 })
 
 ------------------------
@@ -117,17 +116,17 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin 		= "Zeige Zeit bis eine Fraktion gewinnt",
-	TimerFlag 		= "Zeige Zeit bis zum Respawn der Flagge",
+	TimerWin		= "Zeige Zeit bis eine Fraktion gewinnt",
+	TimerFlag		= "Zeige Zeit bis zum Respawn der Flagge",
 	ShowPointFrame	= "Zeige Flaggenträger und geschätzten Endpunktestand"
 })
 
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1500",
-	WinBarText 		= "%s gewinnt",
+	WinBarText		= "%s gewinnt",
 	Flag			= "Flagge",
-	FlagReset 		= "Die Flagge wurde zurückgesetzt.",
-	FlagTaken 		= "(.+) hat die Flagge aufgenommen.",
+	FlagReset		= "Die Flagge wurde zurückgesetzt.",
+	FlagTaken		= "(.+) hat die Flagge aufgenommen.",
 	FlagCaptured	= "Die %w+ hat die Flagge erobert!",
 	FlagDropped		= "Die Flagge wurde fallengelassen."
 })
@@ -151,7 +150,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
-	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
+	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!",
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
 	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
 	FlagAlliance		= "Allianz-Flagge: ",
@@ -216,7 +215,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	InfoErrorText		= "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
-	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!", -- code is aware of the switched match groups for deDE
+	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!",
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
 	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
 	FlagAlliance		= "Allianz-Flagge: ",
@@ -236,10 +235,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWin				= "Zeige Zeit bis eine Fraktion gewinnt",
-	TimerCap				= "Zeige Eroberungsdauer für Basen",
-	ShowGilneasEstimatedPoints		= "Zeige geschätzten Endpunktestand",
-	ShowGilneasBasesToWin			= "Zeige benötigte Anzahl von Basen zum Sieg"
+	TimerWin					= "Zeige Zeit bis eine Fraktion gewinnt",
+	TimerCap					= "Zeige Eroberungsdauer für Basen",
+	ShowGilneasEstimatedPoints	= "Zeige geschätzten Endpunktestand",
+	ShowGilneasBasesToWin		= "Zeige benötigte Anzahl von Basen zum Sieg"
 })
 
 L:SetMiscLocalization({
@@ -262,7 +261,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Capture = "hat eine Minenlore erobert"
+	Capture	= "hat eine Minenlore erobert"
 })
 
 -------------------------
@@ -271,14 +270,14 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z998")
 
 L:SetOptionLocalization({
-	TimerWin			= "Zeige Zeit bis eine Fraktion gewinnt",
+	TimerWin					= "Zeige Zeit bis eine Fraktion gewinnt",
 	ShowKotmoguEstimatedPoints	= "Zeige geschätzten Endpunktestand",
 	ShowKotmoguOrbsToWin		= "Zeige benötigte Anzahl von Kugeln der Macht zum Sieg"
 })
 
 L:SetMiscLocalization({
-	OrbTaken 	= "(%S+) hat die (%S+) Kugel genommen!",
-	OrbReturn 	= "Die (%S+) Kugel wurde zurückgebracht!",
+	OrbTaken	= "(%S+) hat die (%S+) Kugel genommen!",
+	OrbReturn	= "Die (%S+) Kugel wurde zurückgebracht!",
 	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "%s gewinnt (geschätzt)",
 	OrbsToWin	= "benötigte Kugeln für Sieg: %d"

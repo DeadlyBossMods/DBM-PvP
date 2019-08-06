@@ -7,11 +7,11 @@ local L
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name 				= "基本選項"
+	name	= "基本選項"
 })
 
 L:SetTimerLocalization({
-	TimerInvite 		= "%s"
+	TimerInvite	= "%s"
 })
 
 L:SetOptionLocalization({
@@ -22,9 +22,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "戰鬥將在1分鐘內開始。",
-	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
-	ArenaInvite			= "競技場邀請"
+	BgStart60	= "戰鬥將在1分鐘內開始。",
+	BgStart30	= "戰鬥將在30秒鐘內開始。做好準備!",
+	ArenaInvite	= "競技場邀請"
 })
 
 --------------
@@ -33,19 +33,20 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name 				= "競技場 "
+	name	= "競技場 "
 })
 
 L:SetTimerLocalization({
-	TimerShadow			= "暗影視界"
+	TimerShadow	= "暗影視界"
 })
 
 L:SetOptionLocalization({
-	TimerShadow 		= "顯示暗影視界計時器"
+	TimerShadow	= "顯示暗影視界計時器"
 })
 
 L:SetMiscLocalization({
-	Start15				= "競技場戰鬥在15秒內開始!"
+	Start15			= "競技場戰鬥在15秒內開始!",
+	highmaulArena	= "The battle for supremacy begins in 30 seconds!"
 })
 
 ----------------------
@@ -70,20 +71,20 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("z529")
 
 L:SetTimerLocalization({
-	TimerCap 	= "%s"
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerWin		    	= "顯示勝利計時器",
-	TimerCap		    	= "顯示奪取計時器",
+	TimerWin				= "顯示勝利計時器",
+	TimerCap				= "顯示奪取計時器",
 	ShowAbEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
 	ShowAbBasesToWin		= "顯示勝利需要的基地數量"
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 	= "(%d+)/1500",
-	WinBarText 	= "%s勝利",
-	BasesToWin 	= "勝利需要基地:%d"
+	ScoreExpr	= "(%d+)/1500",
+	WinBarText	= "%s勝利",
+	BasesToWin	= "勝利需要基地:%d"
 })
 
 ---------------------
@@ -92,17 +93,17 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z1105")
 
 L:SetTimerLocalization({
-       TimerCap        = "%s"
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-       TimerCap        = "顯示奪取計時器",
-       TimerWin        = "顯示勝利計時器"
+	TimerCap	= "顯示奪取計時器",
+	TimerWin	= "顯示勝利計時器"
 })
 
 L:SetMiscLocalization({
-       ScoreExpr       = "(%d+)/1500",
-       WinBarText      = "%s勝利"
+	ScoreExpr	= "(%d+)/1500",
+	WinBarText	= "%s勝利"
 })
 
 ------------------------
@@ -111,21 +112,21 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z566")
 
 L:SetTimerLocalization({
-	TimerFlag 	= "旗幟重生"
+	TimerFlag	= "旗幟重生"
 })
 
 L:SetOptionLocalization({
-	TimerWin 		= "顯示勝利計時器",
-	TimerFlag 		= "顯示旗幟重生計時器",
+	TimerWin		= "顯示勝利計時器",
+	TimerFlag		= "顯示旗幟重生計時器",
 	ShowPointFrame	= "顯示旗幟攜帶者和預計勝利方"
 })
 
 L:SetMiscLocalization({
 	ScoreExpr		= "(%d+)/1500",
-	WinBarText 		= "%s勝利",
-	Flag 			= "旗幟",
-	FlagReset 		= "旗幟已重置!",
-	FlagTaken 		= "(.+)已經奪走了旗幟!",
+	WinBarText		= "%s勝利",
+	Flag			= "旗幟",
+	FlagReset		= "旗幟已重置!",
+	FlagTaken		= "(.+)已經奪走了旗幟!",
 	FlagCaptured	= "(.+)已奪得旗幟!",
 	FlagDropped		= "旗幟已經掉落!"
 })
@@ -136,8 +137,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z489")
 
 L:SetTimerLocalization({
-	TimerStart 	= "戰鬥開始",
-	TimerFlag 	= "旗幟重生"
+	TimerStart	= "戰鬥開始",
+	TimerFlag	= "旗幟重生"
 })
 
 L:SetOptionLocalization({
@@ -201,8 +202,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
-	TimerStart 	= "戰鬥開始",
-	TimerFlag 	= "旗幟重生"
+	TimerStart	= "戰鬥開始",
+	TimerFlag	= "旗幟重生"
 })
 
 L:SetOptionLocalization({
@@ -230,20 +231,20 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z761")
 
 L:SetTimerLocalization({
-	TimerCap 			= "%s"
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerWin			= "顯示勝利計時器",
-	TimerCap			= "顯示奪取計時器",
+	TimerWin					= "顯示勝利計時器",
+	TimerCap					= "顯示奪取計時器",
 	ShowGilneasEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
 	ShowGilneasBasesToWin		= "顯示勝利需要的基地數量"
 })
 
 L:SetMiscLocalization({
-	ScoreExpr 	= "(%d+)/1500",
-	WinBarText 	= "%s勝利",
-	BasesToWin 	= "勝利需要基地: %d"
+	ScoreExpr	= "(%d+)/1500",
+	WinBarText	= "%s勝利",
+	BasesToWin	= "勝利需要基地: %d"
 })
 
 ------------------------
@@ -260,7 +261,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Capture 	= "奪走了"
+	Capture	= "奪走了"
 })
 
 -------------------------
@@ -275,8 +276,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	OrbTaken 	= "(%S+)奪走了(%S+)異能球!",
-	OrbReturn 	= "(%S+)異能球已回到初始位置!",
+	OrbTaken	= "(%S+)奪走了(%S+)異能球!",
+	OrbReturn	= "(%S+)異能球已回到初始位置!",
 	ScoreExpr	= "(%d+)/1500",
 	WinBarText	= "預計%s勝利",
 	OrbsToWin	= "獲勝異能球數量: %d"
