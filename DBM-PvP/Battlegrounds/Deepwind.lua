@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local capTimer	= mod:NewTimer(60, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
-local winTimer	= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
+local capTimer	= mod:NewTimer(60, "TimerCap", "136002")
+local winTimer	= mod:NewTimer(30, "TimerWin", "134376")
 
 local bgzone = false
 local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo

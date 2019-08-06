@@ -10,9 +10,9 @@ mod:RegisterEvents(
 )
 
 local warnSiegeEngine 		= mod:NewAnnounce("WarnSiegeEngine", 3)
-local warnSiegeEngineSoon 	= mod:NewAnnounce("WarnSiegeEngineSoon", 2) 
+local warnSiegeEngineSoon 	= mod:NewAnnounce("WarnSiegeEngineSoon", 2)
 
-local POITimer 			= mod:NewTimer(60, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
+local POITimer 			= mod:NewTimer(60, "TimerPOI", "136002")	-- point of interest
 local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
 --mod:AddBoolOption("ShowGatesHealth", true)
@@ -106,7 +106,7 @@ do
 			--end
 		end
 	end
-	
+
 	mod.OnInitialize = initialize
 	function mod:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, initialize, self)
@@ -140,14 +140,14 @@ do
 					end
 				end
 				poi[k] = textureIndex
-			end		 
+			end
 		end
 	end
 
 	local function scheduleCheck(self)
 		self:Schedule(1, checkForUpdates)
 	end
-	
+
 	function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if msg == L.GoblinStartAlliance or msg == L.GoblinBrokenAlliance or msg:find(L.GoblinStartAlliance) or msg:find(L.GoblinBrokenAlliance) then
 			self:SendSync("SEStart", "Alliance")
@@ -165,7 +165,7 @@ do
 			checkForUpdates()
 		end
 	end
-	
+
 	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
 	mod.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
 	mod.CHAT_MSG_RAID_BOSS_EMOTE = scheduleCheck
@@ -176,7 +176,7 @@ function mod:UNIT_DIED(args)
 	if cid == 34476 then
 		self:SendSync("SEBroken", "Alliance")
 	elseif cid == 35069 then
-		self:SendSync("SEBroken", "Horde")	
+		self:SendSync("SEBroken", "Horde")
 	end
 end
 

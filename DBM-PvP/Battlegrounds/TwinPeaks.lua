@@ -41,7 +41,7 @@ do
 end
 
 do
-	local flagTimer			= mod:NewTimer(12, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
+	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483")
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
 	local function updateflagcarrier(self, event, arg1)

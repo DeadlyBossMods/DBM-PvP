@@ -8,7 +8,7 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local cartTimer		= mod:NewTimer(9.5, "TimerCart", "Interface\\Icons\\INV_Misc_PocketWatch_01")
+local cartTimer		= mod:NewTimer(9.5, "TimerCart", "134376")
 
 local bgzone = false
 local cartCount = 0

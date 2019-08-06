@@ -15,8 +15,8 @@ mod:RegisterEvents(
 )
 
 local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
-local towerTimer	= mod:NewTimer(240, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
-local gyTimer		= mod:NewTimer(240, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
+local towerTimer	= mod:NewTimer(240, "TimerTower", "136001")
+local gyTimer		= mod:NewTimer(240, "TimerGY", "136119")
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
 local allyColor = {
@@ -33,7 +33,7 @@ local hordeColor = {
 
 local graveyards = {}
 local function is_graveyard(id)
-	return id == 8 or id == 15 or id == 13 or id == 4 or id == 14 
+	return id == 8 or id == 15 or id == 13 or id == 4 or id == 14
 end
 local function gy_state(id)
 	if id == 8 then			return -1	-- Neutral
@@ -170,7 +170,7 @@ do
 			return _G[tooltip:GetName().."Text"]:GetText()
 		end
 	end
-	
+
 	local function loadQuests()
 		for i, v in pairs(quests) do
 			if type(v[1]) == "table" then
@@ -200,10 +200,10 @@ do
 		[13180] = {6826, 17327},
 		[13181] = {6827, 17328},
 		[13439] = {6941, 17503},
-		[13437] = {6943, 17504},	
-		[13441] = {7002, 17642},	
-	}	
-	
+		[13437] = {6943, 17504},
+		[13441] = {7002, 17642},
+	}
+
 	loadQuests() -- requests the quest information from the server
 	mod:Schedule(5, loadQuests) -- information should be available now....load it
 	mod:Schedule(15, loadQuests) -- sometimes this requires a lot more time, just to be sure!

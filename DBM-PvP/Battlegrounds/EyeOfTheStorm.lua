@@ -42,8 +42,8 @@ mod:AddBoolOption("ShowPointFrame", true, nil, function()
 	end
 end)
 
-local winTimer = mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
-local flagTimer = mod:NewTimer(7, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
+local winTimer = mod:NewTimer(30, "TimerWin", "134376")
+local flagTimer = mod:NewTimer(7, "TimerFlag", "132483")
 
 local objectives = {
 	[1] = 6,	-- Blood Elf
@@ -62,12 +62,12 @@ local function isTower(id)
 end
 
 local function getBasecount()
-	local alliance = 0 
+	local alliance = 0
 	local horde = 0
 	for k,v in pairs(objectives) do
-		if v == 11 then 
+		if v == 11 then
 			alliance = alliance + 1
-		elseif v == 10 then 
+		elseif v == 10 then
 			horde = horde + 1
 		end
 	end
@@ -168,7 +168,7 @@ do
 		end
 		self:UPDATE_UI_WIDGET()
 	end
-	
+
 	local function scheduleCheck(self)
 		self:Schedule(1, checkForUpdates, self)
 	end
@@ -182,12 +182,12 @@ do
 					self.HordeFlag = nil
 					self:UpdateFlagDisplay()
 				end
-	
+
 			elseif string.match(arg1, L.FlagDropped) then
 				self.AllyFlag = nil
 				self.HordeFlag = nil
 				self:UpdateFlagDisplay()
-	
+
 			elseif string.match(arg1, L.FlagCaptured) then
 				flagTimer:Start()
 				self.AllyFlag = nil
@@ -207,12 +207,12 @@ do
 					self.HordeFlag = name
 					self:UpdateFlagDisplay()
 				end
-	
+
 			elseif string.match(arg1, L.FlagDropped) then
 				self.AllyFlag = nil
 				self.HordeFlag = nil
 				self:UpdateFlagDisplay()
-	
+
 			elseif string.match(arg1, L.FlagCaptured) then
 				flagTimer:Start()
 				self.AllyFlag = nil
@@ -234,7 +234,7 @@ do
 			self:UpdateFlagDisplay()
 		end
 		scheduleCheck(self)
-	end	
+	end
 end
 
 
@@ -247,7 +247,7 @@ function mod:UPDATE_UI_WIDGET()
 	-- calculate new times
 	local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_bases]
 	local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_bases]
-	
+
 	if AllyTime > 5000 then		AllyTime = 5000 end
 	if HordeTime > 5000 then	HordeTime = 5000 end
 
@@ -257,7 +257,7 @@ function mod:UPDATE_UI_WIDGET()
 			self.ScoreFrame1Text:SetText("")
 			self.ScoreFrame2Text:SetText("")
 		end
-		
+
 	elseif AllyTime > HordeTime then -- Horde wins
 		winTimer:Update(getGametime(), getGametime()+HordeTime)
 		winTimer:DisableEnlarge()
@@ -303,7 +303,7 @@ function mod:UpdateFlagDisplay()
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
 		end
 		self.ScoreFrame1Text:SetText(newText)
-		
+
 		newText = nil
 		oldText = self.ScoreFrame2Text:GetText()
 		if self.HordeFlag then

@@ -8,7 +8,7 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local winTimer 		= mod:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
+local winTimer 		= mod:NewTimer(30, "TimerWin", "134376")
 
 local bgzone = false
 local orbs = {}
@@ -186,7 +186,7 @@ do
 
 	function mod:UPDATE_UI_WIDGET()
 		if not bgzone then return end
-	
+
 		local AllyOrbs, HordeOrbs, TotalOrbs = GetNumOrbs()
 		local AllyScore, HordeScore = GetScore()
 		local callUpdate = false
@@ -216,16 +216,16 @@ do
 		if callUpdate or winner_is == 0 then
 			self:UpdateWinTimer()
 		end
-		
+
 	end
 
 	function mod:UpdateWinTimer()
 		local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_orbs]
 		local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_orbs]
-		
+
 		if AllyTime > 5000 then AllyTime = 5000 end
 		if HordeTime > 5000 then HordeTime = 5000 end
-				
+
 		if AllyTime == HordeTime then	-- no winner
 			winner_is = 0
 			winTimer:Stop()
@@ -233,7 +233,7 @@ do
 				self.ScoreFrame1Text:SetText("")
 				self.ScoreFrame2Text:SetText("")
 			end
-		
+
 		elseif AllyTime > HordeTime then	-- Horde wins
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_orbs]) + last_alliance_score) / 10) * 10)
@@ -253,7 +253,7 @@ do
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[last_horde_orbs]) + last_horde_score) / 10) * 10)
 				self.ScoreFrame2Text:SetText("("..HordePoints..")")
-				self.ScoreFrame1Text:SetText("(1500)")		
+				self.ScoreFrame1Text:SetText("(1500)")
 			end
 
 			winner_is = 1
@@ -287,7 +287,7 @@ do
 					else
 						baseLowest = EnemyTime
 					end
-					
+
 					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * ResPerSec[ 5 - i ] + 0.5 ) ) / 10 ) * 10
 					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
 					if( FriendlyFinal >= 1500 and EnemyFinal < 1500 ) then
