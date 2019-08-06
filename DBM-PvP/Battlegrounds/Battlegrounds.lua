@@ -1,8 +1,8 @@
 local mod	= DBM:NewMod("Battlegrounds", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
-local format, ipairs, tostring = format, ipairs, tostring
-local IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE, C_ChatInfo = IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE, C_ChatInfo
+local ipairs = ipairs
+local IsInInstance = IsInInstance
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -21,73 +21,88 @@ mod:RegisterEvents(
 	"UPDATE_BATTLEFIELD_STATUS"
 )
 
-local inviteTimer		= mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
-local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
+do
+	local C_ChatInfo = C_ChatInfo
 
-function mod:ZONE_CHANGED_NEW_AREA()
-	local _, instanceType = IsInInstance()
-	if instanceType == "pvp" then
-		C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
-		self:Schedule(3, DBM.RequestTimers, DBM)
-	end
-	if self.Options.HideBossEmoteFrame then
-		DBM:HideBlizzardEvents(instanceType == "pvp" and 1 or 0, true)
-	end
-	for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
-	DBM:GetModByName("z30"):Unschedule()
-	DBM:GetModByName("z2106"):Unschedule()
-	DBM:GetModByName("z2107"):Unschedule()
-	DBM:GetModByName("z566"):Unschedule()
-	DBM:GetModByName("z628"):Unschedule()
-	DBM:GetModByName("z726"):Unschedule()
-	DBM:GetModByName("z727"):Unschedule()
-	DBM:GetModByName("z761"):Unschedule()
-	DBM:GetModByName("z998"):Unschedule()
-	DBM:GetModByName("z1105"):Unschedule()
-end
-mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
-mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
-
-function mod:PLAYER_DEAD()
-	local _, instanceType = IsInInstance()
-	if instanceType == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
-		RepopMe()
-	end
-end
-
-function mod:START_TIMER(_, timeSeconds)
-	local _, instanceType = IsInInstance()
-	if (instanceType == "pvp" or instanceType == "arena") and self.Options.ShowStartTimer then
-		for _, bar in ipairs(TimerTracker.timerList) do
-			bar.bar:Hide()
+	function mod:ZONE_CHANGED_NEW_AREA()
+		local _, instanceType = IsInInstance()
+		if instanceType == "pvp" then
+			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
+			self:Schedule(3, DBM.RequestTimers, DBM)
 		end
-		remainingTimer:SetTimer(timeSeconds)
-		remainingTimer:Start()
+		if self.Options.HideBossEmoteFrame then
+			DBM:HideBlizzardEvents(instanceType == "pvp" and 1 or 0, true)
+		end
+		for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
+		for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
+		DBM:GetModByName("z30"):Unschedule()
+		DBM:GetModByName("z2106"):Unschedule()
+		DBM:GetModByName("z2107"):Unschedule()
+		DBM:GetModByName("z566"):Unschedule()
+		DBM:GetModByName("z628"):Unschedule()
+		DBM:GetModByName("z726"):Unschedule()
+		DBM:GetModByName("z727"):Unschedule()
+		DBM:GetModByName("z761"):Unschedule()
+		DBM:GetModByName("z998"):Unschedule()
+		DBM:GetModByName("z1105"):Unschedule()
+	end
+	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
+end
+
+do
+	local HasSoulstone = HasSoulstone
+	
+	function mod:PLAYER_DEAD()
+		local _, instanceType = IsInInstance()
+		if instanceType == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
+			RepopMe()
+		end
 	end
 end
 
-function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
-	if self.Options.ShowInviteTimer then
-		local status, mapName, _, _, _, teamSize = GetBattlefieldStatus(queueID)
-		if status == "confirm"
-			if size == "ARENASKIRMISH" then
-				mapName = L.ArenaInvite .. " " .. format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
+do
+	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
+
+	function mod:START_TIMER(_, timeSeconds)
+		local _, instanceType = IsInInstance()
+		if (instanceType == "pvp" or instanceType == "arena") and self.Options.ShowStartTimer then
+			for _, bar in ipairs(TimerTracker.timerList) do
+				bar.bar:Hide()
 			end
-			local expiration = GetBattlefieldPortExpiration(queueID)
-			if inviteTimer:GetTime(mapName) == 0 and expiration >= 3 then
-				inviteTimer:Start(expiration, mapName)
+			remainingTimer:SetTimer(timeSeconds)
+			remainingTimer:Start()
+		end
+	end
+end
+
+do
+	local format, tostring = format, tostring
+	local inviteTimer		= mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
+	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
+
+	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
+		if self.Options.ShowInviteTimer then
+			local status, mapName, _, _, _, teamSize = GetBattlefieldStatus(queueID)
+			if status == "confirm"
+				if size == "ARENASKIRMISH" then
+					mapName = L.ArenaInvite .. " " .. format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
+				end
+				local expiration = GetBattlefieldPortExpiration(queueID)
+				if inviteTimer:GetTime(mapName) == 0 and expiration >= 3 then
+					inviteTimer:Start(expiration, mapName)
+				end
+			elseif status == "none" then
+				inviteTimer:Stop()
 			end
-		elseif status == "none" then
-			inviteTimer:Stop()
 		end
 	end
 end

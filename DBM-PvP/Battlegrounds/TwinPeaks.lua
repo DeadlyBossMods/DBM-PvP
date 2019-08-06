@@ -11,14 +11,10 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local bgzone = false
-local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVarBool("showArenaEnemyCastbar"), GetCVarBool("showArenaEnemyFrames"), GetCVarBool("showArenaEnemyPets")
-
-local flagTimer			= mod:NewTimer(12, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
-local vulnerableTimer	= mod:NewNextTimer(60, 46392)
-local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
-
 do
+	local bgzone = false
+	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVarBool("showArenaEnemyCastbar"), GetCVarBool("showArenaEnemyFrames"), GetCVarBool("showArenaEnemyPets")
+
 	local function TwinPeaks_Initialize(self)
 		if DBM:GetCurrentArea() == 726 then
 			bgzone = true
@@ -47,6 +43,9 @@ do
 end
 
 do
+	local flagTimer			= mod:NewTimer(12, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
+	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
+
 	local function updateflagcarrier(self, event, arg1)
 		if string.match(arg1, L.ExprFlagCaptured) then
 			flagTimer:Start()
@@ -70,6 +69,8 @@ do
 end
 
 do
+	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
+
 	C_Timer.After(130, function()
 		local info = GetIconAndTextWidgetVisualizationInfo(6)
 		if info and info.state == 1 then
