@@ -1,8 +1,6 @@
 ﻿local mod	= DBM:NewMod("z726", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
-local string.match = string.match
-
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 

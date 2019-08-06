@@ -92,7 +92,7 @@ do
 	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
 		if self.Options.ShowInviteTimer then
 			local status, mapName, _, _, _, teamSize = GetBattlefieldStatus(queueID)
-			if status == "confirm"
+			if status == "confirm" then
 				if size == "ARENASKIRMISH" then
 					mapName = L.ArenaInvite .. " " .. format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
 				end
