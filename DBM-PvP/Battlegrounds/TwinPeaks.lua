@@ -1,8 +1,7 @@
 ﻿local mod	= DBM:NewMod("z726", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
-local tonumber, string.find, string.match = tonumber, string.find, string.match
-local C_CVar, C_Timer = C_CVar, C_TIMER
+local string.match = string.match
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -12,6 +11,7 @@ mod:RegisterEvents(
 )
 
 do
+	local C_CVar = C_CVar
 	local bgzone = false
 	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVarBool("showArenaEnemyCastbar"), GetCVarBool("showArenaEnemyFrames"), GetCVarBool("showArenaEnemyPets")
 
@@ -43,6 +43,7 @@ do
 end
 
 do
+	local string.find = string.find
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
@@ -69,9 +70,10 @@ do
 end
 
 do
+	local tonumber = tonumber
 	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
-	C_Timer.After(130, function()
+	mod:Schedule(130, function()
 		local info = GetIconAndTextWidgetVisualizationInfo(6)
 		if info and info.state == 1 then
 			local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
@@ -80,5 +82,5 @@ do
 				remainingTimer:Start()
 			end
 		end
-	end
+	end, self)
 end
