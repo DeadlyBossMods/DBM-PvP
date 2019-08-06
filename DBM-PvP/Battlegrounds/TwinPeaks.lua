@@ -41,7 +41,6 @@ do
 end
 
 do
-	local string.find = string.find
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
