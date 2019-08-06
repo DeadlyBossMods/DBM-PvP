@@ -1,6 +1,9 @@
 ﻿local mod	= DBM:NewMod("z726", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
+local tonumber, string.find, string.match = tonumber, string.find, string.match
+local C_CVar, C_Timer = C_CVar, C_TIMER
+
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
@@ -60,7 +63,7 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
+		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or string.find(msg, L.Vulnerable1) or string.find(msg, L.Vulnerable2) then
 			vulnerableTimer:Start()
 		end
 	end
