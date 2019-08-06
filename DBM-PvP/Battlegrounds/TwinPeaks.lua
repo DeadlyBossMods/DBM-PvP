@@ -19,7 +19,8 @@ do
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_HORDE",
-				"CHAT_MSG_BG_SYSTEM_NEUTRAL"
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+				"START_TIMER"
 			)
 			-- Fix for flag carriers not showing up
 			C_CVar.SetCVar("showArenaEnemyCastbar", "1")
@@ -70,14 +71,16 @@ do
 	local tonumber = tonumber
 	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
-	mod:Schedule(130, function()
-		local info = GetIconAndTextWidgetVisualizationInfo(6)
-		if info and info.state == 1 then
-			local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
-			if minutes and seconds then
-				remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
-				remainingTimer:Start()
+	function mod:START_TIMER(_, timeSeconds)
+		mod:Schedule(timeSeconds + 1, function()
+			local info = GetIconAndTextWidgetVisualizationInfo(6)
+			if info and info.state == 1 then
+				local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
+				if minutes and seconds then
+					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
+					remainingTimer:Start()
+				end
 			end
-		end
-	end, self)
+		end, self)
+	end
 end
