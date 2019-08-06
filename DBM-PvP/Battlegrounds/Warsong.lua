@@ -73,7 +73,7 @@ do
 
 	function mod:START_TIMER(_, timeSeconds)
 		mod:Schedule(timeSeconds + 1, function()
-			local info = GetIconAndTextWidgetVisualizationInfo(6)
+			local info = GetIconAndTextWidgetVisualizationInfo(630)
 			if info and info.state == 1 then
 				local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
 				if minutes and seconds then
