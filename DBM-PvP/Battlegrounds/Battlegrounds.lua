@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("Battlegrounds", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
 local format, ipairs, tostring = format, ipairs, tostring
-local IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration = IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration
+local IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = IsInInstance, HasSoulstone, GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
