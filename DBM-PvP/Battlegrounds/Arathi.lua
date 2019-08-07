@@ -3,14 +3,14 @@ local L			= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
-local mapId = 0--Placeholder
+local mapId = 0
 
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local winTimer 		= mod:NewTimer(30, "TimerWin", "134376")
-local capTimer 		= mod:NewTimer(60, "TimerCap", "136002")
+local winTimer	= mod:NewTimer(30, "TimerWin", "134376")
+local capTimer	= mod:NewTimer(60, "TimerCap", "136002")
 
 local bgzone = false
 local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
@@ -30,23 +30,12 @@ mod:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 end)
 
 local ResPerSec = {
-	[0] = 1e-300, -- work-around for the divions by zero foo (no, using DOUBLE_MIN is not possible here as it would overflow to infinity which is also an exception)
+	[0] = 1e-300,
 	[1] = 10/12,
 	[2] = 10/9,
 	[3] = 10/6,
 	[4] = 10/3,
 	[5] = 30,
-}
-
-local allyColor = {
-	r = 0,
-	g = 0,
-	b = 1,
-}
-local hordeColor = {
-	r = 1,
-	g = 0,
-	b = 0,
 }
 
 local objectives = {
@@ -56,6 +45,7 @@ local objectives = {
 	Stables = 0,
 	Blacksmith = 0,
 }
+
 local function getObjectiveType(id)
 	if id >=16 and id <=20 then
 		return "GoldMine"
@@ -71,6 +61,7 @@ local function getObjectiveType(id)
 		return false
 	end
 end
+
 local function getObjectiveState(id)
 	if id == 16 or id == 21 or id == 26 or id == 31 or id == 36 then
 		return -1 	-- Neutral
@@ -99,6 +90,7 @@ local function get_basecount()
 	end
 	return alliance, horde
 end
+
 local function get_score()
 	if not bgzone then
 		return 0, 0
@@ -106,7 +98,7 @@ local function get_score()
 	local ally, horde = 2, 3
 	for i = 1, 3 do
 		if select(5, GetWorldStateUIInfo(i)) then
-			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then--find -- "Interface\\TargetingFrame\\UI-PVP-Alliance", must be alliance.
+			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then
 				ally = i
 				horde = i + 1
 				break
@@ -160,18 +152,15 @@ do
 					end
 				end
 			end
-
 			if self.Options.ShowAbEstimatedPoints then
 				self:ShowEstimatedPoints()
 			end
 			if self.Options.ShowAbBasesToWin then
 				self:ShowBasesToWin()
 			end
-
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-
 			if self.Options.ShowAbEstimatedPoints then
 				self:HideEstimatedPoints()
 			end
@@ -181,6 +170,7 @@ do
 		end
 	end
 	mod.OnInitialize = AB_Initialize
+
 	function mod:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, AB_Initialize, self)
 	end
@@ -194,8 +184,8 @@ do
 			local name = areaPOIInfo.name
 			local textureIndex = areaPOIInfo.textureIndex
 			if name and textureIndex then
-				local type = getObjectiveType(textureIndex)		-- name of the objective without spaces
-				local state = getObjectiveState(textureIndex)	-- state of the objective
+				local type = getObjectiveType(textureIndex)
+				local state = getObjectiveState(textureIndex)
 				if type and state and textureIndex ~= objectives[type] then
 					capTimer:Stop(name)
 					if state > 2 then
@@ -217,7 +207,6 @@ do
 	local function schedule_check(self)
 		self:Schedule(1, check_for_updates)
 	end
-
 	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	mod.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 	mod.CHAT_MSG_RAID_BOSS_EMOTE = schedule_check
@@ -232,12 +221,12 @@ do
 	local last_alliance_bases = 0
 
 	function mod:UPDATE_UI_WIDGET()
-		if not bgzone then return end
-
+		if not bgzone then
+			return
+		end
 		local AllyBases, HordeBases = get_basecount()
 		local AllyScore, HordeScore = get_score()
 		local callupdate = false
-
 		if AllyScore ~= last_alliance_score then
 			last_alliance_score = AllyScore
 			if winner_is == 1 then
@@ -257,7 +246,6 @@ do
 			last_horde_bases = HordeBases
 			callupdate = true
 		end
-
 		if callupdate or winner_is == 0 then
 			self:UpdateWinTimer()
 		end
@@ -265,10 +253,12 @@ do
 	function mod:UpdateWinTimer()
 		local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_bases]
 		local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_bases]
-
-		if AllyTime > 5000 then		AllyTime = 5000 end
-		if HordeTime > 5000 then	HordeTime = 5000 end
-
+		if AllyTime > 5000 then
+			AllyTime = 5000
+		end
+		if HordeTime > 5000 then
+			HordeTime = 5000
+		end
 		if AllyTime == HordeTime then
 			winner_is = 0
 			winTimer:Stop()
@@ -276,35 +266,31 @@ do
 				self.ScoreFrame1Text:SetText("")
 				self.ScoreFrame2Text:SetText("")
 			end
-
 		elseif AllyTime > HordeTime then -- Horde wins
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_bases]) + last_alliance_score) / 10) * 10)
 				self.ScoreFrame1Text:SetText("("..AllyPoints..")")
 				self.ScoreFrame2Text:SetText("(1500)")
 			end
-
 			winner_is = 2
 			winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 			winTimer:DisableEnlarge()
 			local title = L.Horde or FACTION_HORDE--L.Horde is nil in english local, unless it's added to non english local, FACTION_HORDE will be used
 			winTimer:UpdateName(L.WinBarText:format(title))
-			winTimer:SetColor(hordeColor)
+			winTimer:SetColor(1, 0, 0)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
-
 		elseif HordeTime > AllyTime then -- Alliance wins
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[last_horde_bases]) + last_horde_score) / 10) * 10)
 				self.ScoreFrame2Text:SetText("("..HordePoints..")")
 				self.ScoreFrame1Text:SetText("(1500)")
 			end
-
 			winner_is = 1
 			winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 			winTimer:DisableEnlarge()
-			local title = L.Alliance or FACTION_ALLIANCE--L.Alliance is nil in english local, unless it's added to non english local, FACTION_ALLIANCE will be used
+			local title = L.Alliance or FACTION_ALLIANCE
 			winTimer:UpdateName(L.WinBarText:format(title))
-			winTimer:SetColor(allyColor)
+			winTimer:SetColor(0, 0, 1)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
 		end
 

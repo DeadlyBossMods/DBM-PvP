@@ -1,18 +1,17 @@
 local mod		= DBM:NewMod("z628", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
-local mapId = 0--Obviously not 0
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local warnSiegeEngine 		= mod:NewAnnounce("WarnSiegeEngine", 3)
 local warnSiegeEngineSoon 	= mod:NewAnnounce("WarnSiegeEngineSoon", 2)
 
-local POITimer 			= mod:NewTimer(60, "TimerPOI", "136002")	-- point of interest
+local POITimer 			= mod:NewTimer(60, "TimerPOI", "136002")
 local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 
 --mod:AddBoolOption("ShowGatesHealth", true)
@@ -25,7 +24,7 @@ local hordeColor = {r = 1, g = 0, b = 0}
 
 --local gateHP = {}
 
-local function isInArgs(val, ...)	-- search for val in all args (...)
+local function isInArgs(val, ...)
 	for i=1, select("#", ...), 1 do
 		local v = select(i,  ...)
 		if v == val then
@@ -86,8 +85,8 @@ do
 				"UNIT_DIED"
 				--"SPELL_BUILDING_DAMAGE"
 			)
-			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
-				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(628)) do
+				local areaPOIInfo = GetAreaPOIInfo(628, areaPOIId)
 				local name = areaPOIInfo.name
 				local textureIndex = areaPOIInfo.textureIndex
 				if name and textureIndex then
@@ -115,7 +114,9 @@ end
 
 do
 	local function checkForUpdates()
-		if not bgzone then return end
+		if not bgzone then
+			return
+		end
 		for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
 			local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
 			local name = areaPOIInfo.name
@@ -134,7 +135,7 @@ do
 							POITimer:UpdateIcon(hordeTowerIcon, name)
 						end
 					end
-					if k == 13 then 	-- Workshop is attacked, Siege Engine building is cancelled
+					if k == 13 then
 						timerSiegeEngine:Cancel()
 						warnSiegeEngineSoon:Cancel()
 					end
@@ -165,7 +166,6 @@ do
 			checkForUpdates()
 		end
 	end
-
 	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
 	mod.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
 	mod.CHAT_MSG_RAID_BOSS_EMOTE = scheduleCheck

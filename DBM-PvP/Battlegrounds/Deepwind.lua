@@ -1,9 +1,5 @@
--- Deepwind Gorge mod v3.0
--- written by Cenuij
-
 local mod		= DBM:NewMod("z1105", "DBM-PvP", 2)
 local L			= mod:GetLocalizedStrings()
-local mapId = 0--Placeholder
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -25,17 +21,6 @@ local ResPerSec = {
 	[3] = 32/5,
 }
 
-local allyColor = {
-	r = 0,
-	g = 0,
-	b = 1,
-}
-local hordeColor = {
-	r = 1,
-	g = 0,
-	b = 0,
-}
-
 local objectives = {}
 
 local function get_state_from_texture(id)
@@ -54,8 +39,8 @@ end
 
 local function get_objectives()
 	local result = {}
-	for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
-		local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+	for _, areaPOIId in ipairs(GetAreaPOIForMap(1105)) do
+		local areaPOIInfo = GetAreaPOIInfo(1105, areaPOIId)
 		local name = areaPOIInfo.name
 		local textureIndex = areaPOIInfo.textureIndex
 		if name and textureIndex then
@@ -85,7 +70,7 @@ local function get_score()
 	local ally, horde = 2, 3
 	for i = 1, 3 do
 		if select(5, GetWorldStateUIInfo(i)) then
-			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then--find -- "Interface\\TargetingFrame\\UI-PVP-Alliance", must be alliance.
+			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then
 				ally = i
 				horde = i + 1
 				break
@@ -131,17 +116,12 @@ local function Deepwind_Initialize(self)
 		self:UnregisterShortTermEvents()
 	end
 end
-
 mod.OnInitialize = Deepwind_Initialize
 
 function mod:ZONE_CHANGED_NEW_AREA()
 	self:Schedule(1, Deepwind_Initialize, self)
 end
 
-
---
--- capTimer
---
 do
 	local function check_for_updates()
 		if not bgzone then return end
@@ -166,36 +146,32 @@ do
 	local function schedule_check(self)
 		self:Schedule(1, check_for_updates)
 	end
-
 	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	mod.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 	mod.CHAT_MSG_RAID_BOSS_EMOTE = schedule_check
 	mod.CHAT_MSG_BG_SYSTEM_NEUTRAL = schedule_check
 end
 
---
--- winTimer
---
-
 function mod:UPDATE_UI_WIDGET()
-	if not bgzone then return end
-
+	if not bgzone then
+		return
+	end
 	local last_alliance_bases, last_horde_bases = get_basecount()
 	local last_alliance_score, last_horde_score = get_score()
-
 	local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_bases]
 	local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_bases]
-
-	if AllyTime > 5000 then		AllyTime = 5000 end
-	if HordeTime > 5000 then	HordeTime = 5000 end
-
+	if AllyTime > 5000 then
+		AllyTime = 5000
+	end
+	if HordeTime > 5000 then
+		HordeTime = 5000
+	end
 	if AllyTime == HordeTime then
 		winTimer:Stop()
 		if self.ScoreFrame1Text then
 			self.ScoreFrame1Text:SetText("")
 			self.ScoreFrame2Text:SetText("")
 		end
-
 	elseif AllyTime > HordeTime then -- Horde wins
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_bases]) + last_alliance_score) / 10) * 10)
@@ -205,9 +181,9 @@ function mod:UPDATE_UI_WIDGET()
 
 		winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 		winTimer:DisableEnlarge()
-		local title = L.Horde or FACTION_HORDE--L.Horde is nil in english local, unless it's added to non english local, FACTION_HORDE will be used
+		local title = L.Horde or FACTION_HORDE
 		winTimer:UpdateName(L.WinBarText:format(title))
-		winTimer:SetColor(hordeColor)
+		winTimer:SetColor(1, 0, 0)
 		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
 
 	elseif HordeTime > AllyTime then -- Alliance wins
@@ -219,9 +195,9 @@ function mod:UPDATE_UI_WIDGET()
 
 		winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 		winTimer:DisableEnlarge()
-		local title = L.Alliance or FACTION_ALLIANCE--L.Alliance is nil in english local, unless it's added to non english local, FACTION_ALLIANCE will be used
+		local title = L.Alliance or FACTION_ALLIANCE
 		winTimer:UpdateName(L.WinBarText:format(title))
-		winTimer:SetColor(allyColor)
+		winTimer:SetColor(0, 0, 1)
 		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
 	end
 end

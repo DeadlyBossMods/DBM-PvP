@@ -1,11 +1,5 @@
--- EyeOfTheStorm mod v3.0
--- rewrite by Nitram and Tandanu
---
--- thanks DiabloHu
-
 local mod	= DBM:NewMod("z566", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
-local mapId = 0--Placeholder
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -17,21 +11,11 @@ mod:RegisterEvents(
 local bgzone = false
 local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
 local ResPerSec = {
-	[0] = 1e-300, -- blah
+	[0] = 1e-300,
 	[1] = 1,
 	[2] = 2,
 	[3] = 5,
 	[4] = 10,
-}
-local allyColor = {
-	r = 0,
-	g = 0,
-	b = 1,
-}
-local hordeColor = {
-	r = 1,
-	g = 0,
-	b = 0,
 }
 
 mod:AddBoolOption("ShowPointFrame", true, nil, function()
@@ -81,7 +65,7 @@ local function getScore()
 	local ally, horde = 2, 3
 	for i = 1, 3 do
 		if select(5, GetWorldStateUIInfo(i)) then
-			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then--find -- "Interface\\TargetingFrame\\UI-PVP-Alliance", must be alliance.
+			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then
 				ally = i
 				horde = i + 1
 				break
@@ -123,8 +107,9 @@ do
 				"UPDATE_UI_WIDGET"
 			)
 			updateGametime()
-			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
-				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			-- TODO: 566 standard, 968 rated
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(566)) do
+				local areaPOIInfo = GetAreaPOIInfo(566, areaPOIId)
 				local name = areaPOIInfo.name
 				local textureIndex = areaPOIInfo.textureIndex
 				if name and textureIndex then
@@ -136,7 +121,6 @@ do
 			if self.Options.ShowPointFrame then
 				self:ShowEstimatedPoints()
 			end
-
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
@@ -239,29 +223,30 @@ end
 
 
 function mod:UPDATE_UI_WIDGET()
-	if not bgzone then return end
-
+	if not bgzone then
+		return
+	end
 	local last_alliance_bases, last_horde_bases = getBasecount()
 	local last_alliance_score, last_horde_score = getScore()
-
-	-- calculate new times
 	local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_bases]
 	local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_bases]
 
-	if AllyTime > 5000 then		AllyTime = 5000 end
-	if HordeTime > 5000 then	HordeTime = 5000 end
-
+	if AllyTime > 5000 then
+		AllyTime = 5000
+	end
+	if HordeTime > 5000 then
+		HordeTime = 5000
+	end
 	if AllyTime == HordeTime then
 		winTimer:Stop()
 		if self.ScoreFrame1Text then
 			self.ScoreFrame1Text:SetText("")
 			self.ScoreFrame2Text:SetText("")
 		end
-
 	elseif AllyTime > HordeTime then -- Horde wins
 		winTimer:Update(getGametime(), getGametime()+HordeTime)
 		winTimer:DisableEnlarge()
-		local title = L.Horde or FACTION_HORDE--L.Horde is nil in english local, unless it's added to non english local, FACTION_HORDE will be used
+		local title = L.Horde or FACTION_HORDE
 		winTimer:UpdateName(L.WinBarText:format(title))
 		winTimer:SetColor(hordeColor)
 
@@ -271,14 +256,12 @@ function mod:UPDATE_UI_WIDGET()
 			self.ScoreFrame2Text:SetText("(1500)")
 			self:UpdateFlagDisplay()
 		end
-
 	elseif HordeTime > AllyTime then -- Alliance wins
 		winTimer:Update(getGametime(), getGametime()+AllyTime)
 		winTimer:DisableEnlarge()
-		local title = L.Alliance or FACTION_ALLIANCE--L.Alliance is nil in english local, unless it's added to non english local, FACTION_ALLIANCE will be used
+		local title = L.Alliance or FACTION_ALLIANCE
 		winTimer:UpdateName(L.WinBarText:format(title))
 		winTimer:SetColor(allyColor)
-
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			local HordePoints = math.floor((HordeTime * ResPerSec[last_horde_bases]) + last_horde_score)
 			self.ScoreFrame1Text:SetText("(1500)")
@@ -303,7 +286,6 @@ function mod:UpdateFlagDisplay()
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
 		end
 		self.ScoreFrame1Text:SetText(newText)
-
 		newText = nil
 		oldText = self.ScoreFrame2Text:GetText()
 		if self.HordeFlag then

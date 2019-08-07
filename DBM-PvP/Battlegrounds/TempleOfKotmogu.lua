@@ -35,17 +35,6 @@ local ResPerSec = {
 	[4] = 18/5
 }
 
-local allyColor = {
-	r = 0,
-	g = 0,
-	b = 1,
-}
-local hordeColor = {
-	r = 1,
-	g = 0,
-	b = 0,
-}
-
 local function AddOrb(color, name, faction)
 	local exists = false
 	for i,v in ipairs(orbs) do
@@ -89,7 +78,7 @@ local function GetScore()
 	local ally, horde = 2, 3
 	for i = 1, 3 do
 		if select(5, GetWorldStateUIInfo(i)) then
-			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then--find -- "Interface\\TargetingFrame\\UI-PVP-Alliance", must be alliance.
+			if string.match(select(5, GetWorldStateUIInfo(i)), "Alliance") then
 				ally = i
 				horde = i + 1
 				break
@@ -141,7 +130,6 @@ function mod:OnInitialize()
 		self:UnregisterShortTermEvents()
 		table.wipe(orbs)
 		winTimer:Stop()
-
 		if self.Options.ShowKotmoguEstimatedPoints then
 			self:HideEstimatedPoints()
 		end
@@ -185,12 +173,12 @@ do
 	local last_alliance_orbs= 0
 
 	function mod:UPDATE_UI_WIDGET()
-		if not bgzone then return end
-
+		if not bgzone then
+			return
+		end
 		local AllyOrbs, HordeOrbs, TotalOrbs = GetNumOrbs()
 		local AllyScore, HordeScore = GetScore()
 		local callUpdate = false
-
 		if AllyScore ~= last_alliance_score then
 			last_alliance_score = AllyScore
 			if winner_is == 1 then
@@ -202,30 +190,28 @@ do
 				callUpdate = true
 			end
 		end
-
 		if AllyOrbs ~= last_alliance_orbs then
 			last_alliance_orbs= AllyOrbs
 			callUpdate = true
 		end
-
 		if HordeOrbs ~= last_horde_orbs then
 			last_horde_orbs = HordeOrbs
 			callUpdate = true
 		end
-
 		if callUpdate or winner_is == 0 then
 			self:UpdateWinTimer()
 		end
-
 	end
 
 	function mod:UpdateWinTimer()
 		local AllyTime = (1500 - last_alliance_score) / ResPerSec[last_alliance_orbs]
 		local HordeTime = (1500 - last_horde_score) / ResPerSec[last_horde_orbs]
-
-		if AllyTime > 5000 then AllyTime = 5000 end
-		if HordeTime > 5000 then HordeTime = 5000 end
-
+		if AllyTime > 5000 then
+			AllyTime = 5000
+		end
+		if HordeTime > 5000 then
+			HordeTime = 5000
+		end
 		if AllyTime == HordeTime then	-- no winner
 			winner_is = 0
 			winTimer:Stop()
@@ -233,38 +219,33 @@ do
 				self.ScoreFrame1Text:SetText("")
 				self.ScoreFrame2Text:SetText("")
 			end
-
 		elseif AllyTime > HordeTime then	-- Horde wins
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_orbs]) + last_alliance_score) / 10) * 10)
 				self.ScoreFrame1Text:SetText("("..AllyPoints..")")
 				self.ScoreFrame2Text:SetText("(1500)")
 			end
-
 			winner_is = 2
 			winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 			winTimer:DisableEnlarge()
-			local title = L.Horde or FACTION_HORDE--L.Horde is nil in english local, unless it's added to non english local, FACTION_HORDE will be used
+			local title = L.Horde or FACTION_HORDE
 			winTimer:UpdateName(L.WinBarText:format(title))
-			winTimer:SetColor(hordeColor)
+			winTimer:SetColor(1, 0, 0)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
-
 		elseif HordeTime > AllyTime then 	-- Alliance wins
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
 				local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[last_horde_orbs]) + last_horde_score) / 10) * 10)
 				self.ScoreFrame2Text:SetText("("..HordePoints..")")
 				self.ScoreFrame1Text:SetText("(1500)")
 			end
-
 			winner_is = 1
 			winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 			winTimer:DisableEnlarge()
-			local title = L.Alliance or FACTION_ALLIANCE--L.Alliance is nil in english local, unless it's added to non english local, FACTION_ALLIANCE will be used
+			local title = L.Alliance or FACTION_ALLIANCE
 			winTimer:UpdateName(L.WinBarText:format(title))
-			winTimer:SetColor(allyColor)
+			winTimer:SetColor(0, 0, 1)
 			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
 		end
-
 		if self.Options.ShowKotmoguOrbsToWin then
 			local FriendlyLast, EnemyLast, FriendlyOrbs, EnemyOrbs, baseLowest
 			if( UnitFactionGroup("player") == "Alliance" ) then
@@ -360,3 +341,5 @@ function mod:HideOrbsToWin()
 		self.ScoreFrameToWinText:SetText("")
 	end
 end
+
+-- MapID 998

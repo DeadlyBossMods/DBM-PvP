@@ -1,9 +1,5 @@
--- Alterac mod v3.0
--- rewrite by Nitram and Tandanu
-
 local mod	= DBM:NewMod("z30", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
-local mapId = 91
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -11,7 +7,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:AddBoolOption("AutoTurnIn")
 
 mod:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA" 	-- Required for BG start
+	"ZONE_CHANGED_NEW_AREA"
 )
 
 local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
@@ -19,22 +15,13 @@ local towerTimer	= mod:NewTimer(240, "TimerTower", "136001")
 local gyTimer		= mod:NewTimer(240, "TimerGY", "136119")
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
-local allyColor = {
-	r = 0,
-	g = 0,
-	b = 1,
-}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
-local hordeColor = {
-	r = 1,
-	g = 0,
-	b = 0,
-}
 
 local graveyards = {}
 local function is_graveyard(id)
 	return id == 8 or id == 15 or id == 13 or id == 4 or id == 14
 end
+
 local function gy_state(id)
 	if id == 8 then			return -1	-- Neutral
 	elseif id == 15 then	return 1	-- Alliance controlled
@@ -49,6 +36,7 @@ local towers = {}
 local function is_tower(id)
 	return id == 6 or id == 11 or id == 10 or id == 9 or id == 12
 end
+
 local function tower_state(id)
 	if id == 6 then			return -1	-- Neutral / Destroyed
 	elseif id == 11 then	return 1	-- Alliance controlled
@@ -75,11 +63,10 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			for _, areaPOIId in ipairs(GetAreaPOIForMap(mapId)) do
-				local areaPOIInfo = GetAreaPOIInfo(mapId, areaPOIId)
+			for _, areaPOIId in ipairs(GetAreaPOIForMap(30)) do
+				local areaPOIInfo = GetAreaPOIInfo(30, areaPOIId)
 				local name = areaPOIInfo.name
 				local textureIndex = areaPOIInfo.textureIndex
-				-- work-around for a bug in the german localization of WoW: the graveyard seems to change its name depending on the state
 				if name == "Friedhof des Sturmlanzen" then
 					name = "Friedhof der Sturmlanzen"
 				end
@@ -97,6 +84,7 @@ do
 		end
 	end
 	mod.OnInitialize = AV_Initialize
+
 	function mod:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, AV_Initialize, self)
 	end
@@ -131,10 +119,10 @@ do
 						if curState > 2 then
 							towerTimer:Start(nil, name)
 							if curState == 3 then
-								towerTimer:SetColor(allyColor, name)
+								towerTimer:SetColor(0, 0, 1, name)
 								towerTimer:UpdateIcon(hordeTowerIcon, name)
 							else
-								towerTimer:SetColor(hordeColor, name)
+								towerTimer:SetColor(1, 0, 0, name)
 								towerTimer:UpdateIcon(allyTowerIcon, name)
 							end
 						end
@@ -148,7 +136,6 @@ do
 	local function schedule_check(self)
 		self:Schedule(1, check_for_updates)
 	end
-
 	mod.CHAT_MSG_MONSTER_YELL = schedule_check
 	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	mod.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
@@ -204,9 +191,9 @@ do
 		[13441] = {7002, 17642},
 	}
 
-	loadQuests() -- requests the quest information from the server
-	mod:Schedule(5, loadQuests) -- information should be available now....load it
-	mod:Schedule(15, loadQuests) -- sometimes this requires a lot more time, just to be sure!
+	loadQuests()
+	mod:Schedule(5, loadQuests)
+	mod:Schedule(15, loadQuests)
 end
 
 local function isQuestAutoTurnInQuest(name)
