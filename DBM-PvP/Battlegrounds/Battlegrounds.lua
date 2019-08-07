@@ -59,18 +59,18 @@ do
 end
 
 do
-	local HasSoulstone = HasSoulstone
+	local C_DeathInfo = C_DeathInfo
 
 	function mod:PLAYER_DEAD()
 		local _, instanceType = IsInInstance()
-		if instanceType == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
+		if instanceType == "pvp" and not C_DeathInfo.GetSelfResurrectOptions()() and self.Options.AutoSpirit then
 			RepopMe()
 		end
 	end
 end
 
 do
-	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
+	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
@@ -86,7 +86,7 @@ end
 
 do
 	local format, tostring = format, tostring
-	local inviteTimer		= mod:NewTimer(60, "TimerInvite", "135986", nil, false)
+	local inviteTimer = mod:NewTimer(60, "TimerInvite", "135986", nil, false)
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
 
 	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
