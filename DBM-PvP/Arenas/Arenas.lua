@@ -1,17 +1,13 @@
--- Arenas mod v3.0
--- rewrite by Tandanu
---
+local mod	= DBM:NewMod("Arenas", "DBM-PvP", 1)
+local L		= mod:GetLocalizedStrings()
 
-local mod		= DBM:NewMod("Arenas", "DBM-PvP", 1)
-local L			= mod:GetLocalizedStrings()
-
-mod:SetRevision(("$Revision: 9938 $"):sub(12, -3))
+mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 
-local timerShadow	= mod:NewTimer(90, "TimerShadow", 34709)
-local timerDamp		= mod:NewCastTimer(300, 110310)
+local timerShadow		= mod:NewTimer(90, "TimerShadow", 34709)
+local timerDamp			= mod:NewCastTimer(300, 110310)
 local timerCombatStart	= mod:NewCombatTimer(30)
 
 function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)

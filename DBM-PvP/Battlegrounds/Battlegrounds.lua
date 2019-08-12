@@ -113,23 +113,23 @@ local objectives, resPerSec
 
 function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	mod:AddBoolOption("ShowEstimatedPoints", true, nil, function()
-		if mod.Options.ShowGilneasEstimatedPoints and bgzone then
+		if mod.Options.ShowEstimatedPoints and bgzone then
 			mod:ShowEstimatedPoints()
 		else
 			mod:HideEstimatedPoints()
 		end
 	end)
 	mod:AddBoolOption("ShowBasesToWin", false, nil, function()
-		if mod.Options.ShowGilneasBasesToWin and bgzone then
+		if mod.Options.ShowBasesToWin and bgzone then
 			mod:ShowBasesToWin()
 		else
 			mod:HideBasesToWin()
 		end
 	end)
-	if self.Options.ShowGilneasEstimatedPoints then
+	if self.Options.ShowEstimatedPoints then
 		self:ShowEstimatedPoints()
 	end
-	if self.Options.ShowGilneasBasesToWin then
+	if self.Options.ShowBasesToWin then
 		self:ShowBasesToWin()
 	end
 	self:RegisterShortTermEvents(
@@ -144,10 +144,10 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 end
 
 function mod:UnsubscribeAssault()
-	if self.Options.ShowGilneasEstimatedPoints then
+	if self.Options.ShowEstimatedPoints then
 		self:HideEstimatedPoints()
 	end
-	if self.Options.ShowGilneasBasesToWin then
+	if self.Options.ShowBasesToWin then
 		self:HideBasesToWin()
 	end
 	self:UnregisterShortTermEvents()
@@ -155,26 +155,12 @@ function mod:UnsubscribeAssault()
 	objectives = nil
 end
 
-local get_gametime, update_gametime
-do
-	local gametime = 0
-	function updateGametime()
-		gametime = time()
-	end
-	function getGametime()
-		local systime = GetBattlefieldInstanceRunTime()
-		if systime > 0 then
-			return systime / 1000
-		else
-			return time() - gametime
-		end
-	end
-end
-
+local GetTime = GetTime
 local winTimer = mod:NewTimer(30, "TimerWin", "134376")
 local lastHordeScore, lastAllianceScore, lastHordeBases, lastAllianceBases = 0, 0, 0, 0
 
 function mod:UpdateWinTimer(maxScore)
+	local gameTime = GetTime()
 	local allyTime = math.min(maxScore, (maxScore - lastAllianceScore) / resPerSec[lastAllianceBases + 1])
 	local hordeTime = math.min(maxScore, (maxScore - lastHordeScore) / resPerSec[lastAllianceBases + 1])
 	if allyTime == hordeTime then
@@ -188,7 +174,7 @@ function mod:UpdateWinTimer(maxScore)
 			self.ScoreFrame1Text:SetText("(" .. math.floor(math.floor(((hordeTime * resPerSec[lastAllianceBases + 1]) + lastAllianceScore) / 10) * 10) .. ")")
 			self.ScoreFrame2Text:SetText("(" .. maxScore .. ")")
 		end
-		winTimer:Update(getGametime(), getGametime() + hordeTime)
+		winTimer:Update(gameTime, gameTime + hordeTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
 		winTimer:SetColor(1, 0, 0)
@@ -198,7 +184,7 @@ function mod:UpdateWinTimer(maxScore)
 			self.ScoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
 			self.ScoreFrame1Text:SetText("(" .. maxScore .. ")")
 		end
-		winTimer:Update(getGametime(), getGametime() + allyTime)
+		winTimer:Update(gameTime, gameTime + allyTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
 		winTimer:SetColor(0, 0, 1)
