@@ -11,9 +11,9 @@ mod:RegisterEvents(
 do
 	local C_CVar = C_CVar
 	local bgzone = false
-	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVarBool("showArenaEnemyCastbar"), GetCVarBool("showArenaEnemyFrames"), GetCVarBool("showArenaEnemyPets")
+	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVarBool("showArenaEnemyCastbar"), C_CVar.GetCVarBool("showArenaEnemyFrames"), C_CVar.GetCVarBool("showArenaEnemyPets")
 
-	local function WSG_Initialize(self)
+	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 2106 then
 			bgzone = true
 			self:RegisterShortTermEvents(
@@ -34,10 +34,9 @@ do
 			C_CVar.SetCVar("showArenaEnemyPets", cachedShowPets)
 		end
 	end
-	mod.OnInitialize = WSG_Initialize
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, WSG_Initialize, self)
+		self:ScheduleMethod(1, "OnInitialize")
 	end
 end
 
@@ -45,8 +44,8 @@ do
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132349")
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
-	local function updateflagcarrier(self, event, arg1)
-		if string.match(arg1, L.ExprFlagCaptured) then
+	local function updateflagcarrier(_, _, arg1)
+		if arg1:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
 			vulnerableTimer:Cancel()
 		end
@@ -61,7 +60,7 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or string.find(msg, L.Vulnerable1) or string.find(msg, L.Vulnerable2) then
+		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
 			vulnerableTimer:Start()
 		end
 	end
@@ -76,7 +75,7 @@ do
 		mod:Schedule(timeSeconds + 1, function()
 			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(630)
 			if info and info.state == 1 then
-				local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
+				local minutes, seconds = info.text:match("(%d+):(%d+)")
 				if minutes and seconds then
 					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
 					remainingTimer:Start()

@@ -33,16 +33,16 @@ do
 		if self.Options.HideBossEmoteFrame then
 			DBM:HideBlizzardEvents(instanceType == "pvp" and 1 or 0, true)
 		end
-		for i, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
-		for i, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
+		for _, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
 		DBM:GetModByName("z30"):Unschedule()
 		DBM:GetModByName("z566"):Unschedule()
 		DBM:GetModByName("z628"):Unschedule()
@@ -70,6 +70,8 @@ do
 end
 
 do
+	local tonumber = tonumber
+	local C_UIWidgetManager, TimeTracker = C_UIWidgetManager, TimeTracker
 	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
 	function mod:START_TIMER(_, timeSeconds)
@@ -81,6 +83,16 @@ do
 			remainingTimer:SetTimer(timeSeconds)
 			remainingTimer:Start()
 		end
+		mod:Schedule(timeSeconds + 1, function()
+			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
+			if info and info.state == 1 then
+				local minutes, seconds = info.text:match("(%d+):(%d+)")
+				if minutes and seconds then
+					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
+					remainingTimer:Start()
+				end
+			end
+		end, self)
 	end
 end
 
@@ -93,7 +105,7 @@ do
 		if self.Options.ShowInviteTimer then
 			local status, mapName, _, _, _, teamSize = GetBattlefieldStatus(queueID)
 			if status == "confirm" then
-				if size == "ARENASKIRMISH" then
+				if teamSize == "ARENASKIRMISH" then
 					mapName = L.ArenaInvite .. " " .. format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
 				end
 				local expiration = GetBattlefieldPortExpiration(queueID)
@@ -113,14 +125,14 @@ local objectives, resPerSec
 
 function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	mod:AddBoolOption("ShowEstimatedPoints", true, nil, function()
-		if mod.Options.ShowEstimatedPoints and bgzone then
+		if mod.Options.ShowEstimatedPoints then
 			mod:ShowEstimatedPoints()
 		else
 			mod:HideEstimatedPoints()
 		end
 	end)
 	mod:AddBoolOption("ShowBasesToWin", false, nil, function()
-		if mod.Options.ShowBasesToWin and bgzone then
+		if mod.Options.ShowBasesToWin then
 			mod:ShowBasesToWin()
 		else
 			mod:HideBasesToWin()
@@ -133,9 +145,6 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 		self:ShowBasesToWin()
 	end
 	self:RegisterShortTermEvents(
-		"CHAT_MSG_BG_SYSTEM_HORDE",
-		"CHAT_MSG_BG_SYSTEM_ALLIANCE",
-		"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 		"UPDATE_UI_WIDGET"
 	)
 	subscribedMapID = mapID
@@ -223,8 +232,8 @@ function mod:UpdateWinTimer(maxScore)
 end
 
 do
-	local pairs, ipairs, select, tonumber = pairs, ipairs, select, tonumber
-	local C_AreaPoiInfo = C_AreaPoiInfo
+	local pairs = pairs
+	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
 	local objectivesStore = {}
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
 
@@ -235,26 +244,26 @@ do
 		for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 			local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
 			local infoName, infoTexture = areaPOIInfo.name, areaPOIInfo.textureIndex
-			if name and textureIndex then
-				local state, defaultState = objectivesStore[name], objectives[name]
-				if state ~= textureIndex then
-					capTimer:Stop(name)
-					local isAllianceAssaulted = textureIndex == defaultState + 3
-					if textureIndex == defaultState + 1 or isAllianceAssaulted then
-						capTimer:Start(nil, name)
+			if infoName and infoTexture then
+				local state, defaultState = objectivesStore[infoName], objectives[infoName]
+				if state ~= infoTexture then
+					capTimer:Stop(infoName)
+					local isAllianceAssaulted = infoTexture == defaultState + 3
+					if infoTexture == defaultState + 1 or isAllianceAssaulted then
+						capTimer:Start(nil, infoName)
 						if isAllianceAssaulted then
-							capTimer:SetColor(0, 0, 1, name)
-							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", name)
+							capTimer:SetColor(0, 0, 1, infoName)
+							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", infoName)
 						else
-							capTimer:SetColor(1, 0, 0, name)
-							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", name)
+							capTimer:SetColor(1, 0, 0, infoName)
+							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", infoName)
 						end
 					end
-					objectivesStore[name] = textureIndex
+					objectivesStore[infoName] = infoTexture
 				end
 			end
 		end
-		local info = GetDoubleStatusBarWidgetVisualizationInfo(1671)
+		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1671)
 		local maxScore = info.leftBarMax
 		local allyScore, hordeScore = info.leftBarValue, info.rightBarValue
 		local allyToMax, hordeToMax = maxScore - allyScore, maxScore - hordeScore
@@ -266,7 +275,7 @@ do
 				hordeBases = hordeBases + 1
 			end
 		end
-		local callupdate = false
+		local callupdate
 		if allyScore ~= lastAllianceScore then
 			lastAllianceScore = allyScore
 			if allyToMax > hordeToMax then
@@ -287,17 +296,10 @@ do
 			lastHordeBases = hordeBases
 			callupdate = true
 		end
-		if callupdate or winner_is == 0 then
+		if callupdate then
 			self:UpdateWinTimer(maxScore)
 		end
 	end
-
-	local function scheduleCheck(self)
-		self:Schedule(1, checkForUpdates)
-	end
-	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
-	mod.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
-	mod.CHAT_MSG_BG_SYSTEM_NEUTRAL = scheduleCheck
 end
 
 function mod:ShowEstimatedPoints()

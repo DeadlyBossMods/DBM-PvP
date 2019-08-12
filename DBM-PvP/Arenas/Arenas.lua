@@ -14,7 +14,7 @@ function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 	if IsActiveBattlefieldArena() and msg == L.Start15 then
 		timerShadow:Schedule(16)
 		timerDamp:Schedule(16)
-		countdownMatchStart:Start()
+		timerCombatStart:Start()
 	elseif msg == L.highmaulArena then
 		timerCombatStart:Start()
 	end

@@ -1,5 +1,4 @@
 local mod	= DBM:NewMod("z761", "DBM-PvP", 2)
-local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -11,7 +10,7 @@ mod:RegisterEvents(
 do
 	local bgzone = false
 
-	local function Gilneas_Initialize(self)
+	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 761 then
 			bgzone = true
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
@@ -24,9 +23,8 @@ do
 			DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
 		end
 	end
-	mod.OnInitialize = Gilneas_Initialize
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, Gilneas_Initialize, self)
+		self:ScheduleMethod(1, "OnInitialize")
 	end
 end

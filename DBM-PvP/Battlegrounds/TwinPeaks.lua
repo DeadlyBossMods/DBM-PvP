@@ -13,14 +13,13 @@ do
 	local bgzone = false
 	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVarBool("showArenaEnemyCastbar"), C_CVar.GetCVarBool("showArenaEnemyFrames"), C_CVar.GetCVarBool("showArenaEnemyPets")
 
-	local function TwinPeaks_Initialize(self)
+	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 726 then
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_HORDE",
-				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-				"START_TIMER"
+				"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 			)
 			-- Fix for flag carriers not showing up
 			C_CVar.SetCVar("showArenaEnemyCastbar", "1")
@@ -34,10 +33,9 @@ do
 			C_CVar.SetCVar("showArenaEnemyPets", cachedShowPets)
 		end
 	end
-	mod.OnInitialize = TwinPeaks_Initialize
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, TwinPeaks_Initialize, self)
+		self:ScheduleMethod(1, "OnInitialize")
 	end
 end
 
@@ -45,8 +43,8 @@ do
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483")
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
-	local function updateflagcarrier(self, event, arg1)
-		if string.match(arg1, L.ExprFlagCaptured) then
+	local function updateflagcarrier(_, _, arg1)
+		if arg1:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
 			vulnerableTimer:Cancel()
 		end
@@ -61,26 +59,8 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or string.find(msg, L.Vulnerable1) or string.find(msg, L.Vulnerable2) then
+		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
 			vulnerableTimer:Start()
 		end
-	end
-end
-
-do
-	local tonumber = tonumber
-	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
-
-	function mod:START_TIMER(_, timeSeconds)
-		mod:Schedule(timeSeconds + 1, function()
-			local info = GetIconAndTextWidgetVisualizationInfo(6)
-			if info and info.state == 1 then
-				local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
-				if minutes and seconds then
-					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
-					remainingTimer:Start()
-				end
-			end
-		end, self)
 	end
 end
