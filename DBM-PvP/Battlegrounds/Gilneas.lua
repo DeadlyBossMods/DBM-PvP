@@ -14,14 +14,14 @@ do
 	local function Gilneas_Initialize(self)
 		if DBM:GetCurrentArea() == 761 then
 			bgzone = true
-			DBM:GetModByName("Battlegrounds"):SubscribeAssaults(
+			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
 				275,
 				{Lighthouse = 26, Mines = 16, Waterworks = 6},
 				{0.01, 10 / 9, 10 / 3, 30}
 			)
 		elseif bgzone then
 			bgzone = false
-			DBM:GetModByName("Battlegrounds"):UnsubscribeAssaults()
+			DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
 		end
 	end
 	mod.OnInitialize = Gilneas_Initialize

@@ -101,7 +101,6 @@ end
 
 local function Deepwind_Initialize(self)
 	if 1105 == DBM:GetCurrentArea() then
-		WorldMapFrame:SetMapID(mapId)
 		bgzone = true
 		self:RegisterShortTermEvents(
 			"CHAT_MSG_BG_SYSTEM_HORDE",

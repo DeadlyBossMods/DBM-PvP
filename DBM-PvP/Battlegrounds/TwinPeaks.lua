@@ -11,7 +11,7 @@ mod:RegisterEvents(
 do
 	local C_CVar = C_CVar
 	local bgzone = false
-	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVarBool("showArenaEnemyCastbar"), GetCVarBool("showArenaEnemyFrames"), GetCVarBool("showArenaEnemyPets")
+	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVarBool("showArenaEnemyCastbar"), C_CVar.GetCVarBool("showArenaEnemyFrames"), C_CVar.GetCVarBool("showArenaEnemyPets")
 
 	local function TwinPeaks_Initialize(self)
 		if DBM:GetCurrentArea() == 726 then

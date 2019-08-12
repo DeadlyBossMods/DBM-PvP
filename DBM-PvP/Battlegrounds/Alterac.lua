@@ -51,7 +51,6 @@ local bgzone = false
 do
 	local function AV_Initialize(self)
 		if DBM:GetCurrentArea() == 30 then
-			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",

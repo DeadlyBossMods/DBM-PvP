@@ -98,7 +98,6 @@ end
 do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 566 then
-			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",

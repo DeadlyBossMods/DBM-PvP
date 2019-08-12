@@ -134,7 +134,7 @@ L:SetMiscLocalization({
 ---------------------
 --  Warsong Gulch  --
 ---------------------
-L = DBM:GetModLocalization("z489")
+L = DBM:GetModLocalization("z2106")
 
 L:SetTimerLocalization({
 	TimerStart	= "Game starts",

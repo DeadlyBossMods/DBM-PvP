@@ -14,7 +14,7 @@ do
 	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVarBool("showArenaEnemyCastbar"), GetCVarBool("showArenaEnemyFrames"), GetCVarBool("showArenaEnemyPets")
 
 	local function WSG_Initialize(self)
-		if DBM:GetCurrentArea() == 489 or DBM:GetCurrentArea() == 2106 then
+		if DBM:GetCurrentArea() == 2106 then
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -69,11 +69,12 @@ end
 
 do
 	local tonumber = tonumber
+	local C_UIWidgetManager = C_UIWidgetManager
 	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
 	function mod:START_TIMER(_, timeSeconds)
 		mod:Schedule(timeSeconds + 1, function()
-			local info = GetIconAndTextWidgetVisualizationInfo(630)
+			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(630)
 			if info and info.state == 1 then
 				local minutes, seconds = string.match(info.text, "(%d+):(%d+)")
 				if minutes and seconds then

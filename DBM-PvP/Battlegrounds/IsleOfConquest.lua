@@ -1,5 +1,5 @@
-local mod		= DBM:NewMod("z628", "DBM-PvP", 2)
-local L			= mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("z628", "DBM-PvP", 2)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -17,10 +17,6 @@ local timerSiegeEngine 	= mod:NewTimer(180, "TimerSiegeEngine", 15048)
 --mod:AddBoolOption("ShowGatesHealth", true)
 
 local GetAreaPOIForMap, GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIForMap, C_AreaPoiInfo.GetAreaPOIInfo
-local allyTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower"
-local allyColor = {r = 0, g = 0, b = 1}
-local hordeTowerIcon = "Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower"
-local hordeColor = {r = 1, g = 0, b = 0}
 
 --local gateHP = {}
 
@@ -75,7 +71,6 @@ local bgzone = false
 do
 	local function initialize(self)
 		if DBM:GetCurrentArea() == 628 then
-			WorldMapFrame:SetMapID(mapId)
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
@@ -98,15 +93,14 @@ do
 			gateHP = {}
 		elseif bgzone then
 			self:UnregisterShortTermEvents()
-			self:Stop()
 			bgzone = false
 			--if self.Options.ShowGatesHealth then
 			--	DBM.InfoFrame:Hide()
 			--end
 		end
 	end
-
 	mod.OnInitialize = initialize
+
 	function mod:ZONE_CHANGED_NEW_AREA()
 		self:Schedule(1, initialize, self)
 	end
@@ -128,11 +122,11 @@ do
 					if curState > 2 then
 						POITimer:Start(nil, name)
 						if curState == 3 then
-							POITimer:SetColor(allyColor, name)
-							POITimer:UpdateIcon(allyTowerIcon, name)
+							POITimer:SetColor(0, 0, 1, name)
+							POITimer:UpdateIcon("Interface\\AddOns\\DBM-PvP\\Textures\\GuardTower", name)
 						else
-							POITimer:SetColor(hordeColor, name)
-							POITimer:UpdateIcon(hordeTowerIcon, name)
+							POITimer:SetColor(1, 0, 0, name)
+							POITimer:UpdateIcon("Interface\\AddOns\\DBM-PvP\\Textures\\OrcTower", name)
 						end
 					end
 					if k == 13 then
@@ -148,6 +142,9 @@ do
 	local function scheduleCheck(self)
 		self:Schedule(1, checkForUpdates)
 	end
+	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
+	mod.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
+	mod.CHAT_MSG_RAID_BOSS_EMOTE = scheduleCheck
 
 	function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if msg == L.GoblinStartAlliance or msg == L.GoblinBrokenAlliance or msg:find(L.GoblinStartAlliance) or msg:find(L.GoblinBrokenAlliance) then
@@ -166,9 +163,6 @@ do
 			checkForUpdates()
 		end
 	end
-	mod.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
-	mod.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
-	mod.CHAT_MSG_RAID_BOSS_EMOTE = scheduleCheck
 end
 
 function mod:UNIT_DIED(args)
