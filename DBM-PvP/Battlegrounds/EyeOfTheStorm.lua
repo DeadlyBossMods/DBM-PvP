@@ -18,6 +18,7 @@ do
 			bgzone = true
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
 				397,
+                -- TODO: Get default ID's
 				{},
 				{0.01, 1, 2, 5, 10}
 			)

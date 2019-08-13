@@ -12,9 +12,16 @@ do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 628 then
 			bgzone = true
-			-- Assault ID: 169
+			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
+				169,
+				-- TODO: Get default ID's
+				{},
+				-- TODO: Get respawn info
+				{}
+			)
 		elseif bgzone then
 			bgzone = false
+			DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
 		end
 	end
 

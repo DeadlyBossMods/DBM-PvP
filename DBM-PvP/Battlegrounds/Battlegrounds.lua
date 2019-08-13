@@ -238,7 +238,7 @@ do
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
 
 	function mod:UPDATE_UI_WIDGET(widget)
-		if subscribedMapID == 0 or not widget or widget.widgetID == 1671 then
+		if subscribedMapID == 0 or not widget or widget.widgetID ~= 1671 then
 			return
 		end
 		for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do

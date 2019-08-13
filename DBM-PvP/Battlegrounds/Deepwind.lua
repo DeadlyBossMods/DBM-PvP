@@ -14,13 +14,12 @@ do
 		if 1105 == DBM:GetCurrentArea() then
 			bgzone = true
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
-				0,
+				519,
 				-- TODO: Get default ID's
 				{},
 				{0.01, 8 / 5, 16 / 5, 32 / 5}
 			)
 			bgzone = true
-			-- Assault ID: 519
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()

@@ -23,8 +23,7 @@ do
 			end
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
 				assaultID,
-				-- TODO: Get default ID's
-				{Farm = 0, GoldMine = 0, LumberMill = 0, Stables = 0, Blacksmith = 0},
+				{["Farm"] = 31, ["Gold Mine"] = 16, ["Lumber Mill"] = 21, ["Stables"] = 36, ["Blacksmith"] = 26},
 				{0.01, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
 			)
 		elseif bgzone then
