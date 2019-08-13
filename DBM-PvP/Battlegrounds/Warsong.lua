@@ -3,7 +3,7 @@ if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
 	mod	= DBM:NewMod("z489", "DBM-PvP", 2)
 else
 	mod	= DBM:NewMod("z2106", "DBM-PvP", 2)
-ebd
+end
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
