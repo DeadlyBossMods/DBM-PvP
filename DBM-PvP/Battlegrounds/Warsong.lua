@@ -1,4 +1,9 @@
-﻿local mod	= DBM:NewMod("z2106", "DBM-PvP", 2)
+﻿local mod
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	mod	= DBM:NewMod("z489", "DBM-PvP", 2)
+else
+	mod	= DBM:NewMod("z2106", "DBM-PvP", 2)
+ebd
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
@@ -9,12 +14,12 @@ mod:RegisterEvents(
 )
 
 do
-	local C_CVar = C_CVar
+	local SetCVar = C_CVar and C_CVar.SetCVar or SetCVar
 	local bgzone = false
 	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVarBool("showArenaEnemyCastbar"), C_CVar.GetCVarBool("showArenaEnemyFrames"), C_CVar.GetCVarBool("showArenaEnemyPets")
 
 	function mod:OnInitialize()
-		if DBM:GetCurrentArea() == 2106 then
+		if DBM:GetCurrentArea() == 489 or DBM:GetCurrentArea() == 2106 then--Classic, Retail
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -23,15 +28,15 @@ do
 				"START_TIMER"
 			)
 			-- Fix for flag carriers not showing up
-			C_CVar.SetCVar("showArenaEnemyCastbar", "1")
-			C_CVar.SetCVar("showArenaEnemyFrames", "1")
-			C_CVar.SetCVar("showArenaEnemyPets", "1")
+			SetCVar("showArenaEnemyCastbar", "1")
+			SetCVar("showArenaEnemyFrames", "1")
+			SetCVar("showArenaEnemyPets", "1")
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-			C_CVar.SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
-			C_CVar.SetCVar("showArenaEnemyFrames", cachedShowFrames)
-			C_CVar.SetCVar("showArenaEnemyPets", cachedShowPets)
+			SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
+			SetCVar("showArenaEnemyFrames", cachedShowFrames)
+			SetCVar("showArenaEnemyPets", cachedShowPets)
 		end
 	end
 

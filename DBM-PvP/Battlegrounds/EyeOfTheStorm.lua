@@ -1,3 +1,4 @@
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
 local mod	= DBM:NewMod("z566", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 

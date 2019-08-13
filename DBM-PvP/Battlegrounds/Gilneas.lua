@@ -1,3 +1,4 @@
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
 local mod	= DBM:NewMod("z761", "DBM-PvP", 2)
 
 mod:SetRevision("@file-date-integer@")

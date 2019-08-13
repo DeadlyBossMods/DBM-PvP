@@ -1,4 +1,9 @@
-local mod		= DBM:NewMod("z2107", "DBM-PvP", 2)
+local mod
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	mod		= DBM:NewMod("z529", "DBM-PvP", 2)
+else
+	mod		= DBM:NewMod("z2107", "DBM-PvP", 2)
+end
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -12,11 +17,11 @@ do
 
 	function mod:OnInitialize()
 		local zoneID = DBM:GetCurrentArea()
-		if zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then--Classic Arathi, Winter, New, AI
+		if zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then--Classic Arathi, Winter, Remastered Retail, AI
 			local assaultID
 			if zoneID == 1681 then
 				assaultID = 837
-			elseif zoneID == 2107 then
+			elseif zoneID == 2107 or zoneID == 529 then--Assumed classic also uses assault 93, verify
 				assaultID = 93
 			elseif zoneID == 2177 then
 				assaultID = 1383
