@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/DeadlyBossMods/DeadlyBossMods.svg?branch=master)](https://travis-ci.org/DeadlyBossMods/DeadlyBossMods)
+[![Build Status](https://travis-ci.org/DeadlyBossMods/DBM-PvP.svg?branch=master)](https://travis-ci.org/DeadlyBossMods/DBM-PvP)
 [![DeadlyBossMods on Discord](https://img.shields.io/badge/discord-DeadlyBossMods-738bd7.svg?style=flat)](https://discord.gg/DeadlyBossMods) 
 
 [![Patreon](https://media.forgecdn.net/attachments/76/25/patreon-medium-button.png)](https://www.patreon.com/deadlybossmods)
+
 Deadly Boss Mods: PvP
 =====================
 [Forum Thread](https://deadlybossmods.com/forum/viewtopic.php?f=3&p=1126&sid=48e276ac0b0ef7ed7cc3ac394f85f8fc#p1126)
