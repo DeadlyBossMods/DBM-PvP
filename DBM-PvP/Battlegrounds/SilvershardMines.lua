@@ -24,8 +24,7 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-			for _, v in ipairs(self.timers) do v:Stop() end
-			self:Unschedule()
+			self:Stop()
 		end
 	end
 

@@ -32,8 +32,7 @@ do
 			bgzone = false
 			self:UnregisterShortTermEvents()
             DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
-			for _, v in ipairs(self.timers) do v:Stop() end--AV. Only one same in both
-			self:Unschedule()
+			self:Stop()
 		end
 	end
 

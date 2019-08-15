@@ -37,8 +37,7 @@ do
 			SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
 			SetCVar("showArenaEnemyFrames", cachedShowFrames)
 			SetCVar("showArenaEnemyPets", cachedShowPets)
-			for _, v in ipairs(self.timers) do v:Stop() end
-			self:Unschedule()
+			self:Stop()
 		end
 	end
 

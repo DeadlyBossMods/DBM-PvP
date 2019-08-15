@@ -34,8 +34,7 @@ do
 		elseif bgzone then
 			bgzone = false
 			DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
-			for _, v in ipairs(self.timers) do v:Stop() end
-			self:Unschedule()
+			self:Stop()
 		end
 	end
 
