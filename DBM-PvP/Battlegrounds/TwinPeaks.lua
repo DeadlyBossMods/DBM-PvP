@@ -1,4 +1,6 @@
-﻿if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
+﻿if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	return
+end
 local mod	= DBM:NewMod("z726", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 

@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	ShowEstimatedPoints	= "Show estimated points on win/loss",
 	ShowBasesToWin		= "Show bases required to win",
 	TimerCap			= "Show capture timer",
-	TimerRemaining		= "Show time remaining timer"--Time remaining on what?
+	TimerRemaining		= "Show time remaining in match timer"
 })
 
 L:SetMiscLocalization({
@@ -62,33 +62,8 @@ L:SetMiscLocalization({
 ----------------------
 L = DBM:GetModLocalization("z30")
 
-L:SetTimerLocalization({
-	TimerTower	= "%s",
-	TimerGY		= "%s"
-})
-
 L:SetOptionLocalization({
-	TimerTower	= "Show tower capture timer",
-	TimerGY		= "Show graveyard capture timer",
 	AutoTurnIn	= "Automatically turn-in quests"
-})
-
---------------------
---  Arathi Basin  --
---------------------
-L = DBM:GetModLocalization("z529")
-
----------------------
---  Deepwind Gorge --
----------------------
-L = DBM:GetModLocalization("z1105")
-
-L:SetTimerLocalization({
-	TimerCap	= "%s"
-})
-
-L:SetOptionLocalization({
-	TimerWin	= "Show win timer"
 })
 
 ------------------------
@@ -102,7 +77,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerFlag		= "Show flag respawn timer",
-	ShowPointFrame	= "Show flag carrier and estimated points"
+	ShowFlagCarrier	= "Show flag carrier",
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
 })
 
 L:SetMiscLocalization({
@@ -116,18 +92,20 @@ L:SetMiscLocalization({
 ---------------------
 --  Warsong Gulch  --
 ---------------------
-L = DBM:GetModLocalization("z2106")
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	L = DBM:GetModLocalization("z489")
+else
+	L = DBM:GetModLocalization("z2106")
+end
 
 L:SetTimerLocalization({
-	TimerFlag	= "Flag respawn",
-	TimerRemaining	= "Time Remaining: "
+	TimerFlag		= "Flag respawn"
 })
 
 L:SetOptionLocalization({
 	TimerFlag					= "Show flag respawn timer",
 	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat",
-	TimerRemaining				= "Show time remaining timer"--Time remaining on what?
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
 })
 
 L:SetMiscLocalization({
@@ -158,7 +136,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPOI			= "Show capture timer",
 	TimerSiegeEngine	= "Show timer for Siege Engine construction",
 	WarnSiegeEngine		= "Show warning when Siege Engine is ready",
 	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready",
@@ -184,7 +161,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z726")
 
 L:SetTimerLocalization({
-	TimerStart		= "Game starts",
 	TimerFlag		= "Flag respawn"
 })
 
@@ -204,19 +180,6 @@ L:SetMiscLocalization({
 	FlagBase			= "Base",
 	Vulnerable1			= "The flag carriers have become vulnerable to attack!",
 	Vulnerable2			= "The flag carriers have become increasingly vulnerable to attack!"
-})
-
-------------------------------
---  The Battle for Gilneas  --
-------------------------------
-L = DBM:GetModLocalization("z761")
-
-L:SetTimerLocalization({
-	TimerCap	= "%s"
-})
-
-L:SetOptionLocalization({
-	TimerCap	= "Show capture timer"
 })
 
 -------------------------

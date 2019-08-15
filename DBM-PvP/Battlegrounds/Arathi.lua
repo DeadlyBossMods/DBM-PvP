@@ -1,8 +1,8 @@
 local mod
 if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-	mod		= DBM:NewMod("z529", "DBM-PvP", 2)
+	mod	= DBM:NewMod("z529", "DBM-PvP", 2)
 else
-	mod		= DBM:NewMod("z2107", "DBM-PvP", 2)
+	mod	= DBM:NewMod("z2107", "DBM-PvP", 2)
 end
 
 mod:SetRevision("@file-date-integer@")
@@ -13,8 +13,6 @@ mod:RegisterEvents(
 )
 
 do
-	local bgzone = false
-
 	function mod:OnInitialize()
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then--Classic Arathi, Winter, Remastered Retail, AI
@@ -31,10 +29,6 @@ do
 				{["Farm"] = 31, ["Gold Mine"] = 16, ["Lumber Mill"] = 21, ["Stables"] = 36, ["Blacksmith"] = 26},
 				{0.01, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
 			)
-		elseif bgzone then
-			bgzone = false
-			DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
-			self:Stop()
 		end
 	end
 

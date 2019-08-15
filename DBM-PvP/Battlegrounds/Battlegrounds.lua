@@ -23,20 +23,21 @@ mod:RegisterEvents(
 
 do
 	local C_ChatInfo = C_ChatInfo
-	local eventsHiddenbyPvP = false
+	local bgzone = false
 
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
 			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 			self:Schedule(3, DBM.RequestTimers, DBM)
-			if not eventsHiddenbyPvP and self.Options.HideBossEmoteFrame then
-				eventsHiddenbyPvP = true
+			if not bgzone and self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(1, true)
 			end
-		else
-			if eventsHiddenbyPvP and self.Options.HideBossEmoteFrame then
-				eventsHiddenbyPvP = false
+			bgzone = true
+		elseif bgzone
+			bgzone = false
+			self:UnsubscribeAssault()
+			if self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
 			end
 		end
@@ -99,7 +100,7 @@ do
 				if inviteTimer:GetTime(mapName) == 0 and expiration >= 3 then
 					inviteTimer:Start(expiration, mapName)
 				end
-			elseif status == "none" then
+			elseif status == "none" or status == "active" then
 				inviteTimer:Stop()
 			end
 		end
@@ -139,6 +140,8 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	resPerSec = rezPerSec
 end
 
+local winTimer = mod:NewTimer(30, "TimerWin", "134376")
+
 function mod:UnsubscribeAssault()
 	if self.Options.ShowEstimatedPoints then
 		self:HideEstimatedPoints()
@@ -149,10 +152,10 @@ function mod:UnsubscribeAssault()
 	self:UnregisterShortTermEvents()
 	subscribedMapID = 0
 	objectives = nil
+	winTimer:Stop()
 end
 
 local GetTime = GetTime
-local winTimer = mod:NewTimer(30, "TimerWin", "134376")
 local lastHordeScore, lastAllianceScore, lastHordeBases, lastAllianceBases = 0, 0, 0, 0
 
 function mod:UpdateWinTimer(maxScore)
@@ -256,9 +259,13 @@ do
 		local allyToMax, hordeToMax = maxScore - allyScore, maxScore - hordeScore
 		local allyBases, hordeBases = 0, 0
 		for k, v in pairs(objectivesStore) do
-			if v == objectives[k] + 2 then
+			local obj = objectives[k]
+			if not obj then
+				return -- Object is missing from the table???
+			end
+			if v == obj + 2 then
 				allyBases = allyBases + 1
-			elseif v == objectives[k] + 4 then
+			elseif v == obj + 4 then
 				hordeBases = hordeBases + 1
 			end
 		end

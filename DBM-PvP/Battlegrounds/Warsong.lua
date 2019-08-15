@@ -71,22 +71,3 @@ do
 		end
 	end
 end
-
-do
-	local tonumber = tonumber
-	local C_UIWidgetManager = C_UIWidgetManager
-	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
-
-	function mod:START_TIMER(_, timeSeconds)
-		mod:Schedule(timeSeconds + 1, function()
-			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(630)
-			if info and info.state == 1 then
-				local minutes, seconds = info.text:match("(%d+):(%d+)")
-				if minutes and seconds then
-					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
-					remainingTimer:Start()
-				end
-			end
-		end, self)
-	end
-end

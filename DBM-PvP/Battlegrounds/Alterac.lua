@@ -31,7 +31,6 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-            DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
 			self:Stop()
 		end
 	end

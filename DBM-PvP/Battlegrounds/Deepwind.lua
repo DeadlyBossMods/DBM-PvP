@@ -1,4 +1,6 @@
-if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	return
+end
 local mod	= DBM:NewMod("z1105", "DBM-PvP", 2)
 
 mod:SetRevision("@file-date-integer@")
@@ -9,8 +11,6 @@ mod:RegisterEvents(
 )
 
 do
-	local bgzone = false
-
 	function mod:OnInitialize()
 		if 1105 == DBM:GetCurrentArea() then
 			bgzone = true
@@ -20,11 +20,6 @@ do
 				{},
 				{0.01, 8 / 5, 16 / 5, 32 / 5}
 			)
-			bgzone = true
-		elseif bgzone then
-			bgzone = false
-			self:UnregisterShortTermEvents()
-			self:Stop()
 		end
 	end
 

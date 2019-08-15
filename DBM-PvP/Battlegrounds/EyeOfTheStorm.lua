@@ -1,4 +1,6 @@
-if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	return
+end
 local mod	= DBM:NewMod("z566", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
@@ -12,11 +14,8 @@ mod:RegisterEvents(
 local flagTimer = mod:NewTimer(7, "TimerFlag", "132483")
 
 do
-	local bgzone = false
-
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 566 or DBM:GetCurrentArea() == 968 then
-			bgzone = true
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
 				397,
                 -- TODO: Get default ID's
@@ -24,9 +23,6 @@ do
 				{0.01, 1, 2, 5, 10}
 			)
 			-- TODO: 566 standard, 968 rated
-		elseif bgzone then
-			bgzone = false
-			self:Stop()
 		end
 	end
 
