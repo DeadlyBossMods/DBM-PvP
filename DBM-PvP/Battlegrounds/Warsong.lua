@@ -11,7 +11,7 @@ mod:RegisterEvents(
 do
 	local C_CVar = C_CVar
 	local bgzone = false
-	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVarBool("showArenaEnemyCastbar"), C_CVar.GetCVarBool("showArenaEnemyFrames"), C_CVar.GetCVarBool("showArenaEnemyPets")
+	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVar("showArenaEnemyCastbar"), C_CVar.GetCVar("showArenaEnemyFrames"), C_CVar.GetCVar("showArenaEnemyPets")
 
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 2106 then
