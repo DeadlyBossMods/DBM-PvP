@@ -1,3 +1,4 @@
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
 local mod	= DBM:NewMod("z727", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
@@ -23,6 +24,7 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
+			self:Stop()
 		end
 	end
 

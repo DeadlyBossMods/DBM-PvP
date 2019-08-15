@@ -1,3 +1,4 @@
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
 local mod	= DBM:NewMod("z566", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
@@ -25,6 +26,7 @@ do
 			-- TODO: 566 standard, 968 rated
 		elseif bgzone then
 			bgzone = false
+			self:Stop()
 		end
 	end
 

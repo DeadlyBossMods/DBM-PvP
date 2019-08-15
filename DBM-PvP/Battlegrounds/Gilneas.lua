@@ -1,3 +1,4 @@
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
 local mod	= DBM:NewMod("z761", "DBM-PvP", 2)
 
 mod:SetRevision("@file-date-integer@")
@@ -21,6 +22,7 @@ do
 		elseif bgzone then
 			bgzone = false
 			DBM:GetModByName("Battlegrounds"):UnsubscribeAssault()
+			self:Stop()
 		end
 	end
 

@@ -23,36 +23,23 @@ mod:RegisterEvents(
 
 do
 	local C_ChatInfo = C_ChatInfo
+	local eventsHiddenbyPvP = false
 
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
 			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 			self:Schedule(3, DBM.RequestTimers, DBM)
+			if not eventsHiddenbyPvP and self.Options.HideBossEmoteFrame then
+				eventsHiddenbyPvP = true
+				DBM:HideBlizzardEvents(1, true)
+			end
+		else
+			if eventsHiddenbyPvP and self.Options.HideBossEmoteFrame then
+				eventsHiddenbyPvP = false
+				DBM:HideBlizzardEvents(0, true)
+			end
 		end
-		if self.Options.HideBossEmoteFrame then
-			DBM:HideBlizzardEvents(instanceType == "pvp" and 1 or 0, true)
-		end
-		for _, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
-		for _, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
-		DBM:GetModByName("z30"):Unschedule()
-		DBM:GetModByName("z566"):Unschedule()
-		DBM:GetModByName("z628"):Unschedule()
-		DBM:GetModByName("z726"):Unschedule()
-		DBM:GetModByName("z727"):Unschedule()
-		DBM:GetModByName("z761"):Unschedule()
-		DBM:GetModByName("z998"):Unschedule()
-		DBM:GetModByName("z1105"):Unschedule()
-		DBM:GetModByName("z2106"):Unschedule()
-		DBM:GetModByName("z2107"):Unschedule()
 	end
 	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
 	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
@@ -71,7 +58,7 @@ end
 
 do
 	local tonumber = tonumber
-	local C_UIWidgetManager, TimeTracker = C_UIWidgetManager, TimeTracker
+	local C_UIWidgetManager, TimeTracker = C_UIWidgetManager, TimeTracker--TimeTracker upvalued but not used
 	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
 	function mod:START_TIMER(_, timeSeconds)

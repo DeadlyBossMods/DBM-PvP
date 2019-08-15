@@ -1,4 +1,5 @@
-﻿local mod	= DBM:NewMod("z726", "DBM-PvP", 2)
+﻿if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
+local mod	= DBM:NewMod("z726", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
@@ -31,6 +32,7 @@ do
 			C_CVar.SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
 			C_CVar.SetCVar("showArenaEnemyFrames", cachedShowFrames)
 			C_CVar.SetCVar("showArenaEnemyPets", cachedShowPets)
+			self:Stop()
 		end
 	end
 
