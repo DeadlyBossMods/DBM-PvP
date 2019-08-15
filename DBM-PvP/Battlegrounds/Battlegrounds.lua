@@ -23,42 +23,22 @@ mod:RegisterEvents(
 
 do
 	local C_ChatInfo = C_ChatInfo
+	local eventsHiddenbyPvP = false
 
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
 			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 			self:Schedule(3, DBM.RequestTimers, DBM)
-		end
-		if self.Options.HideBossEmoteFrame then
-			DBM:HideBlizzardEvents(instanceType == "pvp" and 1 or 0, true)
-		end
-		for _, v in ipairs(DBM:GetModByName("z30").timers) do v:Stop() end--AV. Only one same in both
-		DBM:GetModByName("z30"):Unschedule()
-		if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-			for _, v in ipairs(DBM:GetModByName("z489").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z529").timers) do v:Stop() end
-			DBM:GetModByName("z489"):Unschedule()
-			DBM:GetModByName("z529"):Unschedule()
+			if not eventsHiddenbyPvP and self.Options.HideBossEmoteFrame then
+				eventsHiddenbyPvP = true
+				DBM:HideBlizzardEvents(1, true)
+			end
 		else
-			for _, v in ipairs(DBM:GetModByName("z566").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z628").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z726").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z727").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z761").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z998").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z1105").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z2106").timers) do v:Stop() end
-			for _, v in ipairs(DBM:GetModByName("z2107").timers) do v:Stop() end
-			DBM:GetModByName("z566"):Unschedule()
-			DBM:GetModByName("z628"):Unschedule()
-			DBM:GetModByName("z726"):Unschedule()
-			DBM:GetModByName("z727"):Unschedule()
-			DBM:GetModByName("z761"):Unschedule()
-			DBM:GetModByName("z998"):Unschedule()
-			DBM:GetModByName("z1105"):Unschedule()
-			DBM:GetModByName("z2106"):Unschedule()
-			DBM:GetModByName("z2107"):Unschedule()
+			if eventsHiddenbyPvP and self.Options.HideBossEmoteFrame then
+				eventsHiddenbyPvP = false
+				DBM:HideBlizzardEvents(0, true)
+			end
 		end
 	end
 	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA

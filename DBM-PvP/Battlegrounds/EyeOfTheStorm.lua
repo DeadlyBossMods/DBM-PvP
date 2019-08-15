@@ -26,6 +26,8 @@ do
 			-- TODO: 566 standard, 968 rated
 		elseif bgzone then
 			bgzone = false
+			for _, v in ipairs(self.timers) do v:Stop() end
+			self:Unschedule()
 		end
 	end
 
