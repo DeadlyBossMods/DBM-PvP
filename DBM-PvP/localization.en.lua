@@ -11,17 +11,20 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerInvite		= "%s",
-	TimerRemaining	= "Time Remaining: "
+	TimerRemaining	= "Time Remaining: ",
+	TimerCap		= "%s"
 })
 
 L:SetOptionLocalization({
 	ColorByClass		= "Set name color to class color in the score frame",
 	ShowInviteTimer		= "Show battleground join timer",
 	AutoSpirit			= "Auto-release spirit",
-	HideBossEmoteFrame	= "Hide the raid boss emote frame & garrison/Guild toasts during battlegrounds",
+	HideBossEmoteFrame	= "Hide the raid boss emote frame and garrison/Guild toasts during battlegrounds",
 	TimerWin			= "Show win timer",
 	ShowEstimatedPoints	= "Show estimated points on win/loss",
-	ShowBasesToWin		= "Show bases required to win"
+	ShowBasesToWin		= "Show bases required to win",
+	TimerCap			= "Show capture timer",
+	TimerRemaining		= "Show time remaining timer"--Time remaining on what?
 })
 
 L:SetMiscLocalization({
@@ -75,14 +78,6 @@ L:SetOptionLocalization({
 --------------------
 L = DBM:GetModLocalization("z529")
 
-L:SetTimerLocalization({
-	TimerCap	= "%s"
-})
-
-L:SetOptionLocalization({
-	TimerCap				= "Show capture timer"
-})
-
 ---------------------
 --  Deepwind Gorge --
 ---------------------
@@ -124,13 +119,15 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z2106")
 
 L:SetTimerLocalization({
-	TimerFlag	= "Flag respawn"
+	TimerFlag	= "Flag respawn",
+	TimerRemaining	= "Time Remaining: "
 })
 
 L:SetOptionLocalization({
 	TimerFlag					= "Show flag respawn timer",
 	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat",
+	TimerRemaining				= "Show time remaining timer"--Time remaining on what?
 })
 
 L:SetMiscLocalization({
