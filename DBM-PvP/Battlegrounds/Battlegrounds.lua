@@ -71,7 +71,7 @@ do
 			remainingTimer:SetTimer(timeSeconds)
 			remainingTimer:Start()
 		end
-		mod:Schedule(timeSeconds + 1, function()
+		self:Schedule(timeSeconds + 1, function()
 			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
 			if info and info.state == 1 then
 				local minutes, seconds = info.text:match("(%d+):(%d+)")
@@ -112,18 +112,18 @@ local subscribedMapID = 0
 local objectives, resPerSec
 
 function mod:SubscribeAssault(mapID, objects, rezPerSec)
-	mod:AddBoolOption("ShowEstimatedPoints", true, nil, function()
-		if mod.Options.ShowEstimatedPoints then
-			mod:ShowEstimatedPoints()
+	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
+		if self.Options.ShowEstimatedPoints then
+			self:ShowEstimatedPoints()
 		else
-			mod:HideEstimatedPoints()
+			self:HideEstimatedPoints()
 		end
 	end)
-	mod:AddBoolOption("ShowBasesToWin", false, nil, function()
-		if mod.Options.ShowBasesToWin then
-			mod:ShowBasesToWin()
+	self:AddBoolOption("ShowBasesToWin", false, nil, function()
+		if self.Options.ShowBasesToWin then
+			self:ShowBasesToWin()
 		else
-			mod:HideBasesToWin()
+			self:HideBasesToWin()
 		end
 	end)
 	if self.Options.ShowEstimatedPoints then
