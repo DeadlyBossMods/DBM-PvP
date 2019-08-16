@@ -34,7 +34,7 @@ do
 				DBM:HideBlizzardEvents(1, true)
 			end
 			bgzone = true
-		elseif bgzone
+		elseif bgzone then
 			bgzone = false
 			self:UnsubscribeAssault()
 			if self.Options.HideBossEmoteFrame then
