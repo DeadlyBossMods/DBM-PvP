@@ -178,7 +178,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
 		winTimer:SetColor({1, 0, 0})
-		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
+		winTimer:UpdateIcon("132485")--"Interface\\Icons\\INV_BannerPVP_01.blp"
 	elseif hordeTime > allyTime then
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			self.ScoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
@@ -188,7 +188,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
 		winTimer:SetColor({0, 0, 1})
-		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
+		winTimer:UpdateIcon("132486")--"Interface\\Icons\\INV_BannerPVP_02.blp"
 	end
 	if self.Options.ShowBasesToWin then
 		local friendlyLast, enemyLast, friendlyBases, enemyBases
