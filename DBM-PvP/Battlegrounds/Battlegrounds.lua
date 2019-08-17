@@ -179,7 +179,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
 		winTimer:SetColor({1, 0, 0})
-		winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01
+		winTimer:UpdateIcon("132485")--"Interface\\Icons\\INV_BannerPVP_01.blp"
 	elseif hordeTime > allyTime then
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			self.ScoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
@@ -189,7 +189,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
 		winTimer:SetColor({0, 0, 1})
-		winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02
+		winTimer:UpdateIcon("132486")--"Interface\\Icons\\INV_BannerPVP_02.blp"
 	end
 	if self.Options.ShowBasesToWin then
 		local friendlyLast, enemyLast, friendlyBases, enemyBases
@@ -243,10 +243,10 @@ do
 						capTimer:Start(nil, infoName)
 						if capStates[1] then
 							capTimer:SetColor({0, 0, 1}, infoName)
-							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_02
+							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
 						else
 							capTimer:SetColor({1, 0, 0}, infoName)
-							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_01
+							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
 						end
 					end
 					objectivesStore[infoName] = infoTexture
