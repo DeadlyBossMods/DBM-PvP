@@ -67,16 +67,16 @@ do
 
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
-		if (instanceType == "pvp" or instanceType == "arena") and self.Options.ShowStartTimer then
+		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.ShowStartTimer then
 			for _, bar in ipairs(TimerTracker.timerList) do
 				bar.bar:Hide()
 			end
-			if instanceType == "arena" then
-				timerShadow:Schedule(16)
-				timerDamp:Schedule(16)
-			end
 			remainingTimer:SetTimer(timeSeconds)
 			remainingTimer:Start()
+		end
+		if instanceType == "arena" then
+			timerShadow:Schedule(16)
+			timerDamp:Schedule(16)
 		end
 		self:Schedule(timeSeconds + 1, function()
 			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
