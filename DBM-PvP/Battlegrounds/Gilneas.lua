@@ -9,13 +9,12 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
-
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 761 then
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
 				275,
-				{Lighthouse = 6, Mines = 16, Waterworks = 26},
+				{Lighthouse = {9, 12}, Mines = {17, 19}, Waterworks = {27, 29}},
 				{0.01, 10 / 9, 10 / 3, 30}
 			)
 		end

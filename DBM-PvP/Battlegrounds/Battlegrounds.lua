@@ -36,6 +36,7 @@ do
 			bgzone = true
 		elseif bgzone then
 			bgzone = false
+			DBM:GetModByName("Arena"):Stop()
 			self:UnsubscribeAssault()
 			if self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
@@ -178,7 +179,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
 		winTimer:SetColor({1, 0, 0})
-		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
+		winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01
 	elseif hordeTime > allyTime then
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
 			self.ScoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
@@ -188,7 +189,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
 		winTimer:SetColor({0, 0, 1})
-		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
+		winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02
 	end
 	if self.Options.ShowBasesToWin then
 		local friendlyLast, enemyLast, friendlyBases, enemyBases
@@ -235,18 +236,17 @@ do
 			local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
 			local infoName, infoTexture = areaPOIInfo.name, areaPOIInfo.textureIndex
 			if infoName and infoTexture then
-				local state, defaultState = objectivesStore[infoName], objectives[infoName]
+				local state, capStates = objectivesStore[infoName], objectives[infoName]
 				if state ~= infoTexture then
 					capTimer:Stop(infoName)
-					local isHordeAssaulted = infoTexture == defaultState + 3
-					if infoTexture == defaultState + 1 or isHordeAssaulted then
+					if infoTexture == capStates[1] or capStates[2] then
 						capTimer:Start(nil, infoName)
-						if isHordeAssaulted then
-							capTimer:SetColor({1, 0, 0}, infoName)
-							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", infoName)
-						else
+						if capStates[1] then
 							capTimer:SetColor({0, 0, 1}, infoName)
-							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", infoName)
+							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_02
+						else
+							capTimer:SetColor({1, 0, 0}, infoName)
+							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_01
 						end
 					end
 					objectivesStore[infoName] = infoTexture
@@ -263,9 +263,9 @@ do
 			if not obj then
 				return -- Object is missing from the table???
 			end
-			if v == obj + 2 then
+			if v == obj[1] + 1 then
 				allyBases = allyBases + 1
-			elseif v == obj + 4 then
+			elseif v == obj[2] + 1 then
 				hordeBases = hordeBases + 1
 			end
 		end
