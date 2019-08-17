@@ -27,7 +27,7 @@ do
 
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
-		if instanceType == "pvp" then
+		if instanceType == "pvp" or instanceType == "arena" then
 			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
 			self:Schedule(3, DBM.RequestTimers, DBM)
 			if not bgzone and self.Options.HideBossEmoteFrame then
