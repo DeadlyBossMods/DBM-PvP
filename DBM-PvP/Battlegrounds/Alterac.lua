@@ -22,7 +22,7 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-            DBM:GetModByName("Battlegrounds"):SubscribeAssault(
+            DBM:GetModByName("DBM-PvP"):SubscribeAssault(
                 91,
                 -- TODO: Get default ID's
                 {},

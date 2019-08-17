@@ -14,7 +14,7 @@ do
 	function mod:OnInitialize()
 		if 1105 == DBM:GetCurrentArea() then
 			bgzone = true
-			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
+			DBM:GetModByName("DBM-PvP"):SubscribeAssault(
 				519,
 				-- TODO: Get default ID's
 				{},

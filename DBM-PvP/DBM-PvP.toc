@@ -57,7 +57,8 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 
-Battlegrounds\Battlegrounds.lua
+DBM-PvP.lua
+
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua
 Battlegrounds\Deepwind.lua
@@ -68,5 +69,3 @@ Battlegrounds\SilvershardMines.lua
 Battlegrounds\TempleOfKotmogu.lua
 Battlegrounds\TwinPeaks.lua
 Battlegrounds\Warsong.lua
-
-Arenas\Arenas.lua

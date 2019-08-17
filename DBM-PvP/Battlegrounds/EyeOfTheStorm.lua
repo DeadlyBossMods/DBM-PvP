@@ -16,7 +16,7 @@ local flagTimer = mod:NewTimer(7, "TimerFlag", "132483")
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 566 or DBM:GetCurrentArea() == 968 then
-			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
+			DBM:GetModByName("DBM-PvP"):SubscribeAssault(
 				397, -- 112?
                 -- TODO: Get default ID's
 				{},
