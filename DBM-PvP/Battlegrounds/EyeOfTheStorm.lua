@@ -17,7 +17,7 @@ do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 566 or DBM:GetCurrentArea() == 968 then
 			DBM:GetModByName("Battlegrounds"):SubscribeAssault(
-				397,
+				397, -- 112?
                 -- TODO: Get default ID's
 				{},
 				{0.01, 1, 2, 5, 10}

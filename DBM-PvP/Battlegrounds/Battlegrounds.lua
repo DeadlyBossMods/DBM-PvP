@@ -59,7 +59,7 @@ end
 
 do
 	local tonumber = tonumber
-	local C_UIWidgetManager, TimeTracker = C_UIWidgetManager, TimeTracker--TimeTracker upvalued but not used
+	local C_UIWidgetManager = C_UIWidgetManager
 	local remainingTimer = mod:NewTimer(0, "TimerRemaining", 2457)
 
 	function mod:START_TIMER(_, timeSeconds)
@@ -110,6 +110,7 @@ end
 -- Utility functions
 local subscribedMapID = 0
 local objectives, resPerSec
+local objectivesStore = {}
 
 function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
@@ -140,8 +141,6 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	resPerSec = rezPerSec
 end
 
-local winTimer = mod:NewTimer(30, "TimerWin", "134376")
-
 function mod:UnsubscribeAssault()
 	if self.Options.ShowEstimatedPoints then
 		self:HideEstimatedPoints()
@@ -150,11 +149,13 @@ function mod:UnsubscribeAssault()
 		self:HideBasesToWin()
 	end
 	self:UnregisterShortTermEvents()
+	self:Stop()
 	subscribedMapID = 0
 	objectives = nil
-	winTimer:Stop()
+	objectivesStore = {}
 end
 
+local winTimer = mod:NewTimer(30, "TimerWin", "134376")
 local GetTime = GetTime
 local lastHordeScore, lastAllianceScore, lastHordeBases, lastAllianceBases = 0, 0, 0, 0
 
@@ -176,7 +177,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:Update(gameTime, gameTime + hordeTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
-		winTimer:SetColor(1, 0, 0)
+		winTimer:SetColor({1, 0, 0})
 		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp")
 	elseif hordeTime > allyTime then
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
@@ -186,7 +187,7 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:Update(gameTime, gameTime + allyTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
-		winTimer:SetColor(0, 0, 1)
+		winTimer:SetColor({0, 0, 1})
 		winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp")
 	end
 	if self.Options.ShowBasesToWin then
@@ -224,7 +225,6 @@ end
 do
 	local pairs = pairs
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
-	local objectivesStore = {}
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
 
 	function mod:UPDATE_UI_WIDGET(widget)
@@ -238,15 +238,15 @@ do
 				local state, defaultState = objectivesStore[infoName], objectives[infoName]
 				if state ~= infoTexture then
 					capTimer:Stop(infoName)
-					local isAllianceAssaulted = infoTexture == defaultState + 3
-					if infoTexture == defaultState + 1 or isAllianceAssaulted then
+					local isHordeAssaulted = infoTexture == defaultState + 3
+					if infoTexture == defaultState + 1 or isHordeAssaulted then
 						capTimer:Start(nil, infoName)
-						if isAllianceAssaulted then
-							capTimer:SetColor(0, 0, 1, infoName)
-							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", infoName)
-						else
-							capTimer:SetColor(1, 0, 0, infoName)
+						if isHordeAssaulted then
+							capTimer:SetColor({1, 0, 0}, infoName)
 							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", infoName)
+						else
+							capTimer:SetColor({0, 0, 1}, infoName)
+							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", infoName)
 						end
 					end
 					objectivesStore[infoName] = infoTexture

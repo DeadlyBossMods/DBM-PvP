@@ -4,7 +4,7 @@ if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
 else
 	mod	= DBM:NewMod("z2106", "DBM-PvP", 2)
 end
-local L		= mod:GetLocalizedStrings()
+local L	= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
