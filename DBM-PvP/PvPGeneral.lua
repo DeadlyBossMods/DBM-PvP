@@ -8,8 +8,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 --mod:AddBoolOption("ColorByClass", true)
-mod:AddBoolOption("ShowInviteTimer", true)
-mod:AddBoolOption("ShowStartTimer", true)
+mod:AddBoolOption("ShowInviteTimer", true, "timer")
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 
@@ -62,12 +61,12 @@ do
 	local tonumber = tonumber
 	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
 	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
-	local timerShadow		= mod:NewTimer(90, "TimerShadow", 34709)
+	local timerShadow		= mod:NewNextTimer(90, 34709)
 	local timerDamp			= mod:NewCastTimer(300, 110310)
 
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
-		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.ShowStartTimer then
+		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
 			for _, bar in ipairs(TimerTracker.timerList) do
 				bar.bar:Hide()
 			end

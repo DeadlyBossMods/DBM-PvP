@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	ShowEstimatedPoints	= "Show estimated points on win/loss",
 	ShowBasesToWin		= "Show bases required to win",
 	TimerCap			= "Show capture timer",
-	TimerRemaining		= "Show time remaining in match timer"
+	TimerRemaining		= "Show time remaining for match start and match end"
 })
 
 L:SetMiscLocalization({
