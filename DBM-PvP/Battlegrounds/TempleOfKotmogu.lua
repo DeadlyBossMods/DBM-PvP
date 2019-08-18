@@ -15,8 +15,6 @@ mod:RegisterEvents(
 [19:31:44] { ["areaPoiID"] = 2775,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
 [19:31:44] { ["areaPoiID"] = 2774,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
 [19:31:44] { ["areaPoiID"] = 2777,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
-
-
 ]]--
 
 do

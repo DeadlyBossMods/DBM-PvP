@@ -18,8 +18,7 @@ do
 		if DBM:GetCurrentArea() == 566 or DBM:GetCurrentArea() == 968 then
 			DBM:GetModByName("DBM-PvP"):SubscribeAssault(
 				397, -- 112?
-                -- TODO: Get default ID's
-				{},
+				{}, -- This is empty, because we use atlas info
 				{0.01, 1, 2, 5, 10}
 			)
 		end

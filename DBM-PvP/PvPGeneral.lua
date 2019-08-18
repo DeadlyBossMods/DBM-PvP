@@ -138,6 +138,7 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 		self:ShowBasesToWin()
 	end
 	self:RegisterShortTermEvents(
+		"AREA_POS_UPDATED",
 		"UPDATE_UI_WIDGET"
 	)
 	subscribedMapID = mapID
@@ -228,36 +229,37 @@ end
 
 do
 	local pairs = pairs
-	local C_AreaPoiInfo, C_UIWidgetManager, C_Texture = C_AreaPoiInfo, C_UIWidgetManager, C_Texture
+	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
 
-	function mod:AREA_POS_UPDATED()
-		if subscribedMapID == 0 then
+	function mod:AREA_POS_UPDATED(widget)
+		if subscribedMapID == 0 or (widget and widget.widgetID ~= 1671) then
 			return
 		end
+		local isAtlas = false
 		for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 			local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
-			if areaPOIInfo.atlasName then
-				local atlasInfo = C_Texture.GetAtlasInfo(areaPOIInfo.atlasName)
-				-- TODO
-			end
-		end
-	end
-
-	function mod:UPDATE_UI_WIDGET(widget)
-		if subscribedMapID == 0 or not widget or widget.widgetID ~= 1671 then
-			return
-		end
-		for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
-			local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
-			local infoName, infoTexture = areaPOIInfo.name, areaPOIInfo.textureIndex
-			if infoName and infoTexture then
-				local state, capStates = objectivesStore[infoName], objectives[infoName]
-				if state ~= infoTexture then
+			local infoName, atlasName, infoTexture = areaPOIInfo.name, areaPOIInfo.atlasName, areaPOIInfo.textureIndex
+			if infoName then
+				local isAllyCapped, isHordeCapped, checkState
+				if atlasName then
+					isAtlas = true
+					isAllyCapped = atlasName:find('leftIcon')
+					isHordeCapped = atlasName:find('rightIcon')
+					checkState = atlasName
+				elseif infoTexture then
+					local capStates = objectives[infoName]
+					if capStates then
+						isAllyCapped = infoTexture == capStates[1]
+						isHordeCapped = infoTexture == capStates[2]
+						checkState = infoTexture
+					end
+				end
+				if objectivesStore[infoName] ~= checkState then
 					capTimer:Stop(infoName)
-					if infoTexture == capStates[1] or capStates[2] then
+					if isAllyCapped or isHordeCapped then
 						capTimer:Start(nil, infoName)
-						if capStates[1] then
+						if isAllyCapped then
 							capTimer:SetColor({0, 0, 1}, infoName)
 							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
 						else
@@ -265,7 +267,29 @@ do
 							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
 						end
 					end
-					objectivesStore[infoName] = infoTexture
+					objectivesStore[infoName] = checkState
+				end
+			end
+		end
+		local allyBases, hordeBases = 0, 0
+		if isAtlas then
+			for _, v in ipairs(objectivesStore) do
+				if v:find('leftIcon') then
+					allyBases = allyBases + 1
+				elseif v:find('rightIcon') then
+					hordeBases = hordeBases + 1
+				end
+			end
+		else
+			for k, v in pairs(objectivesStore) do
+				local obj = objectives[k]
+				if not obj then
+					return -- Object is missing from the table???
+				end
+				if v == obj[1] + 1 then
+					allyBases = allyBases + 1
+				elseif v == obj[2] + 1 then
+					hordeBases = hordeBases + 1
 				end
 			end
 		end
@@ -273,18 +297,6 @@ do
 		local maxScore = info.leftBarMax
 		local allyScore, hordeScore = info.leftBarValue, info.rightBarValue
 		local allyToMax, hordeToMax = maxScore - allyScore, maxScore - hordeScore
-		local allyBases, hordeBases = 0, 0
-		for k, v in pairs(objectivesStore) do
-			local obj = objectives[k]
-			if not obj then
-				return -- Object is missing from the table???
-			end
-			if v == obj[1] + 1 then
-				allyBases = allyBases + 1
-			elseif v == obj[2] + 1 then
-				hordeBases = hordeBases + 1
-			end
-		end
 		local callupdate
 		if allyScore ~= lastAllianceScore then
 			lastAllianceScore = allyScore
@@ -307,9 +319,11 @@ do
 			callupdate = true
 		end
 		if callupdate then
-			self:UpdateWinTimer(maxScore)
+			mod:UpdateWinTimer(maxScore)
 		end
 	end
+
+	mod.UPDATE_UI_WIDGET = mod.AREA_POS_UPDATED
 end
 
 function mod:ShowEstimatedPoints()
