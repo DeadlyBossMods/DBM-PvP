@@ -10,6 +10,15 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
+--[[
+[19:31:44] { ["areaPoiID"] = 2776,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
+[19:31:44] { ["areaPoiID"] = 2775,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
+[19:31:44] { ["areaPoiID"] = 2774,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
+[19:31:44] { ["areaPoiID"] = 2777,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
+
+
+]]--
+
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 998 then
