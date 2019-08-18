@@ -22,7 +22,6 @@ do
 				{},
 				{0.01, 1, 2, 5, 10}
 			)
-			-- TODO: 566 standard, 968 rated
 		end
 	end
 

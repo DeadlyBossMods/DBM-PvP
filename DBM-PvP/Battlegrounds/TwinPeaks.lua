@@ -12,9 +12,9 @@ mod:RegisterEvents(
 )
 
 do
-	local C_CVar = C_CVar
+	local SetCVar, GetCVar = C_CVar and C_CVar.SetCVar or SetCVar, C_CVar and C_CVar.GetCVar or GetCVar
 	local bgzone = false
-	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVar("showArenaEnemyCastbar"), C_CVar.GetCVar("showArenaEnemyFrames"), C_CVar.GetCVar("showArenaEnemyPets")
+	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVar("showArenaEnemyCastbar"), GetCVar("showArenaEnemyFrames"), GetCVar("showArenaEnemyPets")
 
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 726 then
@@ -25,15 +25,15 @@ do
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 			)
 			-- Fix for flag carriers not showing up
-			C_CVar.SetCVar("showArenaEnemyCastbar", "1")
-			C_CVar.SetCVar("showArenaEnemyFrames", "1")
-			C_CVar.SetCVar("showArenaEnemyPets", "1")
+			SetCVar("showArenaEnemyCastbar", "1")
+			SetCVar("showArenaEnemyFrames", "1")
+			SetCVar("showArenaEnemyPets", "1")
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-			C_CVar.SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
-			C_CVar.SetCVar("showArenaEnemyFrames", cachedShowFrames)
-			C_CVar.SetCVar("showArenaEnemyPets", cachedShowPets)
+			SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
+			SetCVar("showArenaEnemyFrames", cachedShowFrames)
+			SetCVar("showArenaEnemyPets", cachedShowPets)
 			self:Stop()
 		end
 	end

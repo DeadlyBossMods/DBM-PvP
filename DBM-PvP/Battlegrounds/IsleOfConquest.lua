@@ -17,7 +17,7 @@ do
 				169,
 				-- TODO: Get default ID's
 				{},
-				-- TODO: Get respawn info
+				-- TODO: Get resource info
 				{}
 			)
 		end

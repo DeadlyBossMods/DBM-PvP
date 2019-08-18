@@ -14,9 +14,9 @@ mod:RegisterEvents(
 )
 
 do
-	local SetCVar = C_CVar and C_CVar.SetCVar or SetCVar
+	local SetCVar, GetCVar = C_CVar and C_CVar.SetCVar or SetCVar, C_CVar and C_CVar.GetCVar or GetCVar
 	local bgzone = false
-	local cachedShowCastbar, cachedShowFrames, cachedShowPets = C_CVar.GetCVar("showArenaEnemyCastbar"), C_CVar.GetCVar("showArenaEnemyFrames"), C_CVar.GetCVar("showArenaEnemyPets")
+	local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVar("showArenaEnemyCastbar"), GetCVar("showArenaEnemyFrames"), GetCVar("showArenaEnemyPets")
 
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 489 or DBM:GetCurrentArea() == 2106 then--Classic, Retail
