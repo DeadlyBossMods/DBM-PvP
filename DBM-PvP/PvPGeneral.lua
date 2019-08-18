@@ -91,7 +91,7 @@ end
 do
 	local format, tostring = format, tostring
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
-	local inviteTimer = mod:NewTimer(60, "TimerInvite", "135986", nil)
+	local inviteTimer = mod:NewTimer(60, "TimerInvite", "135986")
 
 	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
 		if self.Options.TimerInvite then
