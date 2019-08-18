@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("DBM-PvP", "DBM-PvP", 2)
+local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
 local ipairs = ipairs

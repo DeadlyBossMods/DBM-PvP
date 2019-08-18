@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("z30", "DBM-PvP", 2)
+local mod	= DBM:NewMod("z30", "DBM-PvP")
 
 local pairs, ipairs, type, tonumber, select = pairs, ipairs, type, tonumber, select
 

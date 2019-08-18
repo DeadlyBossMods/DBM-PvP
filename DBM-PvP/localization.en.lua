@@ -3,7 +3,7 @@
 --------------------------
 --  General BG Options  --
 --------------------------
-L = DBM:GetModLocalization("Battlegrounds")
+L = DBM:GetModLocalization("PvPGeneral")
 
 L:SetGeneralLocalization({
 	name	= "General Options"

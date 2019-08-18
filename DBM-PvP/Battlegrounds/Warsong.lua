@@ -1,8 +1,8 @@
 ﻿local mod
 if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-	mod	= DBM:NewMod("z489", "DBM-PvP", 2)
+	mod	= DBM:NewMod("z489", "DBM-PvP")
 else
-	mod	= DBM:NewMod("z2106", "DBM-PvP", 2)
+	mod	= DBM:NewMod("z2106", "DBM-PvP")
 end
 local L	= mod:GetLocalizedStrings()
 

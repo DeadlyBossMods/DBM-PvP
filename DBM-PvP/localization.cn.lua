@@ -4,7 +4,7 @@ local L
 --------------------------
 --  General BG Options  --
 --------------------------
-L = DBM:GetModLocalization("Battlegrounds")
+L = DBM:GetModLocalization("PvPGeneral")
 
 L:SetGeneralLocalization({
 	name	= "常规设置"

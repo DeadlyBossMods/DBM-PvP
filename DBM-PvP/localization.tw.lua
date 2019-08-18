@@ -4,7 +4,7 @@ local L
 --------------------------
 --  General BG Options  --
 --------------------------
-L = DBM:GetModLocalization("Battlegrounds")
+L = DBM:GetModLocalization("PvPGeneral")
 
 L:SetGeneralLocalization({
 	name	= "基本選項"
@@ -215,7 +215,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	InfoErrorText		= "當你離開戰鬥後，旗幟框架將會回復。",
-	ExprFlagPickUp		= "(.+)的旗幟被(.+)拔掉了!", 
+	ExprFlagPickUp		= "(.+)的旗幟被(.+)拔掉了!",
 	ExprFlagCaptured	= "(.+)佔據了(.+)的旗幟!",
 	ExprFlagReturn		= "(.+)的旗幟被(.+)還到了它的基地",
 	FlagAlliance		= "聯盟旗幟: ",

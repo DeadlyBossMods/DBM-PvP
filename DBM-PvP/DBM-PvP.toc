@@ -22,16 +22,6 @@
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: OTHER
 ## X-DBM-Mod-No-Statistics: 1
-## X-DBM-Mod-SubCategories: Arena,Battlegrounds
-## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder
-## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя
-## X-DBM-Mod-SubCategories-koKR: 투기장,전장
-## X-DBM-Mod-SubCategories-zhTW: 競技場,戰場
-## X-DBM-Mod-SubCategories-zhCN: 竞技场　,战场
-## X-DBM-Mod-SubCategories-esES: Arenas,Campos de batalla
-## X-DBM-Mod-SubCategories-esMX: Arenas,Campos de batalla
-## X-DBM-Mod-SubCategories-ptBR: Arena,Campos de Batalha
-## X-DBM-Mod-SubCategories-frFR: Arène,Champs de Bataille
 ## X-DBM-Mod-Name: PvP
 ## X-DBM-Mod-Name-deDE: PvP
 ## X-DBM-Mod-Name-frFR: PvP
@@ -57,7 +47,7 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 
-DBM-PvP.lua
+PvPGeneral.lua
 
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua
