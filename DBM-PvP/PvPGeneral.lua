@@ -8,7 +8,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 --mod:AddBoolOption("ColorByClass", true)
-mod:AddBoolOption("ShowInviteTimer", true, "timer")
+mod:AddBoolOption("TimerRemaining", true, "timer")
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 
