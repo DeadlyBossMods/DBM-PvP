@@ -8,7 +8,6 @@ mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 --mod:AddBoolOption("ColorByClass", true)
-mod:AddBoolOption("ShowTimerRemaining", true, "timer")
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 
@@ -65,7 +64,7 @@ do
 
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
-		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.ShowTimerRemaining then
+		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
 			for _, bar in ipairs(TimerTracker.timerList) do
 				bar.bar:Hide()
 			end
@@ -92,10 +91,10 @@ end
 do
 	local format, tostring = format, tostring
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
-	local inviteTimer = mod:NewTimer(60, "TimerInvite", "135986", nil, false)
+	local inviteTimer = mod:NewTimer(60, "TimerInvite", "135986", nil)
 
 	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
-		if self.Options.ShowInviteTimer then
+		if self.Options.TimerInvite then
 			local status, mapName, _, _, _, teamSize = GetBattlefieldStatus(queueID)
 			if status == "confirm" then
 				if teamSize == "ARENASKIRMISH" then
