@@ -8,7 +8,7 @@ mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 --mod:AddBoolOption("ColorByClass", true)
-mod:AddBoolOption("TimerRemaining", true, "timer")
+mod:AddBoolOption("ShowTimerRemaining", true, "timer")
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 
@@ -65,7 +65,7 @@ do
 
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
-		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
+		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.ShowTimerRemaining then
 			for _, bar in ipairs(TimerTracker.timerList) do
 				bar.bar:Hide()
 			end
@@ -229,8 +229,21 @@ end
 
 do
 	local pairs = pairs
-	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
+	local C_AreaPoiInfo, C_UIWidgetManager, C_Texture = C_AreaPoiInfo, C_UIWidgetManager, C_Texture
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
+
+	function mod:AREA_POS_UPDATED()
+		if subscribedMapID == 0 then
+			return
+		end
+		for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
+			local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
+			if areaPOIInfo.atlasName then
+				local atlasInfo = C_Texture.GetAtlasInfo(areaPOIInfo.atlasName)
+				-- TODO
+			end
+		end
+	end
 
 	function mod:UPDATE_UI_WIDGET(widget)
 		if subscribedMapID == 0 or not widget or widget.widgetID ~= 1671 then
