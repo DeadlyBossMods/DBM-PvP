@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "전장 점수판 캐릭터명에 직업 색상 사용",
-	ShowInviteTimer		= "전장 입장까지 남은시간 바 보기",
+	TimerInvite			= "전장 입장까지 남은시간 바 보기",
 	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동",
 	HideBossEmoteFrame	= "화면 가운데 나타나는 전장 메세지, 주둔지 및 길드 알림 숨김"
 })

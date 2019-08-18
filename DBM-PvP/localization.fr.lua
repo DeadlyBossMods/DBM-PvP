@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "Met le nom en couleur en fonction de la classe dans le tableau des scores",
-	ShowInviteTimer		= "Affiche le temps restant pour rejoindre le Champ de bataille",
+	TimerInvite			= "Affiche le temps restant pour rejoindre le Champ de bataille",
 	AutoSpirit			= "Auto-rez à un Ange",
 	HideBossEmoteFrame	= "Masquez les cadres d'émotes de boss de raid"
 })

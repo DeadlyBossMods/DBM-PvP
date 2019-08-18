@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "在得分視窗中設置玩家名為職業顏色",
-	ShowInviteTimer		= "顯示戰場組隊計時器",
+	TimerInvite			= "顯示戰場組隊計時器",
 	AutoSpirit			= "自動釋放靈魂",
 	HideBossEmoteFrame	= "在戰場時隱藏團隊首領表情框架&要塞/公會提示"
 })

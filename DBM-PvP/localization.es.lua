@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "Mostrar nombres con el color de su clase en la tabla de estadísticas",
-	ShowInviteTimer		= "Mostrar tiempo restante para unirse al campo de batalla",
+	TimerInvite			= "Mostrar tiempo restante para unirse al campo de batalla",
 	AutoSpirit			= "Liberar espíritu automáticamente",
 	HideBossEmoteFrame	= "Ocultar marco de jefe de banda y botón de ciudadela en campos de batalla"
 })

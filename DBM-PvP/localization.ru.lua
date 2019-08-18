@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "Показывать имена цветом класса в таблице очков",
-	ShowInviteTimer		= "Отсчет времени до входа на поле боя",
+	TimerInvite			= "Отсчет времени до входа на поле боя",
 	AutoSpirit			= "Автоматически покидать тело",
 	HideBossEmoteFrame	= "Скрыть фрейм эмоций рейдового босса"
 })

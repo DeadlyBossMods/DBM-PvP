@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "Usar cor da classe para os nomes, no quadro de pontuação",
-	ShowInviteTimer		= "Exibir cronógrafo para juntar-se ao Campo de Batalha",
+	TimerInvite			= "Exibir cronógrafo para juntar-se ao Campo de Batalha",
 	AutoSpirit			= "Libertar espírito automaticamente",
 	HideBossEmoteFrame	= "Esconder quadro de emoção de chefe."
 })

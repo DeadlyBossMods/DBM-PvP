@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "得分板上玩家按职业着色",
-	ShowInviteTimer		= "计时条：进入战场",
+	TimerInvite			= "计时条：进入战场",
 	AutoSpirit			= "自动释放灵魂",
 	HideBossEmoteFrame	= "隐藏团队首领表情框体"
 })

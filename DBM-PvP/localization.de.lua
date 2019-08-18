@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "Einfärbung der Spielernamen nach Klasse in der Schlachtfeld-Punktetafel",
-	ShowInviteTimer		= "Zeige Zeit für Schlachtfeld-Beitrittsmöglichkeit",
+	TimerInvite			= "Zeige Zeit für Schlachtfeld-Beitrittsmöglichkeit",
 	AutoSpirit			= "Automatisch Geist freilassen",
 	HideBossEmoteFrame	= "Verberge das Fenster \"RaidBossEmoteFrame\" und Garnisons-/Gildenerfolgsmeldungen während Schlachtfeldern"
 })
