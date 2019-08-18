@@ -35,7 +35,6 @@ do
 			bgzone = true
 		elseif bgzone then
 			bgzone = false
-			DBM:GetModByName("Arena"):Stop()
 			self:UnsubscribeAssault()
 			if self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
