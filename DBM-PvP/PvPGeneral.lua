@@ -319,7 +319,7 @@ do
 			callupdate = true
 		end
 		if callupdate then
-			mod:UpdateWinTimer(maxScore)
+			self:UpdateWinTimer(maxScore)
 		end
 	end
 
