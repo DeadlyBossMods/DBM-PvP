@@ -170,14 +170,12 @@ function mod:UpdateWinTimer(maxScore)
 	local hordeTime = math.min(maxScore, (maxScore - lastHordeScore) / resPerSec[lastAllianceBases + 1])
 	if allyTime == hordeTime then
 		winTimer:Stop()
-		if self.ScoreFrame1Text then
-			self.ScoreFrame1Text:SetText("")
-			self.ScoreFrame2Text:SetText("")
+		if self.ScoreFrameText then
+			self.ScoreFrameText:SetText("")
 		end
 	elseif allyTime > hordeTime then
-		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			self.ScoreFrame1Text:SetText("(" .. math.floor(math.floor(((hordeTime * resPerSec[lastAllianceBases + 1]) + lastAllianceScore) / 10) * 10) .. ")")
-			self.ScoreFrame2Text:SetText("(" .. maxScore .. ")")
+		if self.ScoreFrameText then
+			self.ScoreFrameText:SetText("(" .. math.floor(math.floor(((hordeTime * resPerSec[lastAllianceBases + 1]) + lastAllianceScore) / 10) * 10) .. ")")
 		end
 		winTimer:Update(gameTime, gameTime + hordeTime)
 		winTimer:DisableEnlarge()
@@ -185,9 +183,8 @@ function mod:UpdateWinTimer(maxScore)
 		winTimer:SetColor({1, 0, 0})
 		winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
 	elseif hordeTime > allyTime then
-		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			self.ScoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
-			self.ScoreFrame1Text:SetText("(" .. maxScore .. ")")
+		if self.ScoreFrameText then
+			self.ScoreFrameText:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
 		end
 		winTimer:Update(gameTime, gameTime + allyTime)
 		winTimer:DisableEnlarge()
@@ -328,28 +325,17 @@ end
 
 function mod:ShowEstimatedPoints()
 	if AlwaysUpFrame1 and AlwaysUpFrame2 then
-		if not self.ScoreFrame1 then
-			self.ScoreFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1)
-			self.ScoreFrame1:SetHeight(10)
-			self.ScoreFrame1:SetWidth(100)
-			self.ScoreFrame1:SetPoint("LEFT", "AlwaysUpFrame1DynamicIconButton", "RIGHT", 4, 0)
-			self.ScoreFrame1Text = self.ScoreFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
-			self.ScoreFrame1Text:SetAllPoints(self.ScoreFrame1)
-			self.ScoreFrame1Text:SetJustifyH("LEFT")
+		if not self.ScoreFrame then
+			self.ScoreFrame = CreateFrame("Frame", nil, AlwaysUpFrame1)
+			self.ScoreFrame:SetHeight(10)
+			self.ScoreFrame:SetWidth(100)
+			self.ScoreFrame:SetPoint("LEFT", "AlwaysUpFrame1DynamicIconButton", "RIGHT", 4, 0)
+			self.ScoreFrameText = self.ScoreFrame:CreateFontString(nil, nil, "GameFontNormalSmall")
+			self.ScoreFrameText:SetAllPoints(self.ScoreFrame)
+			self.ScoreFrameText:SetJustifyH("LEFT")
 		end
-		if not self.ScoreFrame2 then
-			self.ScoreFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2)
-			self.ScoreFrame2:SetHeight(10)
-			self.ScoreFrame2:SetWidth(100)
-			self.ScoreFrame2:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
-			self.ScoreFrame2Text = self.ScoreFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
-			self.ScoreFrame2Text:SetAllPoints(self.ScoreFrame2)
-			self.ScoreFrame2Text:SetJustifyH("LEFT")
-		end
-		self.ScoreFrame1Text:SetText("")
-		self.ScoreFrame1:Show()
-		self.ScoreFrame2Text:SetText("")
-		self.ScoreFrame2:Show()
+		self.ScoreFrameText:SetText("")
+		self.ScoreFrame:Show()
 	end
 end
 
@@ -368,9 +354,8 @@ function mod:ShowBasesToWin()
 end
 
 function mod:HideEstimatedPoints()
-	if self.ScoreFrame1 and self.ScoreFrame2 then
-		self.ScoreFrame1:Hide()
-		self.ScoreFrame2:Hide()
+	if self.ScoreFrame then
+		self.ScoreFrame:Hide()
 	end
 end
 
