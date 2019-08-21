@@ -10,105 +10,39 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCap		= "%s",
+	TimerFlag		= "Flag respawn",
 	TimerInvite		= "%s",
 	TimerRemaining	= "Time Remaining: ",
-	TimerCap		= "%s"
+	TimerShadow		= "Shadow Sight",
 })
 
 L:SetOptionLocalization({
-	ColorByClass		= "Set name color to class color in the score frame",
-	TimerInvite			= "Show battleground join timer",
 	AutoSpirit			= "Auto-release spirit",
+	ColorByClass		= "Set name color to class color in the score frame",
 	HideBossEmoteFrame	= "Hide the raid boss emote frame and garrison/Guild toasts during battlegrounds",
-	TimerWin			= "Show win timer",
-	ShowEstimatedPoints	= "Show estimated points on win/loss",
 	ShowBasesToWin		= "Show bases required to win",
+	ShowEstimatedPoints	= "Show estimated points on win/loss",
+	ShowFlagCarrier		= "Show flag carrier",
 	TimerCap			= "Show capture timer",
-	TimerRemaining		= "Show time remaining for match start and match end"
+	TimerFlag			= "Show flag respawn timer",
+	TimerInvite			= "Show battleground join timer",
+	TimerRemaining		= "Show time remaining for match start and match end",
+	TimerShadow			= "Show timer for Shadow Sight",
+	TimerWin			= "Show win timer"
 })
 
 L:SetMiscLocalization({
-	ArenaInvite	= "Arena invite",
-	WinBarText	= "%s wins",
-	-- TODO: Standardise these two locales
-	BasesToWin	= "Bases to win: %d",
-	OrbsToWin	= "Orbs to win: %d"
-})
-
---------------
---  Arenas  --
---------------
-L = DBM:GetModLocalization("Arenas")
-
-L:SetGeneralLocalization({
-	name	= "Arenas"
-})
-
-L:SetTimerLocalization({
-	TimerShadow	= "Shadow Sight"
-})
-
-L:SetOptionLocalization({
-	TimerShadow	= "Show timer for Shadow Sight"
-})
-
-L:SetMiscLocalization({
-	Start15			= "Fifteen seconds until the Arena battle begins!",
-	highmaulArena	= "The battle for supremacy begins in 30 seconds!"
-})
-
-----------------------
---  Alterac Valley  --
-----------------------
-L = DBM:GetModLocalization("z30")
-
-L:SetOptionLocalization({
-	AutoTurnIn	= "Automatically turn-in quests"
-})
-
-------------------------
---  Eye of the Storm  --
-------------------------
-L = DBM:GetModLocalization("z566")
-
-L:SetTimerLocalization({
-	TimerFlag	= "Flag respawn"
-})
-
-L:SetOptionLocalization({
-	TimerFlag		= "Show flag respawn timer",
-	ShowFlagCarrier	= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
-})
-
-L:SetMiscLocalization({
-	Flag			= "Flag",
-	FlagReset		= "The flag has been reset!",
-	FlagTaken		= "(.+) has taken the flag!",
-	FlagCaptured	= "The .+ ha%w+ captured the flag!",
-	FlagDropped		= "The flag has been dropped!"
-})
-
----------------------
---  Warsong Gulch  --
----------------------
-if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-	L = DBM:GetModLocalization("z489")
-else
-	L = DBM:GetModLocalization("z2106")
-end
-
-L:SetTimerLocalization({
-	TimerFlag		= "Flag respawn"
-})
-
-L:SetOptionLocalization({
-	TimerFlag					= "Show flag respawn timer",
-	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
-})
-
-L:SetMiscLocalization({
+	ArenaInvite			= "Arena invite",
+	BasesToWin			= "Bases to win: %d",
+	WinBarText			= "%s wins",
+	-- TODO: Implement the flag carrying system
+	Flag				= "Flag",
+	FlagReset			= "The flag has been reset!",
+	FlagTaken			= "(.+) has taken the flag!",
+	FlagCaptured		= "The .+ ha%w+ captured the flag!",
+	FlagDropped			= "The flag has been dropped!",
+	--
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
 	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
 	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
@@ -118,6 +52,15 @@ L:SetMiscLocalization({
 	FlagBase			= "Base",
 	Vulnerable1			= "The flag carriers have become vulnerable to attack!",
 	Vulnerable2			= "The flag carriers have become increasingly vulnerable to attack!"
+})
+
+----------------------
+--  Alterac Valley  --
+----------------------
+L = DBM:GetModLocalization("z30")
+
+L:SetOptionLocalization({
+	AutoTurnIn	= "Automatically turn-in quests"
 })
 
 ------------------------
@@ -131,7 +74,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPOI			= "%s",
 	TimerSiegeEngine	= "Siege Engine ready"
 })
 
@@ -155,33 +97,6 @@ L:SetMiscLocalization({
 	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
 
-------------------
---  Twin Peaks  --
-------------------
-L = DBM:GetModLocalization("z726")
-
-L:SetTimerLocalization({
-	TimerFlag		= "Flag respawn"
-})
-
-L:SetOptionLocalization({
-	TimerFlag					= "Show flag respawn timer",
-	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
-})
-
-L:SetMiscLocalization({
-	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
-	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
-	FlagAlliance		= "Alliance Flag: ",
-	FlagHorde			= "Horde Flag: ",
-	FlagBase			= "Base",
-	Vulnerable1			= "The flag carriers have become vulnerable to attack!",
-	Vulnerable2			= "The flag carriers have become increasingly vulnerable to attack!"
-})
-
 -------------------------
 --  Silvershard Mines  --
 -------------------------
@@ -203,6 +118,10 @@ L:SetMiscLocalization({
 --  Temple of Kotmogu  --
 -------------------------
 L = DBM:GetModLocalization("z998")
+
+L:SetOptionLocalization({
+	ShowOrbCarriers	= "Show flag carrier",
+})
 
 L:SetMiscLocalization({
 	OrbTaken	= "(%S+) has taken the (%S+) orb!",

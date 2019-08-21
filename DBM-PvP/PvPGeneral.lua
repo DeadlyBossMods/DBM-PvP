@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
-local ipairs = ipairs
+local ipairs, math = ipairs, math
 local IsInInstance, CreateFrame = IsInInstance, CreateFrame
 
 mod:SetRevision("@file-date-integer@")
@@ -71,13 +71,13 @@ do
 			remainingTimer:SetTimer(timeSeconds)
 			remainingTimer:Start()
 		end
-		if instanceType == "arena" then
-			timerShadow:Schedule(16)
-			timerDamp:Schedule(16)
-		end
 		self:Schedule(timeSeconds + 1, function()
+			if instanceType == "arena" then
+				timerShadow:Start()
+				timerDamp:Start()
+			end
 			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
-			if info and info.state == 1 then
+			if info and info.state == 1 and self.Options.TimerRemaining then
 				local minutes, seconds = info.text:match("(%d+):(%d+)")
 				if minutes and seconds then
 					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
@@ -112,6 +112,62 @@ do
 end
 
 -- Utility functions
+local scoreFrame1, scoreFrame2, scoreFrameToWin, scoreFrame1Text, scoreFrame2Text, scoreFrameToWinText
+
+local function ShowEstimatedPoints()
+	if AlwaysUpFrame1 and AlwaysUpFrame2 then
+		if not scoreFrame1 then
+			scoreFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1)
+			scoreFrame1:SetHeight(10)
+			scoreFrame1:SetWidth(100)
+			scoreFrame1:SetPoint("LEFT", "AlwaysUpFrame1DynamicIconButton", "RIGHT", 4, 0)
+			scoreFrame1Text = scoreFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
+			scoreFrame1Text:SetAllPoints(scoreFrame1)
+			scoreFrame1Text:SetJustifyH("LEFT")
+		end
+		if not scoreFrame2 then
+			scoreFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2)
+			scoreFrame2:SetHeight(10)
+			scoreFrame2:SetWidth(100)
+			scoreFrame2:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
+			scoreFrame2Text = scoreFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
+			scoreFrame2Text:SetAllPoints(scoreFrame2)
+			scoreFrame2Text:SetJustifyH("LEFT")
+		end
+		scoreFrame1Text:SetText("")
+		scoreFrame1:Show()
+		scoreFrame2Text:SetText("")
+		scoreFrame2:Show()
+	end
+end
+
+local function ShowBasesToWin()
+	if not scoreFrameToWin then
+		scoreFrameToWin = CreateFrame("Frame", nil, AlwaysUpFrame2)
+		scoreFrameToWin:SetHeight(10)
+		scoreFrameToWin:SetWidth(200)
+		scoreFrameToWin:SetPoint("TOPLEFT", "AlwaysUpFrame2", "BOTTOMLEFT", 22, 2)
+		scoreFrameToWinText = scoreFrameToWin:CreateFontString(nil, nil, "GameFontNormalSmall")
+		scoreFrameToWinText:SetAllPoints(scoreFrameToWin)
+		scoreFrameToWinText:SetJustifyH("LEFT")
+	end
+	scoreFrameToWinText:SetText("")
+	scoreFrameToWin:Show()
+end
+
+local function HideEstimatedPoints()
+	if scoreFrame1 and scoreFrame2 then
+		scoreFrame1:Hide()
+		scoreFrame2:Hide()
+	end
+end
+
+local function HideBasesToWin()
+	if scoreFrameToWin then
+		scoreFrameToWin:Hide()
+	end
+end
+
 local subscribedMapID = 0
 local objectives, resPerSec
 local objectivesStore = {}
@@ -119,23 +175,23 @@ local objectivesStore = {}
 function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
 		if self.Options.ShowEstimatedPoints then
-			self:ShowEstimatedPoints()
+			ShowEstimatedPoints()
 		else
-			self:HideEstimatedPoints()
+			HideEstimatedPoints()
 		end
 	end)
 	self:AddBoolOption("ShowBasesToWin", false, nil, function()
 		if self.Options.ShowBasesToWin then
-			self:ShowBasesToWin()
+			ShowBasesToWin()
 		else
-			self:HideBasesToWin()
+			HideBasesToWin()
 		end
 	end)
 	if self.Options.ShowEstimatedPoints then
-		self:ShowEstimatedPoints()
+		ShowEstimatedPoints()
 	end
 	if self.Options.ShowBasesToWin then
-		self:ShowBasesToWin()
+		ShowBasesToWin()
 	end
 	self:RegisterShortTermEvents(
 		"AREA_POS_UPDATED",
@@ -144,90 +200,84 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	subscribedMapID = mapID
 	objectives = objects
 	resPerSec = rezPerSec
-end
-
-function mod:UnsubscribeAssault()
-	if self.Options.ShowEstimatedPoints then
-		self:HideEstimatedPoints()
-	end
-	if self.Options.ShowBasesToWin then
-		self:HideBasesToWin()
-	end
-	self:UnregisterShortTermEvents()
-	self:Stop()
-	subscribedMapID = 0
-	objectives = nil
 	objectivesStore = {}
 end
 
-local winTimer = mod:NewTimer(30, "TimerWin", "134376")
-local GetTime = GetTime
-local lastHordeScore, lastAllianceScore, lastHordeBases, lastAllianceBases = 0, 0, 0, 0
-
-function mod:UpdateWinTimer(maxScore)
-	local gameTime = GetTime()
-	local allyTime = math.min(maxScore, (maxScore - lastAllianceScore) / resPerSec[lastAllianceBases + 1])
-	local hordeTime = math.min(maxScore, (maxScore - lastHordeScore) / resPerSec[lastAllianceBases + 1])
-	if allyTime == hordeTime then
-		winTimer:Stop()
-		if self.ScoreFrame1Text then
-			self.ScoreFrame1Text:SetText("")
-			self.ScoreFrame2Text:SetText("")
-		end
-	elseif allyTime > hordeTime then
-		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			self.ScoreFrame1Text:SetText("(" .. math.floor(math.floor(((hordeTime * resPerSec[lastAllianceBases + 1]) + lastAllianceScore) / 10) * 10) .. ")")
-			self.ScoreFrame2Text:SetText("(" .. maxScore .. ")")
-		end
-		winTimer:Update(gameTime, gameTime + hordeTime)
-		winTimer:DisableEnlarge()
-		winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
-		winTimer:SetColor({1, 0, 0})
-		winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
-	elseif hordeTime > allyTime then
-		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			self.ScoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[lastHordeBases + 1]) + lastHordeScore) / 10) * 10) .. ")")
-			self.ScoreFrame1Text:SetText("(" .. maxScore .. ")")
-		end
-		winTimer:Update(gameTime, gameTime + allyTime)
-		winTimer:DisableEnlarge()
-		winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
-		winTimer:SetColor({0, 0, 1})
-		winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
-	end
-	if self.Options.ShowBasesToWin then
-		local friendlyLast, enemyLast, friendlyBases, enemyBases
-		if UnitFactionGroup("player") == "Alliance" then
-			friendlyLast = lastAllianceScore
-			enemyLast = lastHordeScore
-			friendlyBases = lastAllianceBases
-			enemyBases = lastHordeBases
-		else
-			friendlyLast = lastHordeScore
-			enemyLast = lastAllianceScore
-			friendlyBases = lastHordeBases
-			enemyBases = lastAllianceBases
-		end
-		if (maxScore - friendlyLast) / resPerSec[friendlyBases + 1] > (maxScore - enemyLast) / resPerSec[enemyBases + 1] then
-			local enemyTime, friendlyTime, baseLowest, enemyFinal, friendlyFinal
-			for i = 1, 3 do
-				enemyTime = (maxScore - enemyLast) / resPerSec[3 - i]
-				friendlyTime = (maxScore - friendlyLast) / resPerSec[i]
-				baseLowest = friendlyTime < enemyTime and friendlyTime or enemyTime
-				enemyFinal = math.floor((enemyLast + math.floor(baseLowest * resPerSec[3] + 0.5)) / 10) * 10
-				friendlyFinal = math.floor((friendlyLast + math.floor(baseLowest * resPerSec[i] + 0.5)) / 10) * 10
-				if friendlyFinal >= maxScore and enemyFinal < maxScore then
-					self.ScoreFrameToWinText:SetText(L.BasesToWin:format(i))
-					break
-				end
-			end
-		else
-			self.ScoreFrameToWinText:SetText("")
-		end
-	end
+function mod:UnsubscribeAssault()
+	HideEstimatedPoints()
+	HideBasesToWin()
+	self:UnregisterShortTermEvents()
+	self:Stop()
+	subscribedMapID = 0
 end
 
 do
+	local GetTime, UnitFactionGroup, FACTION_HORDE, FACTION_ALLIANCE = GetTime, UnitFactionGroup, FACTION_HORDE, FACTION_ALLIANCE
+	local winTimer = mod:NewTimer(30, "TimerWin", "134376")
+
+	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
+		local gameTime = GetTime()
+		local allyTime = math.min(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
+		local hordeTime = math.min(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
+		if allyTime == hordeTime then
+			winTimer:Stop()
+			if scoreFrame1Text then
+				scoreFrame1Text:SetText("")
+				scoreFrame2Text:SetText("")
+			end
+		elseif allyTime > hordeTime then
+			if scoreFrame1Text and scoreFrame2Text then
+				scoreFrame1Text:SetText("(" .. math.floor(math.floor(((hordeTime * resPerSec[allianceBases + 1]) + allianceScore) / 10) * 10) .. ")")
+				scoreFrame2Text:SetText("(" .. maxScore .. ")")
+			end
+			winTimer:Update(gameTime, gameTime + hordeTime)
+			winTimer:DisableEnlarge()
+			winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
+			winTimer:SetColor({1, 0, 0})
+			winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
+		elseif hordeTime > allyTime then
+			if scoreFrame1Text and scoreFrame2Text then
+				scoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[hordeBases + 1]) + hordeScore) / 10) * 10) .. ")")
+				scoreFrame1Text:SetText("(" .. maxScore .. ")")
+			end
+			winTimer:Update(gameTime, gameTime + allyTime)
+			winTimer:DisableEnlarge()
+			winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
+			winTimer:SetColor({0, 0, 1})
+			winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
+		end
+		if self.Options.ShowBasesToWin then
+			local friendlyLast, enemyLast, friendlyBases, enemyBases
+			if UnitFactionGroup("player") == "Alliance" then
+				friendlyLast = allianceScore
+				enemyLast = hordeScore
+				friendlyBases = allianceBases
+				enemyBases = hordeBases
+			else
+				friendlyLast =hordeScore
+				enemyLast = allianceScore
+				friendlyBases = hordeBases
+				enemyBases = allianceBases
+			end
+			if (maxScore - friendlyLast) / resPerSec[friendlyBases + 1] > (maxScore - enemyLast) / resPerSec[enemyBases + 1] then
+				local enemyTime, friendlyTime, baseLowest, enemyFinal, friendlyFinal
+				for i = 1, 3 do
+					enemyTime = (maxScore - enemyLast) / resPerSec[3 - i]
+					friendlyTime = (maxScore - friendlyLast) / resPerSec[i]
+					baseLowest = friendlyTime < enemyTime and friendlyTime or enemyTime
+					enemyFinal = math.floor((enemyLast + math.floor(baseLowest * resPerSec[3] + 0.5)) / 10) * 10
+					friendlyFinal = math.floor((friendlyLast + math.floor(baseLowest * resPerSec[i] + 0.5)) / 10) * 10
+					if friendlyFinal >= maxScore and enemyFinal < maxScore then
+						scoreFrameToWinText:SetText(L.BasesToWin:format(i))
+						break
+					end
+				end
+			else
+				scoreFrameToWinText:SetText("")
+			end
+		end
+	end
+
 	local pairs = pairs
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
@@ -294,90 +344,10 @@ do
 			end
 		end
 		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1671)
-		local maxScore = info.leftBarMax
-		local allyScore, hordeScore = info.leftBarValue, info.rightBarValue
-		local allyToMax, hordeToMax = maxScore - allyScore, maxScore - hordeScore
-		local callupdate
-		if allyScore ~= lastAllianceScore then
-			lastAllianceScore = allyScore
-			if allyToMax > hordeToMax then
-				callupdate = true
-			end
-		end
-		if hordeScore ~= lastHordeScore then
-			lastHordeScore = hordeScore
-			if hordeToMax > allyToMax then
-				callupdate = true
-			end
-		end
-		if lastAllianceBases ~= allyBases then
-			lastAllianceBases = allyBases
-			callupdate = true
-		end
-		if lastHordeBases ~= hordeBases then
-			lastHordeBases = hordeBases
-			callupdate = true
-		end
-		if callupdate then
-			self:UpdateWinTimer(maxScore)
-		end
+		self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 	end
 
 	mod.UPDATE_UI_WIDGET = mod.AREA_POS_UPDATED
-end
-
-function mod:ShowEstimatedPoints()
-	if AlwaysUpFrame1 and AlwaysUpFrame2 then
-		if not self.ScoreFrame1 then
-			self.ScoreFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1)
-			self.ScoreFrame1:SetHeight(10)
-			self.ScoreFrame1:SetWidth(100)
-			self.ScoreFrame1:SetPoint("LEFT", "AlwaysUpFrame1DynamicIconButton", "RIGHT", 4, 0)
-			self.ScoreFrame1Text = self.ScoreFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
-			self.ScoreFrame1Text:SetAllPoints(self.ScoreFrame1)
-			self.ScoreFrame1Text:SetJustifyH("LEFT")
-		end
-		if not self.ScoreFrame2 then
-			self.ScoreFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2)
-			self.ScoreFrame2:SetHeight(10)
-			self.ScoreFrame2:SetWidth(100)
-			self.ScoreFrame2:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
-			self.ScoreFrame2Text = self.ScoreFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
-			self.ScoreFrame2Text:SetAllPoints(self.ScoreFrame2)
-			self.ScoreFrame2Text:SetJustifyH("LEFT")
-		end
-		self.ScoreFrame1Text:SetText("")
-		self.ScoreFrame1:Show()
-		self.ScoreFrame2Text:SetText("")
-		self.ScoreFrame2:Show()
-	end
-end
-
-function mod:ShowBasesToWin()
-	if not self.ScoreFrameToWin then
-		self.ScoreFrameToWin = CreateFrame("Frame", nil, AlwaysUpFrame2)
-		self.ScoreFrameToWin:SetHeight(10)
-		self.ScoreFrameToWin:SetWidth(200)
-		self.ScoreFrameToWin:SetPoint("TOPLEFT", "AlwaysUpFrame2", "BOTTOMLEFT", 22, 2)
-		self.ScoreFrameToWinText = self.ScoreFrameToWin:CreateFontString(nil, nil, "GameFontNormalSmall")
-		self.ScoreFrameToWinText:SetAllPoints(self.ScoreFrameToWin)
-		self.ScoreFrameToWinText:SetJustifyH("LEFT")
-	end
-	self.ScoreFrameToWinText:SetText("")
-	self.ScoreFrameToWin:Show()
-end
-
-function mod:HideEstimatedPoints()
-	if self.ScoreFrame1 and self.ScoreFrame2 then
-		self.ScoreFrame1:Hide()
-		self.ScoreFrame2:Hide()
-	end
-end
-
-function mod:HideBasesToWin()
-	if self.ScoreFrameToWin then
-		self.ScoreFrameToWin:Hide()
-	end
 end
 
 --[[
