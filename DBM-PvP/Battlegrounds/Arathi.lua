@@ -24,7 +24,7 @@ do
 			elseif zoneID == 2177 then
 				assaultID = 1383
 			end
-			DBM:GetModByName("DBM-PvP"):SubscribeAssault(
+			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				assaultID,
 				-- TODO: Get ID's
 				{["Farm"] = 31, ["Gold Mine"] = 16, ["Lumber Mill"] = 21, ["Stables"] = 36, ["Blacksmith"] = 26},

@@ -13,7 +13,7 @@ mod:RegisterEvents(
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 628 then
-			DBM:GetModByName("DBM-PvP"):SubscribeAssault(
+			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				169,
 				-- TODO: Get default ID's
 				{},

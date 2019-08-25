@@ -35,6 +35,7 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnsubscribeAssault()
+			self:UnsubscribeFlags()
 			if self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
 			end
@@ -209,6 +210,57 @@ function mod:UnsubscribeAssault()
 	self:UnregisterShortTermEvents()
 	self:Stop()
 	subscribedMapID = 0
+end
+
+local SetCVar, GetCVar = C_CVar and C_CVar.SetCVar or SetCVar, C_CVar and C_CVar.GetCVar or GetCVar
+local cachedShowCastbar, cachedShowFrames, cachedShowPets = GetCVar("showArenaEnemyCastbar"), GetCVar("showArenaEnemyFrames"), GetCVar("showArenaEnemyPets")
+
+function mod:SubscribeFlags()
+	self:RegisterShortTermEvents(
+		"CHAT_MSG_BG_SYSTEM_ALLIANCE",
+		"CHAT_MSG_BG_SYSTEM_HORDE",
+		"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+		"START_TIMER"
+	)
+	-- Fix for flag carriers not showing up
+	SetCVar("showArenaEnemyCastbar", "1")
+	SetCVar("showArenaEnemyFrames", "1")
+	SetCVar("showArenaEnemyPets", "1")
+end
+
+function mod:UnsubscribeFlags()
+	self:UnregisterShortTermEvents()
+	-- Fix for flag carriers not showing up
+	SetCVar("showArenaEnemyCastbar", cachedShowCastbar)
+	SetCVar("showArenaEnemyFrames", cachedShowFrames)
+	SetCVar("showArenaEnemyPets", cachedShowPets)
+	self:Stop()
+end
+
+do
+	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483")
+	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
+
+	local function updateflagcarrier(_, _, arg1)
+		if arg1:match(L.ExprFlagCaptured) then
+			flagTimer:Start()
+			vulnerableTimer:Cancel()
+		end
+	end
+
+	function mod:CHAT_MSG_BG_SYSTEM_ALLIANCE(...)
+		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_ALLIANCE", ...)
+	end
+
+	function mod:CHAT_MSG_BG_SYSTEM_HORDE(...)
+		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_HORDE", ...)
+	end
+
+	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
+		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
+			vulnerableTimer:Start()
+		end
+	end
 end
 
 do
