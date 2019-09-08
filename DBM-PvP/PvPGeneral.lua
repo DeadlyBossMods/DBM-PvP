@@ -103,6 +103,7 @@ do
 				if teamSize == "ARENASKIRMISH" then
 					mapName = L.ArenaInvite .. " " .. format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
 				end
+				inviteTimer:Stop(mapName)
 				local expiration = GetBattlefieldPortExpiration(queueID)
 				if inviteTimer:GetTime(mapName) == 0 and expiration >= 3 then
 					inviteTimer:Start(expiration, mapName)
@@ -335,6 +336,7 @@ do
 
 	local pairs = pairs
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
+	local ignoredAtlas = {112, 397}
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
@@ -362,7 +364,7 @@ do
 				end
 				if objectivesStore[infoName] ~= checkState then
 					capTimer:Stop(infoName)
-					if not atlasName and (isAllyCapped or isHordeCapped) then
+					if not ignoredAtlas[subscribedMapID] and (isAllyCapped or isHordeCapped) then
 						capTimer:Start(nil, infoName)
 						if isAllyCapped then
 							capTimer:SetColor({0, 0, 1}, infoName)
