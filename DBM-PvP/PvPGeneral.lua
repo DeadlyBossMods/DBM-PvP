@@ -391,9 +391,9 @@ do
 				if not obj then
 					return -- Object is missing from the table???
 				end
-				if v == obj[1] + 1 then
+				if v == obj[1] then
 					allyBases = allyBases + 1
-				elseif v == obj[2] + 1 then
+				elseif v == obj[2] then
 					hordeBases = hordeBases + 1
 				end
 			end
