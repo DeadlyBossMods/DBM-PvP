@@ -10,20 +10,12 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
---[[
-[19:31:44] { ["areaPoiID"] = 2776,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
-[19:31:44] { ["areaPoiID"] = 2775,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
-[19:31:44] { ["areaPoiID"] = 2774,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
-[19:31:44] { ["areaPoiID"] = 2777,["name"] = Power Orb,["textureIndex"] = 45,["description"] = Uncontrolled,}
-]]--
-
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 998 then
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
-				0,
-				-- TODO: Get default ID's
-				{},
+				0, -- We don't need an assault ID
+				{}, -- This is empty because we don't use POIS
 				{1e-300, 4.5 / 5, 9 / 5, 13.5 / 5, 18 / 5}
 			)
 		end

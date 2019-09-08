@@ -338,62 +338,75 @@ do
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
-		if subscribedMapID == 0 or (widget and widget.widgetID ~= 1671) then
-			return
-		end
-		local isAtlas = false
-		for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
-			local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
-			local infoName, atlasName, infoTexture = areaPOIInfo.name, areaPOIInfo.atlasName, areaPOIInfo.textureIndex
-			if infoName then
-				local isAllyCapped, isHordeCapped, checkState
-				if atlasName then
-					isAtlas = true
-					isAllyCapped = atlasName:find('leftIcon')
-					isHordeCapped = atlasName:find('rightIcon')
-					checkState = atlasName
-				elseif infoTexture then
-					local capStates = objectives[infoName]
-					if capStates then
-						isAllyCapped = infoTexture == capStates[1]
-						isHordeCapped = infoTexture == capStates[2]
-						checkState = infoTexture
+		local allyBases, hordeBases = 0, 0
+		if subscribedMapID ~= 0 and widget and widget.widgetID == 1671 then
+			local isAtlas = false
+			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
+				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
+				local infoName, atlasName, infoTexture = areaPOIInfo.name, areaPOIInfo.atlasName, areaPOIInfo.textureIndex
+				if infoName then
+					local isAllyCapped, isHordeCapped, checkState
+					if atlasName then
+						isAtlas = true
+						isAllyCapped = atlasName:find('leftIcon')
+						isHordeCapped = atlasName:find('rightIcon')
+						checkState = atlasName
+					elseif infoTexture then
+						local capStates = objectives[infoName]
+						if capStates then
+							isAllyCapped = infoTexture == capStates[1]
+							isHordeCapped = infoTexture == capStates[2]
+							checkState = infoTexture
+						end
 					end
-				end
-				if objectivesStore[infoName] ~= checkState then
-					capTimer:Stop(infoName)
-					objectivesStore[infoName] = checkState
-					if not ignoredAtlas[subscribedMapID] and (isAllyCapped or isHordeCapped) then
-						capTimer:Start(nil, infoName)
-						if isAllyCapped then
-							capTimer:SetColor({r=0, g=0, b=1}, infoName)
-							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
-						else
-							capTimer:SetColor({r=1, g=0, b=0}, infoName)
-							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
+					if objectivesStore[infoName] ~= checkState then
+						capTimer:Stop(infoName)
+						objectivesStore[infoName] = checkState
+						if not ignoredAtlas[subscribedMapID] and (isAllyCapped or isHordeCapped) then
+							capTimer:Start(nil, infoName)
+							if isAllyCapped then
+								capTimer:SetColor({r=0, g=0, b=1}, infoName)
+								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
+							else
+								capTimer:SetColor({r=1, g=0, b=0}, infoName)
+								capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
+							end
 						end
 					end
 				end
 			end
-		end
-		local allyBases, hordeBases = 0, 0
-		if isAtlas then
-			for _, v in ipairs(objectivesStore) do
-				if v:find('leftIcon') then
+			if isAtlas then
+				for _, v in ipairs(objectivesStore) do
+					if v:find('leftIcon') then
+						allyBases = allyBases + 1
+					elseif v:find('rightIcon') then
+						hordeBases = hordeBases + 1
+					end
+				end
+			else
+				for k, v in pairs(objectivesStore) do
+					local obj = objectives[k]
+					if v == obj[1] then
+						allyBases = allyBases + 1
+					elseif v == obj[2] then
+						hordeBases = hordeBases + 1
+					end
+				end
+			end
+		elseif widget and widget.widgetID == 1683 then
+			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
+			for _, v in pairs(widgetInfo.leftIcons) do
+				if v.iconState == 1 then
 					allyBases = allyBases + 1
-				elseif v:find('rightIcon') then
+				end
+			end
+			for _, v in pairs(widgetInfo.rightIcons) do
+				if v.iconState == 1 then
 					hordeBases = hordeBases + 1
 				end
 			end
 		else
-			for k, v in pairs(objectivesStore) do
-				local obj = objectives[k]
-				if v == obj[1] then
-					allyBases = allyBases + 1
-				elseif v == obj[2] then
-					hordeBases = hordeBases + 1
-				end
-			end
+			return
 		end
 		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1671)
 		self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
