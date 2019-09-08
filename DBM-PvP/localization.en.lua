@@ -63,6 +63,15 @@ L:SetOptionLocalization({
 	AutoTurnIn	= "Automatically turn-in quests"
 })
 
+--------------
+--  Ashran  --
+--------------
+L = DBM:GetModLocalization("z1191")
+
+L:SetOptionLocalization({
+	AutoTurnIn	= "Automatically turn-in quests"
+})
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------

@@ -1,6 +1,6 @@
 local mod	= DBM:NewMod("z30", "DBM-PvP")
 
-local pairs, ipairs, type, tonumber, select = pairs, ipairs, type, tonumber, select
+local pairs, ipairs, type, tonumber, select, math = pairs, ipairs, type, tonumber, select, math
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -31,7 +31,6 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-			self:Stop()
 		end
 	end
 
@@ -62,94 +61,95 @@ local quests = {
 }
 
 do
-	local getQuestName
 	do
 		local tooltip = CreateFrame("GameTooltip", "DBM-PvP_Tooltip")
 		tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		tooltip:AddFontStrings(tooltip:CreateFontString("$parentText", nil, "GameTooltipText"), tooltip:CreateFontString("$parentTextRight", nil, "GameTooltipText"))
 
-		function getQuestName(id)
+		local function getQuestName(id)
 			tooltip:ClearLines()
 			tooltip:SetHyperlink("quest:"..id)
 			return _G[tooltip:GetName().."Text"]:GetText()
 		end
-	end
 
-	for _, v in pairs(quests) do
-		if type(v[1]) == "table" then
-			for _, v in ipairs(v) do
+		for _, v in pairs(quests) do
+			if type(v[1]) == "table" then
+				for _, v in ipairs(v) do
+					v[1] = getQuestName(v[1]) or v[1]
+				end
+			else
 				v[1] = getQuestName(v[1]) or v[1]
 			end
-		else
-			v[1] = getQuestName(v[1]) or v[1]
 		end
 	end
 end
 
-local function isQuestAutoTurnInQuest(name)
-	for _, v in pairs(quests) do
-		if type(v[1]) == "table" then
-			for _, v in ipairs(v) do
-				if v[1] == name then
-					return true
+do
+	local UnitGUID, GetTitleText, CompleteQuest, GetQuestReward, GetGossipAvailableQuests, SelectGossipAvailableQuest, GetContainerNumSlots, GetContainerItemLink, GetContainerItemInfo, NUM_BAG_SLOTS = UnitGUID, GetTitleText, CompleteQuest, GetQuestReward, GetGossipAvailableQuests, SelectGossipAvailableQuest, GetContainerNumSlots, GetContainerItemLink, GetContainerItemInfo, NUM_BAG_SLOTS
+
+	local function isQuestAutoTurnInQuest(name)
+		for _, v in pairs(quests) do
+			if type(v[1]) == "table" then
+				for _, v in ipairs(v) do
+					if v[1] == name then
+						return true
+					end
 				end
-			end
-		else
-			if v[1] == name then
+			elseif v[1] == name then
 				return true
 			end
 		end
 	end
-end
 
-local function acceptQuestByName(name)
-	for i = 1, select("#", GetGossipAvailableQuests()), 5 do
-		if select(i, GetGossipAvailableQuests()) == name then
-			SelectGossipAvailableQuest(math.ceil(i / 5))
-			break
-		end
-	end
-end
-
-local function checkItems(item, amount)
-	local found = 0
-	for bag = 0, NUM_BAG_SLOTS do
-		for i = 1, GetContainerNumSlots(bag) do
-			if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
-				found = found + select(2, GetContainerItemInfo(bag, i))
-			end
-		end
-	end
-	return found >= amount
-end
-
-function mod:GOSSIP_SHOW()
-	if not self.Options.AutoTurnIn then
-		return
-	end
-	local quest = quests[tonumber(self:GetCIDFromGUID(UnitGUID("target") or "")) or 0]
-	if quest and type(quest[1]) == "table" then
-		for _, v in ipairs(quest) do
-			if checkItems(v[2], v[3] or 1) then
-				acceptQuestByName(v[1])
+	local function acceptQuestByName(name)
+		for i = 1, select("#", GetGossipAvailableQuests()), 5 do
+			if select(i, GetGossipAvailableQuests()) == name then
+				SelectGossipAvailableQuest(math.ceil(i / 5))
 				break
 			end
 		end
-	elseif quest then
-		if checkItems(quest[2], quest[3] or 1) then
-			acceptQuestByName(quest[1])
+	end
+
+	local function checkItems(item, amount)
+		local found = 0
+		for bag = 0, NUM_BAG_SLOTS do
+			for i = 1, GetContainerNumSlots(bag) do
+				if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
+					found = found + select(2, GetContainerItemInfo(bag, i))
+				end
+			end
+		end
+		return found >= amount
+	end
+
+	function mod:GOSSIP_SHOW()
+		if not self.Options.AutoTurnIn then
+			return
+		end
+		local quest = quests[self:GetCIDFromGUID(UnitGUID("target") or "") or 0]
+		if quest and type(quest[1]) == "table" then
+			for _, v in ipairs(quest) do
+				if checkItems(v[2], v[3] or 1) then
+					acceptQuestByName(v[1])
+					break
+				end
+			end
+		elseif quest then
+			if checkItems(quest[2], quest[3] or 1) then
+				acceptQuestByName(quest[1])
+			end
 		end
 	end
-end
 
-function mod:QUEST_PROGRESS()
-	if isQuestAutoTurnInQuest(GetTitleText()) then
-		CompleteQuest()
+	function mod:QUEST_PROGRESS()
+		if isQuestAutoTurnInQuest(GetTitleText()) then
+			CompleteQuest()
+		end
 	end
-end
 
-function mod:QUEST_COMPLETE()
-	if isQuestAutoTurnInQuest(GetTitleText()) then
-		GetQuestReward(0)
+	function mod:QUEST_COMPLETE()
+		if isQuestAutoTurnInQuest(GetTitleText()) then
+			GetQuestReward(0)
+		end
 	end
 end
