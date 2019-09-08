@@ -336,7 +336,7 @@ do
 
 	local pairs = pairs
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
-	local ignoredAtlas = {112, 397}
+	local ignoredAtlas = {[112] = true, [397] = true}
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
@@ -364,17 +364,17 @@ do
 				end
 				if objectivesStore[infoName] ~= checkState then
 					capTimer:Stop(infoName)
+					objectivesStore[infoName] = checkState
 					if not ignoredAtlas[subscribedMapID] and (isAllyCapped or isHordeCapped) then
 						capTimer:Start(nil, infoName)
 						if isAllyCapped then
 							capTimer:SetColor({r=0, g=0, b=1}, infoName)
-							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
+							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
 						else
 							capTimer:SetColor({r=1, g=0, b=0}, infoName)
-							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
+							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
 						end
 					end
-					objectivesStore[infoName] = checkState
 				end
 			end
 		end
