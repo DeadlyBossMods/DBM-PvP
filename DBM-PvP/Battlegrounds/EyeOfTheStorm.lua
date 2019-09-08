@@ -17,7 +17,7 @@ do
 			modz:SubscribeAssault(
 				DBM:GetCurrentArea() == 566 and 112 or 397,
 				{}, -- This is empty, because we use atlas info
-				{0.01, 1, 2, 5, 10}
+				{1e-300, 1, 2, 5, 10}
 			)
 			modz:SubscribeFlags()
 		end

@@ -16,7 +16,7 @@ do
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				519,
 				{}, -- This is empty, because we use atlas info
-				{0.01, 8 / 5, 16 / 5, 32 / 5}
+				{1e-300, 8 / 5, 16 / 5, 32 / 5}
 			)
 		end
 	end

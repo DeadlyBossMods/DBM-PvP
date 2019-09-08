@@ -17,8 +17,7 @@ do
 				169,
 				-- TODO: Get default ID's
 				{},
-				-- TODO: Get resource info
-				{}
+				{1e-300, 1e-300, 1e-300, 1e-300, 1e-300, 1e-300} -- We don't use resources here
 			)
 		end
 	end

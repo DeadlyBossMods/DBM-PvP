@@ -289,7 +289,7 @@ do
 			winTimer:Update(gameTime, gameTime + hordeTime)
 			winTimer:DisableEnlarge()
 			winTimer:UpdateName(L.WinBarText:format(FACTION_HORDE))
-			winTimer:SetColor({1, 0, 0})
+			winTimer:SetColor({r=1, g=0, b=0})
 			winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
 		elseif hordeTime > allyTime then
 			if scoreFrame1Text and scoreFrame2Text then
@@ -299,7 +299,7 @@ do
 			winTimer:Update(gameTime, gameTime + allyTime)
 			winTimer:DisableEnlarge()
 			winTimer:UpdateName(L.WinBarText:format(FACTION_ALLIANCE))
-			winTimer:SetColor({0, 0, 1})
+			winTimer:SetColor({r=0, g=0, b=1})
 			winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
 		end
 		if self.Options.ShowBasesToWin then
@@ -367,10 +367,10 @@ do
 					if not ignoredAtlas[subscribedMapID] and (isAllyCapped or isHordeCapped) then
 						capTimer:Start(nil, infoName)
 						if isAllyCapped then
-							capTimer:SetColor({0, 0, 1}, infoName)
+							capTimer:SetColor({r=0, g=0, b=1}, infoName)
 							capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
 						else
-							capTimer:SetColor({1, 0, 0}, infoName)
+							capTimer:SetColor({r=1, g=0, b=0}, infoName)
 							capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
 						end
 					end

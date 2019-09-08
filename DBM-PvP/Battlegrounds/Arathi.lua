@@ -28,7 +28,7 @@ do
 				assaultID,
 				-- TODO: Get ID's
 				{["Farm"] = 31, ["Gold Mine"] = 16, ["Lumber Mill"] = 21, ["Stables"] = 36, ["Blacksmith"] = 26},
-				{0.01, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
+				{1e-300, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
 			)
 		end
 	end

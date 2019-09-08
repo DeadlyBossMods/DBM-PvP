@@ -15,7 +15,7 @@ do
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				275,
 				{Lighthouse = {9, 12}, Mines = {17, 19}, Waterworks = {27, 29}},
-				{0.01, 10 / 9, 10 / 3, 30}
+				{1e-300, 10 / 9, 10 / 3, 30}
 			)
 		end
 	end
