@@ -70,8 +70,7 @@ do
 			for _, bar in ipairs(TimerTracker.timerList) do
 				bar.bar:Hide()
 			end
-			remainingTimer:SetTimer(timeSeconds)
-			remainingTimer:Start()
+			remainingTimer:Start(timeSeconds)
 		end
 		self:Schedule(timeSeconds + 1, function()
 			if instanceType == "arena" then
@@ -82,8 +81,7 @@ do
 			if info and info.state == 1 and self.Options.TimerRemaining then
 				local minutes, seconds = info.text:match("(%d+):(%d+)")
 				if minutes and seconds then
-					remainingTimer:SetTimer(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
-					remainingTimer:Start()
+					remainingTimer:Start(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
 				end
 			end
 		end, self)
