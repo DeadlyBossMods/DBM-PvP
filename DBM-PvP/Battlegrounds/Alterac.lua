@@ -22,12 +22,14 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
+			--[[
             DBM:GetModByName("PvPGeneral"):SubscribeAssault(
                 91,
                 -- TODO: Get default ID's
                 {},
                 {0.01, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
             )
+            ]]--
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
