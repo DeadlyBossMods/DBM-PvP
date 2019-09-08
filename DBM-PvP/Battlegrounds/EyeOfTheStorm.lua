@@ -15,7 +15,7 @@ do
 		if DBM:GetCurrentArea() == 566 or DBM:GetCurrentArea() == 968 then
 			local modz = DBM:GetModByName("PvPGeneral")
 			modz:SubscribeAssault(
-				397, -- 112?
+				DBM:GetCurrentArea() == 566 and 112 or 397,
 				{}, -- This is empty, because we use atlas info
 				{0.01, 1, 2, 5, 10}
 			)

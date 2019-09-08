@@ -59,7 +59,8 @@ end
 do
 	local tonumber = tonumber
 	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
-	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", 2457)
+	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup() == "Alliance" and "132486" or "132485")
 	local timerShadow		= mod:NewNextTimer(90, 34709)
 	local timerDamp			= mod:NewCastTimer(300, 110310)
 
@@ -92,7 +93,8 @@ end
 do
 	local format, tostring = format, tostring
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
-	local inviteTimer = mod:NewTimer(60, "TimerInvite", "135986")
+	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	local inviteTimer = mod:NewTimer(60, "TimerInvite", GetPlayerFactionGroup() == "Alliance" and "132486" or "132485")
 
 	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
 		if self.Options.TimerInvite then
@@ -195,7 +197,7 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 		ShowBasesToWin()
 	end
 	self:RegisterShortTermEvents(
-		"AREA_POS_UPDATED",
+		"AREA_POIS_UPDATED",
 		"UPDATE_UI_WIDGET"
 	)
 	subscribedMapID = mapID
@@ -238,10 +240,10 @@ function mod:UnsubscribeFlags()
 end
 
 do
-	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483")
+	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- interface/icons/inv_banner_02.blp
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
-	local function updateflagcarrier(_, _, arg1)
+	local function updateflagcarrier(_, arg1)
 		if arg1:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
 			vulnerableTimer:Cancel()
@@ -249,11 +251,11 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_ALLIANCE(...)
-		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_ALLIANCE", ...)
+		updateflagcarrier(self, ...)
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_HORDE(...)
-		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_HORDE", ...)
+		updateflagcarrier(self, ...)
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
@@ -265,7 +267,8 @@ end
 
 do
 	local GetTime, UnitFactionGroup, FACTION_HORDE, FACTION_ALLIANCE = GetTime, UnitFactionGroup, FACTION_HORDE, FACTION_ALLIANCE
-	local winTimer = mod:NewTimer(30, "TimerWin", "134376")
+	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup() == "Alliance" and "132486" or "132485")
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
 		local gameTime = GetTime()
@@ -332,9 +335,9 @@ do
 
 	local pairs = pairs
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
-	local capTimer = mod:NewTimer(60, "TimerCap", "136002")
+	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
 
-	function mod:AREA_POS_UPDATED(widget)
+	function mod:AREA_POIS_UPDATED(widget)
 		if subscribedMapID == 0 or (widget and widget.widgetID ~= 1671) then
 			return
 		end
@@ -359,7 +362,7 @@ do
 				end
 				if objectivesStore[infoName] ~= checkState then
 					capTimer:Stop(infoName)
-					if isAllyCapped or isHordeCapped then
+					if not atlasName and (isAllyCapped or isHordeCapped) then
 						capTimer:Start(nil, infoName)
 						if isAllyCapped then
 							capTimer:SetColor({0, 0, 1}, infoName)
@@ -398,8 +401,7 @@ do
 		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1671)
 		self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 	end
-
-	mod.UPDATE_UI_WIDGET = mod.AREA_POS_UPDATED
+	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED
 end
 
 --[[

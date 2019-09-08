@@ -36,10 +36,11 @@ do
 end
 
 do
-	local cartTimer	= mod:NewTimer(9.5, "TimerCart", "134376")
+	local cartTimer	= mod:NewTimer(9.5, "TimerCart", "134376") -- interface/icons/inv_misc_pocketwatch_01.blp
 	local cartCount	= 0
 
 	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+		-- TODO: Can we track the differnce between alliance and horde carts?
 		if msg:find(L.Capture) then
 			cartCount = cartCount + 1
 			cartTimer:Start(nil, cartCount)
