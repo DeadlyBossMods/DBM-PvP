@@ -1,8 +1,5 @@
 package-as: DBM-PvP
 enable-nolib-creation: no
 
-ignore:
- - logs
- 
 move-folders:
     DBM-PvP/DBM-PvP: DBM-PvP
