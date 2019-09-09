@@ -89,7 +89,7 @@ do
 end
 
 do
-	local format, tostring = format, tostring
+	local format, tostring = string.format, tostring
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local inviteTimer = mod:NewTimer(60, "TimerInvite", GetPlayerFactionGroup() == "Alliance" and "132486" or "132485")
