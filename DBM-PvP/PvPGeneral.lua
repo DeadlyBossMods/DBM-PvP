@@ -339,7 +339,8 @@ do
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
-		if subscribedMapID ~= 0 and widget and widget.widgetID == 1671 then
+		local widgetID = widget and widget.widgetID
+		if subscribedMapID ~= 0 and widgetID and widgetID == 1671 then
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
@@ -393,7 +394,7 @@ do
 					end
 				end
 			end
-		elseif widget and widget.widgetID == 1683 then
+		elseif widgetID and widgetID == 1683 then
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do
 				if v.iconState == 1 then
@@ -408,8 +409,10 @@ do
 		else
 			return
 		end
-		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1671)
-		self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
+		if info then
+			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+		end
 	end
 	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED
 end
