@@ -15,7 +15,7 @@ do
 	local bgzone = false
 
 	function mod:OnInitialize()
-		if DBM:GetCurrentArea() == 30 then
+		if DBM:GetCurrentArea() == 30 or DBM:GetCurrentArea() == 2197 then
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
