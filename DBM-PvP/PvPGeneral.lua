@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 local ipairs, math = ipairs, math
 local IsInInstance, CreateFrame = IsInInstance, CreateFrame
+local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup("player")--Classic Compat fix
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
