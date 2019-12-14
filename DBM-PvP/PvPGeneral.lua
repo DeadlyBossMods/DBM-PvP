@@ -16,8 +16,8 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
 	"PLAYER_DEAD",
-	"START_TIMER",
-	"UPDATE_BATTLEFIELD_STATUS"
+	"START_TIMER"
+--	"UPDATE_BATTLEFIELD_STATUS"
 )
 
 do
@@ -91,6 +91,7 @@ do
 	end
 end
 
+--[[
 do
 	local format, tostring = string.format, tostring
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
@@ -115,6 +116,7 @@ do
 		end
 	end
 end
+--]]
 
 -- Utility functions
 local scoreFrame1, scoreFrame2, scoreFrameToWin, scoreFrame1Text, scoreFrame2Text, scoreFrameToWinText
