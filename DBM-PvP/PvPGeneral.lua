@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 local ipairs, math = ipairs, math
 local IsInInstance, CreateFrame = IsInInstance, CreateFrame
-local playerFaction = GetPlayerFactionGroup and GetPlayerFactionGroup() or UnitFactionGroup("player")--Classic Compat fix
+local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup--Classic Compat fix
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -61,7 +61,7 @@ do
 	local tonumber = tonumber
 	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
-	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", playerFaction == "Alliance" and "132486" or "132485")
+	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 	local timerShadow		= mod:NewNextTimer(90, 34709)
 	local timerDamp			= mod:NewCastTimer(300, 110310)
 
@@ -93,7 +93,7 @@ do
 	local format, tostring = string.format, tostring
 	local GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE = GetBattlefieldStatus, GetBattlefieldPortExpiration, PVP_TEAMSIZE
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
-	local inviteTimer = mod:NewTimer(60, "TimerInvite", playerFaction == "Alliance" and "132486" or "132485")
+	local inviteTimer = mod:NewTimer(60, "TimerInvite", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 
 	function mod:UPDATE_BATTLEFIELD_STATUS(queueID)
 		if self.Options.TimerInvite then
@@ -266,9 +266,9 @@ do
 end
 
 do
-	local GetTime, UnitFactionGroup, FACTION_HORDE, FACTION_ALLIANCE = GetTime, UnitFactionGroup, FACTION_HORDE, FACTION_ALLIANCE
+	local GetTime, FACTION_HORDE, FACTION_ALLIANCE = GetTime, FACTION_HORDE, FACTION_ALLIANCE
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
-	local winTimer = mod:NewTimer(30, "TimerWin", playerFaction == "Alliance" and "132486" or "132485")
+	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
 		local gameTime = GetTime()
@@ -303,7 +303,7 @@ do
 		end
 		if self.Options.ShowBasesToWin then
 			local friendlyLast, enemyLast, friendlyBases, enemyBases
-			if UnitFactionGroup("player") == "Alliance" then
+			if GetPlayerFactionGroup("player") == "Alliance" then
 				friendlyLast = allianceScore
 				enemyLast = hordeScore
 				friendlyBases = allianceBases
