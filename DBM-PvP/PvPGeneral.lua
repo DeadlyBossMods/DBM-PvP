@@ -68,8 +68,10 @@ do
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
 		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
-			for _, bar in ipairs(TimerTracker.timerList) do
-				bar.bar:Hide()
+			if TimerTracker then
+				for _, bar in ipairs(TimerTracker.timerList) do
+					bar.bar:Hide()
+				end
 			end
 			remainingTimer:Start(timeSeconds)
 		end
