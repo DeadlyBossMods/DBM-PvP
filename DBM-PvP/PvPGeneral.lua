@@ -27,7 +27,11 @@ do
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
-			C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
+			if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+				C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
+			else
+				C_ChatInfo.SendAddonMessage("D4C", "H", "INSTANCE_CHAT")
+			end
 			self:Schedule(3, DBM.RequestTimers, DBM)
 			if not bgzone and self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(1, true)
