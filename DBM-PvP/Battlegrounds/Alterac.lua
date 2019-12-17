@@ -213,7 +213,7 @@ do
 	end
 
 	function mod:AREA_POIS_UPDATED(widget)
-		DBM:Debug("dbmpvp: AREA_POIS_UPDATED "..widget, 2)
+		DBM:Debug("dbmpvp: AREA_POIS_UPDATED "..tostring(widget), 2)
 		if CAP_MAPS[uiMap] == nil then
 			return
 		end
