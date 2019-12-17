@@ -11,6 +11,8 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
+local active_timers = {}
+
 do
 	local bgzone = false
 
@@ -22,17 +24,20 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			--[[
-            DBM:GetModByName("PvPGeneral"):SubscribeAssault(
-                91,
-                -- TODO: Get default ID's
-                {},
-                {0.01, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
-            )
-            ]]--
+			local uiMap = C_Map.GetBestMapForUnit("player")
+			-- 1459 classic av, 1537 korrak
+			if uiMap == 1459 or uiMap == 1537 then
+				self:RegisterShortTermEvents(
+					"AREA_POIS_UPDATED"
+				)
+			end
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
+			for i, timer in pairs(active_timers) do
+				timer:Stop()
+				active_timers[i] = nil
+			end
 		end
 	end
 
@@ -153,5 +158,98 @@ do
 		if isQuestAutoTurnInQuest(GetTitleText()) then
 			GetQuestReward(0)
 		end
+	end
+end
+
+do
+	-- the classic AV timer is 300 seconds or 5 minutes, may as well use this table for that too
+	-- /script for i, x in pairs(C_AreaPoiInfo.GetAreaPOIForMap(1537)) do local a = C_AreaPoiInfo.GetAreaPOIInfo(1537, x); print(tostring(x)..':'..tostring(a.name)..'|'..tostring(a.atlasName or a.textureIndex)) end
+	local CAP_MAPS = {
+		-- AV in classic
+		[1459] = {
+			["Alliance"] = {
+				-- [1] = 300,-- control mine ally
+				[3] = 300,-- capping gy ally
+				[8] = 300,-- capping tower ally
+				-- [10] = 300,-- control tower ally
+				-- [14] = 300,-- control gy ally
+			},
+			["Horde"] = {
+				-- [2] = 300,-- control mine horde
+				-- [9] = 300,-- control tower horde
+				[11] = 300,-- capping tower horde
+				-- [12] = 300,-- control gy horde
+				[13] = 300,-- capping gy horde
+			},
+			-- [0] = 300,-- control mine npc
+			-- [5] = 300,-- destroyed tower (ally & horde)
+			-- [4] = 300,-- ?
+			-- [6] = 300,-- ?
+			-- [7] = 300,-- ?
+		},
+		-- Korrak in retail
+		[1537] = {
+			["Alliance"] = {
+				[9] = 240,-- capping tower
+				[4] = 240,-- capping gy
+			},
+			['Horde'] = {
+				[12] = 240,-- capping tower
+				[14] = 240,-- capping gy
+			},
+		},
+		-- AV in retail
+		-- [??] = {},
+	}
+
+	-- create a mapping for all for the above tables
+	for i, x in pairs(CAP_MAPS) do
+		local all_table = {}
+		x['All'] = all_table
+		for j, y in pairs(x) do
+			if j == "Alliance" or j == 'Horde' then
+				for state, duration in pairs(y) do
+					all_table[state] = duration
+				end
+			end
+		end
+	end
+
+	function mod:AREA_POIS_UPDATED(widget)
+		-- print('dbmpvp: AREA_POIS_UPDATED '..tostring(widget))
+		local mapId = C_Map.GetBestMapForUnit("player")
+		if CAP_MAPS[mapId] == nil then
+			return
+		end
+
+		local CAPPING_INDEXES = CAP_MAPS[mapId]["All"]
+		local ALLY_CAPPING_INDEXES = CAP_MAPS[mapId]["Alliance"]
+
+		for i, x in pairs(C_AreaPoiInfo.GetAreaPOIForMap(mapId)) do
+			local poi = C_AreaPoiInfo.GetAreaPOIInfo(mapId, x)
+			local name = poi.name
+			if CAPPING_INDEXES[poi.textureIndex] and active_timers[name] == nil then
+				-- print('dbmpvp: apcre '..tostring(name)..', '..tostring(poi.textureIndex))
+				local is_alliance = ALLY_CAPPING_INDEXES[poi.textureIndex] and true
+				local timeLeft = (
+					-- this doesn't work in retail or classic, but theres hope ...
+					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(x) or
+					CAPPING_INDEXES[poi.textureIndex]
+				)
+				local timer = mod:NewTimer(
+					timeLeft,
+					name,
+					is_alliance and "132486" or "132485"
+				)
+				timer.keep = true
+				timer:Start()
+				active_timers[name] = timer
+			elseif not CAPPING_INDEXES[poi.textureIndex] and active_timers[name] ~= nil then
+				-- print('dbmpvp: apdel '..tostring(name)..', '..tostring(poi.textureIndex))
+				active_timers[name]:Stop()
+				active_timers[name] = nil
+			end
+		end
+
 	end
 end
