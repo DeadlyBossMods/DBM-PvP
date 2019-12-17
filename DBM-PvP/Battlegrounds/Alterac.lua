@@ -12,27 +12,24 @@ mod:RegisterEvents(
 )
 
 local active_timers = {}
+local uiMap
 
 do
 	local bgzone = false
 
 	function mod:OnInitialize()
-		if DBM:GetCurrentArea() == 30 or DBM:GetCurrentArea() == 2197 then
+		if DBM:GetCurrentArea() == 30 or DBM:GetCurrentArea() == 2197 then--Regular AV (retail and classic), Korrak
 			bgzone = true
+			uiMap = C_Map.GetBestMapForUnit("player")
 			self:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
 				"QUEST_PROGRESS",
-				"QUEST_COMPLETE"
+				"QUEST_COMPLETE",
+				"AREA_POIS_UPDATED"
 			)
-			local uiMap = C_Map.GetBestMapForUnit("player")
-			-- 1459 classic av, 1537 korrak
-			if uiMap == 1459 or uiMap == 1537 then
-				self:RegisterShortTermEvents(
-					"AREA_POIS_UPDATED"
-				)
-			end
 		elseif bgzone then
 			bgzone = false
+			uiMap = nil
 			self:UnregisterShortTermEvents()
 			for i, timer in pairs(active_timers) do
 				timer:Stop()
@@ -216,20 +213,19 @@ do
 	end
 
 	function mod:AREA_POIS_UPDATED(widget)
-		-- print('dbmpvp: AREA_POIS_UPDATED '..tostring(widget))
-		local mapId = C_Map.GetBestMapForUnit("player")
-		if CAP_MAPS[mapId] == nil then
+		DBM:Debug("dbmpvp: AREA_POIS_UPDATED "..widget, 2)
+		if CAP_MAPS[uiMap] == nil then
 			return
 		end
 
-		local CAPPING_INDEXES = CAP_MAPS[mapId]["All"]
-		local ALLY_CAPPING_INDEXES = CAP_MAPS[mapId]["Alliance"]
+		local CAPPING_INDEXES = CAP_MAPS[uiMap]["All"]
+		local ALLY_CAPPING_INDEXES = CAP_MAPS[uiMap]["Alliance"]
 
-		for i, x in pairs(C_AreaPoiInfo.GetAreaPOIForMap(mapId)) do
-			local poi = C_AreaPoiInfo.GetAreaPOIInfo(mapId, x)
+		for i, x in pairs(C_AreaPoiInfo.GetAreaPOIForMap(uiMap)) do
+			local poi = C_AreaPoiInfo.GetAreaPOIInfo(uiMap, x)
 			local name = poi.name
 			if CAPPING_INDEXES[poi.textureIndex] and active_timers[name] == nil then
-				-- print('dbmpvp: apcre '..tostring(name)..', '..tostring(poi.textureIndex))
+				DBM:Debug("dbmpvp: apcre "..tostring(name)..", "..tostring(poi.textureIndex), 2)
 				local is_alliance = ALLY_CAPPING_INDEXES[poi.textureIndex] and true
 				local timeLeft = (
 					-- this doesn't work in retail or classic, but theres hope ...
@@ -245,7 +241,7 @@ do
 				timer:Start()
 				active_timers[name] = timer
 			elseif not CAPPING_INDEXES[poi.textureIndex] and active_timers[name] ~= nil then
-				-- print('dbmpvp: apdel '..tostring(name)..', '..tostring(poi.textureIndex))
+				DBM:Debug("dbmpvp: apdel "..tostring(name)..", "..tostring(poi.textureIndex), 2)
 				active_timers[name]:Stop()
 				active_timers[name] = nil
 			end
