@@ -231,7 +231,7 @@ do
 					-- GetAreaPOISecondsLeft doesn't work in retail?
 					-- Classic never got GetAreaPOISecondsLeft, it still uses GetAreaPOITimeLeft which retail deprecated
 					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(x)
-					or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(x)/60
+					or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(x) and C_AreaPoiInfo.GetAreaPOITimeLeft(x)/60
 					or CAPPING_INDEXES[poi.textureIndex]
 				)
 				local timer = mod:NewTimer(
