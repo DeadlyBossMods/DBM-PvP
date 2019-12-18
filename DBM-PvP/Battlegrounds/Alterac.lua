@@ -13,6 +13,8 @@ mod:RegisterEvents(
 
 local active_states = {}
 local uiMap
+local poiTimer = mod:NewTimer(300, 'TimerCap')
+poiTimer.keep = true
 
 do
 	local bgzone = false
@@ -32,7 +34,7 @@ do
 			bgzone = false
 			uiMap = nil
 			self:UnregisterShortTermEvents()
-			self:Stop()
+			poiTimer:Stop()
 			active_states = {}
 		end
 	end
@@ -210,9 +212,6 @@ do
 			end
 		end
 	end
-
-	local poiTimer = mod:NewTimer(300, 'TimerCap')
-	poiTimer.keep = true
 
 	function mod:AREA_POIS_UPDATED(widget)
 		DBM:Debug("dbmpvp: AREA_POIS_UPDATED "..tostring(widget), 2)
