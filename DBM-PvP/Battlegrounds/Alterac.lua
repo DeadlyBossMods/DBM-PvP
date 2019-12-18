@@ -221,8 +221,8 @@ do
 		local CAPPING_INDEXES = CAP_MAPS[uiMap]["All"]
 		local ALLY_CAPPING_INDEXES = CAP_MAPS[uiMap]["Alliance"]
 
-		for i, x in pairs(C_AreaPoiInfo.GetAreaPOIForMap(uiMap)) do
-			local poi = C_AreaPoiInfo.GetAreaPOIInfo(uiMap, x)
+		for i, areaPoiID in pairs(C_AreaPoiInfo.GetAreaPOIForMap(uiMap)) do
+			local poi = C_AreaPoiInfo.GetAreaPOIInfo(uiMap, areaPoiID)
 			local name = poi.name
 			if CAPPING_INDEXES[poi.textureIndex] and active_timers[name] == nil then
 				DBM:Debug("dbmpvp: apcre "..tostring(name)..", "..tostring(poi.textureIndex), 2)
@@ -230,8 +230,8 @@ do
 				local timeLeft = (
 					-- GetAreaPOISecondsLeft doesn't work in retail?
 					-- Classic never got GetAreaPOISecondsLeft, it still uses GetAreaPOITimeLeft which retail deprecated
-					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(x)
-					or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(x) and C_AreaPoiInfo.GetAreaPOITimeLeft(x)/60
+					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPoiID)
+					or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPoiID) and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPoiID) * 60
 					or CAPPING_INDEXES[poi.textureIndex]
 				)
 				local timer = mod:NewTimer(
