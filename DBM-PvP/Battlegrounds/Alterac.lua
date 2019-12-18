@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
 
-local active_timers = {}
+local active_states = {}
 local uiMap
 
 do
@@ -27,14 +27,13 @@ do
 				"QUEST_COMPLETE",
 				"AREA_POIS_UPDATED"
 			)
+			self:ScheduleMethod(1, "AREA_POIS_UPDATED")
 		elseif bgzone then
 			bgzone = false
 			uiMap = nil
 			self:UnregisterShortTermEvents()
-			for i, timer in pairs(active_timers) do
-				timer:Stop()
-				active_timers[i] = nil
-			end
+			self:Stop()
+			active_states = {}
 		end
 	end
 
@@ -212,6 +211,9 @@ do
 		end
 	end
 
+	local poiTimer = mod:NewTimer(300, 'TimerCap')
+	poiTimer.keep = true
+
 	function mod:AREA_POIS_UPDATED(widget)
 		DBM:Debug("dbmpvp: AREA_POIS_UPDATED "..tostring(widget), 2)
 		if CAP_MAPS[uiMap] == nil then
@@ -224,30 +226,30 @@ do
 		for i, areaPoiID in pairs(C_AreaPoiInfo.GetAreaPOIForMap(uiMap)) do
 			local poi = C_AreaPoiInfo.GetAreaPOIInfo(uiMap, areaPoiID)
 			local name = poi.name
-			if CAPPING_INDEXES[poi.textureIndex] and active_timers[name] == nil then
-				DBM:Debug("dbmpvp: apcre "..tostring(name)..", "..tostring(poi.textureIndex), 2)
-				local is_alliance = ALLY_CAPPING_INDEXES[poi.textureIndex] and true
+			local state = poi.textureIndex
+
+			if CAPPING_INDEXES[state] and active_states[name] ~= state then
+				DBM:Debug("dbmpvp: apcre "..tostring(name)..", "..tostring(state), 2)
+				local is_alliance = ALLY_CAPPING_INDEXES[state] and true
 				local timeLeft = (
 					-- GetAreaPOISecondsLeft doesn't work in retail?
 					-- Classic never got GetAreaPOISecondsLeft, it still uses GetAreaPOITimeLeft which retail deprecated
 					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPoiID)
 					or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPoiID) and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPoiID) * 60
-					or CAPPING_INDEXES[poi.textureIndex]
+					or CAPPING_INDEXES[state]
 				)
-				local timer = mod:NewTimer(
+				local bar = poiTimer:Start(
 					timeLeft,
-					name,
-					is_alliance and "132486" or "132485"
+					name
 				)
-				timer.keep = true
-				timer:Start()
-				active_timers[name] = timer
-			elseif not CAPPING_INDEXES[poi.textureIndex] and active_timers[name] ~= nil then
-				DBM:Debug("dbmpvp: apdel "..tostring(name)..", "..tostring(poi.textureIndex), 2)
-				active_timers[name]:Stop()
-				active_timers[name] = nil
+				bar:SetText(name)
+				bar:SetIcon(is_alliance and "132486" or "132485")
+				active_states[name] = state
+			elseif not CAPPING_INDEXES[state] and active_states[name] ~= nil then
+				DBM:Debug("dbmpvp: apdel "..tostring(name)..", "..tostring(state), 2)
+				active_states[name] = nil
+				poiTimer:Stop(name)
 			end
 		end
-
 	end
 end
