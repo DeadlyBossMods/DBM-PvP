@@ -228,9 +228,11 @@ do
 				DBM:Debug("dbmpvp: apcre "..tostring(name)..", "..tostring(poi.textureIndex), 2)
 				local is_alliance = ALLY_CAPPING_INDEXES[poi.textureIndex] and true
 				local timeLeft = (
-					-- this doesn't work in retail or classic, but theres hope ...
-					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(x) or
-					CAPPING_INDEXES[poi.textureIndex]
+					-- GetAreaPOISecondsLeft doesn't work in retail?
+					-- Classic never got GetAreaPOISecondsLeft, it still uses GetAreaPOITimeLeft which retail deprecated
+					C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(x)
+					or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(x)/60
+					or CAPPING_INDEXES[poi.textureIndex]
 				)
 				local timer = mod:NewTimer(
 					timeLeft,
