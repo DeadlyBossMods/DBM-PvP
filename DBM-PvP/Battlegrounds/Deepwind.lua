@@ -12,7 +12,7 @@ mod:RegisterEvents(
 
 do
 	function mod:OnInitialize()
-		if 1105 == DBM:GetCurrentArea() then
+		if DBM:GetCurrentArea() == 1105 then
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				519,
 				{}, -- This is empty, because we use atlas info
