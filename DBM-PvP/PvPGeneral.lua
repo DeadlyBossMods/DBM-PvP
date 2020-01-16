@@ -349,7 +349,8 @@ do
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
 		local widgetID = widget and widget.widgetID
-		if subscribedMapID ~= 0 and widgetID and widgetID == 1671 then
+		-- Standard battleground score predictor: 1671. Deepwind rework: 2074
+		if subscribedMapID ~= 0 and widgetID and (widgetID == 1671 or widgetID == 2074) then
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
