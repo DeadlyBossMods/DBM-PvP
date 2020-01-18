@@ -15,7 +15,7 @@ do
 		if DBM:GetCurrentArea() == 628 then
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				169,
-				{["Refinery"]: {152,153,154,155}, ["Quarry"]: {17,18,19,20}, ["Docks"]: {147,148,149,150}, ["Workshop"]: {137,138,139,140}, ["Hangar"]: {142,143,144,145}}
+				{["Refinery"] = {152,153,154,155}, ["Quarry"] = {17,18,19,20}, ["Docks"] = {147,148,149,150}, ["Workshop"] = {137,138,139,140}, ["Hangar"] = {142,143,144,145}}
 			)
 			-- TODO: Add gate health
 			-- TODO: Add boss health
