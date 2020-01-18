@@ -317,7 +317,7 @@ do
 				friendlyBases = allianceBases
 				enemyBases = hordeBases
 			else
-				friendlyLast =hordeScore
+				friendlyLast = hordeScore
 				enemyLast = allianceScore
 				friendlyBases = hordeBases
 				enemyBases = allianceBases

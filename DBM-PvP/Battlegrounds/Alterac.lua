@@ -21,6 +21,7 @@ do
 
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 30 or DBM:GetCurrentArea() == 2197 then--Regular AV (retail and classic), Korrak
+			-- mapID: 30 and 91 or 1537 -- Regular AV (retail and classic), Korrak
 			bgzone = true
 			uiMap = C_Map.GetBestMapForUnit("player")
 			self:RegisterShortTermEvents(
