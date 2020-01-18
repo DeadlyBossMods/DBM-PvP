@@ -9,6 +9,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA"
 )
+
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 761 then
