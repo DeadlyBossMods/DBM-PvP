@@ -26,7 +26,7 @@ do
 			end
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				assaultID,
-				{["Farm"] = {32,34}, ["Gold Mine"] = {13,15}, ["Lumber Mill"] = {22,24}, ["Stables"] = {37,39}, ["Blacksmith"] = {27,29}}
+				{["Farm"] = {32,33,34,35}, ["Gold Mine"] = {17,18,19,20}, ["Lumber Mill"] = {22,23,24,25}, ["Stables"] = {37,38,39,40}, ["Blacksmith"] = {27,28,29,30}}
 			)
 		end
 	end

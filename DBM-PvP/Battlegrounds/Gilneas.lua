@@ -14,7 +14,7 @@ do
 		if DBM:GetCurrentArea() == 761 then
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				275,
-				{["Lighthouse"] = {11, 14}, ["Mines"] = {18, 20}, ["Waterworks"] = {28, 30}}
+				{["Lighthouse"] = {9,11,12,13}, ["Mines"] = {17,18,19,20}, ["Waterworks"] = {27,28,29,30}}
 			)
 		end
 	end

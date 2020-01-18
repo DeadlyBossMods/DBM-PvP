@@ -179,7 +179,7 @@ local function HideBasesToWin()
 	end
 end
 
-local subscribedMapID, objectivesStore = 0, {}
+local subscribedMapID, numObjectives, objectivesStore = 0, {}
 local objectives
 
 function mod:SubscribeAssault(mapID, objects)
@@ -210,6 +210,10 @@ function mod:SubscribeAssault(mapID, objects)
 	subscribedMapID = mapID
 	objectives = objects
 	objectivesStore = {}
+	numObjectives = 0
+	for _, _ in pairs(objects) do
+		numObjectives = numObjectives + 1
+	end
 end
 
 -- Debug
@@ -281,9 +285,9 @@ do
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 	local resourcesPerSec = {
-		[3] = {1e-300, 10 / 9, 10 / 3, 30},
-		[4] = {1e-300, 4.5 / 5, 9 / 5, 13.5 / 5, 18 / 5},
-		[5] = {1e-300, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
+		[3] = {1e-300, 1, 3, 30--[[Unknown]]}, -- Gilneas
+		[4] = {1e-300, 1--[[Unknown]], 2--[[Unknown]], 3--[[Unknown]], 4--[[Unknown]]}, -- TempleOfKotmogu
+		[5] = {1e-300, 2, 3, 4, 7, 10--[[Unknown]], 30--[[Unknown]]} -- Arathi/Deepwind
 	}
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
@@ -297,7 +301,7 @@ do
 			prevHScore = hordeScore
 		end
 		-- End debug
-		local resPerSec = resourcesPerSec[#objectives]
+		local resPerSec = resourcesPerSec[numObjectives]
 		local gameTime = GetTime()
 		local allyTime = math.min(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
 		local hordeTime = math.min(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
@@ -375,26 +379,24 @@ do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
 				local infoName, atlasName, infoTexture = areaPOIInfo.name, areaPOIInfo.atlasName, areaPOIInfo.textureIndex
 				if infoName then
-					local isAllyCapped, isHordeCapped, checkState
+					local isAllyCapping, isHordeCapping
 					if atlasName then
 						isAtlas = true
-						isAllyCapped = atlasName:find('leftIcon')
-						isHordeCapped = atlasName:find('rightIcon')
-						checkState = atlasName
+						isAllyCapping = atlasName:find('leftIcon')
+						isHordeCapping = atlasName:find('rightIcon')
 					elseif infoTexture then
 						local capStates = objectives[infoName]
 						if capStates then
-							isAllyCapped = infoTexture == capStates[1]
-							isHordeCapped = infoTexture == capStates[2]
-							checkState = infoTexture
+							isAllyCapping = infoTexture == capStates[1]
+							isHordeCapping = infoTexture == capStates[3]
 						end
 					end
-					if objectivesStore[infoName] ~= checkState then
+					if objectivesStore[infoName] ~= atlasName and atlasName or infoTexture then
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = checkState
-						if not ignoredAtlas[subscribedMapID] and (isAllyCapped or isHordeCapped) then
+						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
 							capTimer:Start(nil, infoName)
-							if isAllyCapped then
+							if isAllyCapping then
 								capTimer:SetColor({r=0, g=0, b=1}, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
 							else
@@ -416,9 +418,9 @@ do
 			else
 				for k, v in pairs(objectivesStore) do
 					local obj = objectives[k]
-					if v == obj[1] then
+					if v == obj[2] then
 						allyBases = allyBases + 1
-					elseif v == obj[2] then
+					elseif v == obj[4] then
 						hordeBases = hordeBases + 1
 					end
 				end
