@@ -17,8 +17,7 @@ do
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				169,
 				-- TODO: Get default ID's
-				{},
-				{1e-300, 1e-300, 1e-300, 1e-300, 1e-300, 1e-300} -- We don't use resources here
+				{}
 			)
 			--]]
 		end

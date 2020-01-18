@@ -179,11 +179,10 @@ local function HideBasesToWin()
 	end
 end
 
-local subscribedMapID = 0
-local objectives, resPerSec
-local objectivesStore = {}
+local subscribedMapID, objectivesStore = 0, {}
+local objectives
 
-function mod:SubscribeAssault(mapID, objects, rezPerSec)
+function mod:SubscribeAssault(mapID, objects)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
 		if self.Options.ShowEstimatedPoints then
 			ShowEstimatedPoints()
@@ -210,9 +209,11 @@ function mod:SubscribeAssault(mapID, objects, rezPerSec)
 	)
 	subscribedMapID = mapID
 	objectives = objects
-	resPerSec = rezPerSec
 	objectivesStore = {}
 end
+
+-- Debug
+local prevAScore, prevHScore = 0, 0
 
 function mod:UnsubscribeAssault()
 	HideEstimatedPoints()
@@ -220,6 +221,8 @@ function mod:UnsubscribeAssault()
 	self:UnregisterShortTermEvents()
 	self:Stop()
 	subscribedMapID = 0
+	-- Debug
+	prevAScore, prevHScore = 0, 0
 end
 
 local SetCVar, GetCVar = C_CVar and C_CVar.SetCVar or SetCVar, C_CVar and C_CVar.GetCVar or GetCVar
@@ -277,8 +280,24 @@ do
 	local GetTime, FACTION_HORDE, FACTION_ALLIANCE = GetTime, FACTION_HORDE, FACTION_ALLIANCE
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
+	local resourcesPerSec = {
+		[3] = {1e-300, 10 / 9, 10 / 3, 30},
+		[4] = {1e-300, 4.5 / 5, 9 / 5, 13.5 / 5, 18 / 5},
+		[5] = {1e-300, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
+	}
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
+		-- Start debug
+		if prevAScore ~= allianceScore then
+			DBM:Debug("Alliance: +" .. allianceScore - prevAScore .. " (" .. allianceBases .. ")")
+			prevAScore = allianceScore
+		end
+		if prevHScore ~= hordeScore then
+			DBM:Debug("Horde: +" .. hordeScore - prevHScore .. " (" .. hordeBases .. ")")
+			prevHScore = hordeScore
+		end
+		-- End debug
+		local resPerSec = resourcesPerSec[#objectives]
 		local gameTime = GetTime()
 		local allyTime = math.min(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
 		local hordeTime = math.min(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])

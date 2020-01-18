@@ -15,8 +15,7 @@ do
 		if DBM:GetCurrentArea() == 2245 then -- Previously zone 1105
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				1576, -- Previously 519, now 1576
-				{["Quarry"] = {18,20}, ["Farm"] = {33,35},  ["Market"] = {205,206}, ["Ruins"] = {210,211}, ["Shrine"] = {215,216}},
-				{1e-300, 10 / 12, 10 / 9, 10 / 6, 10 / 3, 30}
+				{["Quarry"] = {18,20}, ["Farm"] = {33,35},  ["Market"] = {205,206}, ["Ruins"] = {210,211}, ["Shrine"] = {215,216}}
 			)
 		end
 	end
