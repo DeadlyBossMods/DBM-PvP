@@ -55,7 +55,7 @@ function mod:VIGNETTES_UPDATED()
 	for i = 1, #vignetteids do
 		local vignette = C_VignetteInfo.GetVignetteInfo(vignetteids[i])
 		if vignette then
-			local x, y = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 1803):GetXY()
+			local x, y = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907):GetXY()
 			local pos = x .. ":" .. y
 			checkedThisRound[pos] = true
 			if not knownAzerite[pos] then
