@@ -54,16 +54,18 @@ function mod:VIGNETTES_UPDATED()
 	local vignetteids = C_VignetteInfo.GetVignettes()
 	for i = 1, #vignetteids do
 		local vignette = C_VignetteInfo.GetVignetteInfo(vignetteids[i])
-		local x, y = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 1803):GetXY()
-		local pos = x .. ":" .. y
-		checkedThisRound[pos] = true
-		if not knownAzerite[pos] then
-			knownAzerite[pos] = true
-			local atlasName = vignette.atlasName
-			if atlasName == "AzeriteSpawning" then
-				spawnTimer:Start(nil, azeriteNames[pos])
-			elseif atlasName == "AzeriteReady" then
-				spawnTimer:Stop(azeriteNames[pos])
+		if vignette then
+			local x, y = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 1803):GetXY()
+			local pos = x .. ":" .. y
+			checkedThisRound[pos] = true
+			if not knownAzerite[pos] then
+				knownAzerite[pos] = true
+				local atlasName = vignette.atlasName
+				if atlasName == "AzeriteSpawning" then
+					spawnTimer:Start(nil, azeriteNames[pos])
+				elseif atlasName == "AzeriteReady" then
+					spawnTimer:Stop(azeriteNames[pos])
+				end
 			end
 		end
 	end
