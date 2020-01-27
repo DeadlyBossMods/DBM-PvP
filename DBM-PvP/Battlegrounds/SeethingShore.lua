@@ -54,7 +54,7 @@ function mod:VIGNETTES_UPDATED()
 	local vignetteids = C_VignetteInfo.GetVignettes()
 	for i = 1, #vignetteids do
 		local vignette = C_VignetteInfo.GetVignetteInfo(vignetteids[i])
-		if vignette then
+		if vignette and vignette.vignetteGUID then
 			local x, y = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907):GetXY()
 			local pos = x .. ":" .. y
 			checkedThisRound[pos] = true
