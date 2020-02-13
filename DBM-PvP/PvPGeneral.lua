@@ -151,8 +151,8 @@ local function HideBasesToWin()
 	end
 end
 
-local subscribedMapID, numObjectives, objectivesStore = 0, {}
-local objectives
+local subscribedMapID = 0
+local objectives, numObjectives, objectivesStore
 
 function mod:SubscribeAssault(mapID, objects)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
@@ -261,19 +261,40 @@ do
 		[4] = {1e-300, 1--[[Unknown]], 2--[[Unknown]], 3--[[Unknown]], 4--[[Unknown]]}, -- TempleOfKotmogu
 		[5] = {1e-300, 2, 3, 4, 7, 10--[[Unknown]], 30--[[Unknown]]} -- Arathi/Deepwind
 	}
+	-- Debug
+	local lastWarnTime = GetTime()
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
+		local resPerSec = resourcesPerSec[numObjectives]
 		-- Start debug
-		if prevAScore ~= allianceScore then
+		local shouldWarn = GetTime() - lastWarnTime > 30
+		local hasWarned = false
+		if prevAScore == 0 then
+			prevAScore = allianceScore
+		end
+		if prevAScore ~= allianceScore and allianceScore < maxScore then
+			if (allianceScore - prevAScore) ~= resPerSec[allianceBases + 1] and shouldWarn then
+				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (A," .. (allianceScore - prevAScore) .. "," .. allianceBases .. "," .. resPerSec[allianceBases + 1]  .. ")")
+				hasWarned = true
+			end
 			DBM:Debug("Alliance: +" .. allianceScore - prevAScore .. " (" .. allianceBases .. ")")
 			prevAScore = allianceScore
 		end
-		if prevHScore ~= hordeScore then
+		if prevHScore == 0 then
+			prevHScore = hordeScore
+		end
+		if prevHScore ~= hordeScore and hordeScore < maxScore then
+			if (hordeScore - prevHScore) ~= resPerSec[hordeBases + 1] and shouldWarn then
+				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (H," .. (hordeScore - prevHScore) .. "," .. hordeBases .. "," .. resPerSec[hordeBases + 1]  .. ")")
+				hasWarned = true
+			end
 			DBM:Debug("Horde: +" .. hordeScore - prevHScore .. " (" .. hordeBases .. ")")
 			prevHScore = hordeScore
 		end
+		if hasWarned then
+			lastWarnTime = GetTime()
+		end
 		-- End debug
-		local resPerSec = resourcesPerSec[numObjectives]
 		local gameTime = GetTime()
 		local allyTime = math.min(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
 		local hordeTime = math.min(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
@@ -363,9 +384,9 @@ do
 							isHordeCapping = infoTexture == capStates[3]
 						end
 					end
-					if objectivesStore[infoName] ~= atlasName and atlasName or infoTexture then
+					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
 						capTimer:Stop(infoName)
-						objectivesStore[infoName] = atlasName and atlasName or infoTexture
+						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
 							capTimer:Start(nil, infoName)
 							if isAllyCapping then
