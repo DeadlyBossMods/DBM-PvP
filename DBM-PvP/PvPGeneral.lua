@@ -261,21 +261,16 @@ do
 		[4] = {1e-300, 1--[[Unknown]], 2--[[Unknown]], 3--[[Unknown]], 4--[[Unknown]]}, -- TempleOfKotmogu
 		[5] = {1e-300, 2, 3, 4, 7, 10--[[Unknown]], 30--[[Unknown]]} -- Arathi/Deepwind
 	}
-	-- Debug
-	local lastWarnTime = GetTime()
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
 		local resPerSec = resourcesPerSec[numObjectives]
 		-- Start debug
-		local shouldWarn = GetTime() - lastWarnTime > 30
-		local hasWarned = false
 		if prevAScore == 0 then
 			prevAScore = allianceScore
 		end
 		if prevAScore ~= allianceScore and allianceScore < maxScore then
-			if (allianceScore - prevAScore) ~= resPerSec[allianceBases + 1] and shouldWarn then
+			if (allianceScore - prevAScore) ~= resPerSec[allianceBases + 1] and DBM:AntiSpam(30, "PvPAWarn") then
 				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (A," .. (allianceScore - prevAScore) .. "," .. allianceBases .. "," .. resPerSec[allianceBases + 1]  .. ")")
-				hasWarned = true
 			end
 			DBM:Debug("Alliance: +" .. allianceScore - prevAScore .. " (" .. allianceBases .. ")")
 			prevAScore = allianceScore
@@ -284,15 +279,11 @@ do
 			prevHScore = hordeScore
 		end
 		if prevHScore ~= hordeScore and hordeScore < maxScore then
-			if (hordeScore - prevHScore) ~= resPerSec[hordeBases + 1] and shouldWarn then
+			if (hordeScore - prevHScore) ~= resPerSec[hordeBases + 1] and DBM:AntiSpam(30, "PvPHWarn") then
 				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (H," .. (hordeScore - prevHScore) .. "," .. hordeBases .. "," .. resPerSec[hordeBases + 1]  .. ")")
-				hasWarned = true
 			end
 			DBM:Debug("Horde: +" .. hordeScore - prevHScore .. " (" .. hordeBases .. ")")
 			prevHScore = hordeScore
-		end
-		if hasWarned then
-			lastWarnTime = GetTime()
 		end
 		-- End debug
 		local gameTime = GetTime()
