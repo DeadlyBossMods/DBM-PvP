@@ -15,7 +15,7 @@ do
 		if DBM:GetCurrentArea() == 998 then
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
 				0, -- We don't need an assault ID
-				{} -- This is empty because we don't use POIS
+				{{}, {}, {}, {}} -- 4 objectives
 			)
 		end
 	end

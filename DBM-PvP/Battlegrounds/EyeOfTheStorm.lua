@@ -16,7 +16,7 @@ do
 			local modz = DBM:GetModByName("PvPGeneral")
 			modz:SubscribeAssault(
 				DBM:GetCurrentArea() == 566 and 112 or 397,
-				{} -- This is empty, because we use atlas info
+				{{}, {}, {}, {}} -- 4 objectives
 			)
 			modz:SubscribeFlags()
 		end

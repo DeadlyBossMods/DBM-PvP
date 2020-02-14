@@ -253,12 +253,13 @@ do
 end
 
 do
+	local type = type
 	local GetTime, FACTION_HORDE, FACTION_ALLIANCE = GetTime, FACTION_HORDE, FACTION_ALLIANCE
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 	local resourcesPerSec = {
 		[3] = {1e-300, 1, 3, 30--[[Unknown]]}, -- Gilneas
-		[4] = {1e-300, 1--[[Unknown]], 2--[[Unknown]], 3--[[Unknown]], 4--[[Unknown]]}, -- TempleOfKotmogu
+		[4] = {1e-300, 2, 3, 5--[[Unknown]], 10--[[Unknown]]}, -- TempleOfKotmogu/EyeOfTheStorm
 		[5] = {1e-300, 2, 3, 4, 7, 10--[[Unknown]], 30--[[Unknown]]} -- Arathi/Deepwind
 	}
 
@@ -268,7 +269,8 @@ do
 		if prevAScore == 0 then
 			prevAScore = allianceScore
 		end
-		if prevAScore ~= allianceScore and allianceScore < maxScore then
+		--							Higher than max (when they win) OR larger than 50 (flag cap)
+		if prevAScore ~= allianceScore and allianceScore < maxScore and (allianceScore - prevAScore) < 50 then
 			if (allianceScore - prevAScore) ~= resPerSec[allianceBases + 1] and DBM:AntiSpam(30, "PvPAWarn") then
 				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (A," .. (allianceScore - prevAScore) .. "," .. allianceBases .. "," .. resPerSec[allianceBases + 1]  .. ")")
 			end
@@ -278,7 +280,8 @@ do
 		if prevHScore == 0 then
 			prevHScore = hordeScore
 		end
-		if prevHScore ~= hordeScore and hordeScore < maxScore then
+		--							Higher than max (when they win) OR larger than 50 (flag cap)
+		if prevHScore ~= hordeScore and hordeScore < maxScore and (hordeScore - prevHScore) < 50 then
 			if (hordeScore - prevHScore) ~= resPerSec[hordeBases + 1] and DBM:AntiSpam(30, "PvPHWarn") then
 				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (H," .. (hordeScore - prevHScore) .. "," .. hordeBases .. "," .. resPerSec[hordeBases + 1]  .. ")")
 			end
@@ -392,8 +395,10 @@ do
 				end
 			end
 			if isAtlas then
-				for _, v in ipairs(objectivesStore) do
-					if v:find('leftIcon') then
+				for _, v in pairs(objectivesStore) do
+					if type(v) ~= "string" then
+						-- Do nothing
+					elseif v:find('leftIcon') then
 						allyBases = allyBases + 1
 					elseif v:find('rightIcon') then
 						hordeBases = hordeBases + 1
@@ -409,7 +414,7 @@ do
 					end
 				end
 			end
-		elseif widgetID and widgetID == 1683 then
+		elseif widgetID and widgetID == 1683 then -- TempleOfKotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do
 				if v.iconState == 1 then
