@@ -24,7 +24,6 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			self:ScheduleMethod(1, "AREA_POIS_UPDATED")
 			local assaultID
 			if zoneID == 30 then
 				assaultID = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and 30 or 91
