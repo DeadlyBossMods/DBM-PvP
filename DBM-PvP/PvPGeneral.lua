@@ -356,7 +356,7 @@ do
 		[91]    = 304,
 		[1537]  = 240
 	}
-	local States = {
+	local State = {
 		["ALLY_CONTESTED"]      = 1,
 		["ALLY_CONTROLLED"]     = 2,
 		["HORDE_CONTESTED"]     = 3,
@@ -364,15 +364,15 @@ do
 	}
 	local icons = {
 		-- Graveyard
-		[isClassic and 3 or 4]      = States.ALLY_CONTESTED,
-		[isClassic and 14 or 15]    = States.ALLY_CONTROLLED,
-		[isClassic and 13 or 14]    = States.HORDE_CONTESTED,
-		[isClassic and 12 or 13]    = States.HORDE_CONTROLLED,
+		[isClassic and 3 or 4]      = State.ALLY_CONTESTED,
+		[isClassic and 14 or 15]    = State.ALLY_CONTROLLED,
+		[isClassic and 13 or 14]    = State.HORDE_CONTESTED,
+		[isClassic and 12 or 13]    = State.HORDE_CONTROLLED,
 		-- Tower/Lighthouse
-		[isClassic and 8 or 9]      = States.ALLY_CONTESTED,
-		[isClassic and 10 or 11]    = States.ALLY_CONTROLLED,
-		[isClassic and 11 or 12]    = States.HORDE_CONTESTED,
-		[isClassic and 9 or 10]     = States.HORDE_CONTROLLED,
+		[isClassic and 8 or 9]      = State.ALLY_CONTESTED,
+		[isClassic and 10 or 11]    = State.ALLY_CONTROLLED,
+		[isClassic and 11 or 12]    = State.HORDE_CONTESTED,
+		[isClassic and 9 or 10]     = State.HORDE_CONTROLLED,
 		-- Mine/Quarry
 		[17]                        = State.ALLY_CONTESTED,
 		[18]                        = State.ALLY_CONTROLLED,
@@ -455,10 +455,8 @@ do
 						isAllyCapping = atlasName:find('leftIcon')
 						isHordeCapping = atlasName:find('rightIcon')
 					elseif infoTexture then
-						if capStates then
-							isAllyCapping = icons[infoTexture] == State.ALLY_CONTESTED
-							isHordeCapping = icons[infoTexture] == State.HORDE_CONTESTED
-						end
+						isAllyCapping = icons[infoTexture] == State.ALLY_CONTESTED
+						isHordeCapping = icons[infoTexture] == State.HORDE_CONTESTED
 					end
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
 						capTimer:Stop(infoName)
