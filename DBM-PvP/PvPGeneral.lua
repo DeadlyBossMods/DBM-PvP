@@ -26,11 +26,7 @@ do
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
-			if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
-				C_ChatInfo.SendAddonMessage("D4", "H", "INSTANCE_CHAT")
-			else
-				C_ChatInfo.SendAddonMessage("D4C", "H", "INSTANCE_CHAT")
-			end
+			C_ChatInfo.SendAddonMessage(WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC and "D4" or "D4C", "H", "INSTANCE_CHAT")
 			self:Schedule(3, DBM.RequestTimers, DBM)
 			if not bgzone and self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(1, true)
@@ -230,8 +226,8 @@ do
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- interface/icons/inv_banner_02.blp
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 
-	local function updateflagcarrier(_, arg1)
-		if arg1:match(L.ExprFlagCaptured) then
+	local function updateflagcarrier(_, msg)
+		if msg:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
 			vulnerableTimer:Cancel()
 		end
@@ -246,7 +242,7 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
+		if msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
 			vulnerableTimer:Start()
 		end
 	end
@@ -359,8 +355,11 @@ do
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
 		local widgetID = widget and widget.widgetID
+		if not widgetID then
+			return
+		end
 		-- Standard battleground score predictor: 1671. Deepwind rework: 2074
-		if subscribedMapID ~= 0 and widgetID and (widgetID == 1671 or widgetID == 2074) then
+		if subscribedMapID ~= 0 and (widgetID == 1671 or widgetID == 2074) then
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
@@ -414,7 +413,9 @@ do
 					end
 				end
 			end
-		elseif widgetID and widgetID == 1683 then -- TempleOfKotmogu
+			local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
+			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+		elseif widgetID == 1683 then -- TempleOfKotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do
 				if v.iconState == 1 then
@@ -426,11 +427,7 @@ do
 					hordeBases = hordeBases + 1
 				end
 			end
-		else
-			return
-		end
-		local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
-		if info then
+			local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1689)
 			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 		end
 	end
