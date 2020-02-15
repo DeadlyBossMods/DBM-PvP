@@ -17,9 +17,11 @@ do
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then--Classic Arathi, Winter, Remastered Retail, AI
 			local assaultID
-			if zoneID == 1681 then
+			if zoneID == 529 then
+				assaultID = 1461
+			elseif zoneID == 1681 then
 				assaultID = 837
-			elseif zoneID == 2107 or zoneID == 529 then--Assumed classic also uses assault 93, verify
+			elseif zoneID == 2107 then
 				assaultID = 93
 			elseif zoneID == 2177 then
 				assaultID = 1383
