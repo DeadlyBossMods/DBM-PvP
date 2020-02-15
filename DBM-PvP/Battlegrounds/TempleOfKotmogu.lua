@@ -13,10 +13,7 @@ mod:RegisterEvents(
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 998 then
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
-				0, -- We don't need an assault ID
-				{{}, {}, {}, {}} -- 4 objectives
-			)
+			DBM:GetModByName("PvPGeneral"):SubscribeAssault(0, 4)
 		end
 	end
 

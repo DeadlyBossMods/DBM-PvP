@@ -1,6 +1,8 @@
 local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
+local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
 local ipairs, math = ipairs, math
 local IsInInstance, CreateFrame = IsInInstance, CreateFrame
 local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup--Classic Compat fix
@@ -26,7 +28,7 @@ do
 	function mod:ZONE_CHANGED_NEW_AREA()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
-			C_ChatInfo.SendAddonMessage(WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC and "D4" or "D4C", "H", "INSTANCE_CHAT")
+			C_ChatInfo.SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
 			self:Schedule(3, DBM.RequestTimers, DBM)
 			if not bgzone and self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(1, true)
@@ -148,9 +150,9 @@ local function HideBasesToWin()
 end
 
 local subscribedMapID = 0
-local objectives, numObjectives, objectivesStore
+local numObjectives, objectivesStore
 
-function mod:SubscribeAssault(mapID, objects)
+function mod:SubscribeAssault(mapID, objectsCount)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
 		if self.Options.ShowEstimatedPoints then
 			ShowEstimatedPoints()
@@ -176,12 +178,8 @@ function mod:SubscribeAssault(mapID, objects)
 		"UPDATE_UI_WIDGET"
 	)
 	subscribedMapID = mapID
-	objectives = objects
 	objectivesStore = {}
-	numObjectives = 0
-	for _, _ in pairs(objects) do
-		numObjectives = numObjectives + 1
-	end
+	numObjectives = objectsCount
 end
 
 -- Debug
@@ -349,18 +347,103 @@ do
 
 	local pairs = pairs
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
-	local ignoredAtlas = {[112] = true, [397] = true}
-	local overrideTimers = {[30] = 304, [91] = 304, [1537] = 240}
+	local ignoredAtlas = {
+		[112]   = true,
+		[397]   = true
+	}
+	local overrideTimers = {
+		[30]    = 304,
+		[91]    = 304,
+		[1537]  = 240
+	}
+	local States = {
+		["ALLY_CONTESTED"]      = 1,
+		["ALLY_CONTROLLED"]     = 2,
+		["HORDE_CONTESTED"]     = 3,
+		["HORDE_CONTROLLED"]    = 4
+	}
+	local icons = {
+		-- Graveyard
+		[isClassic and 3 or 4]      = States.ALLY_CONTESTED,
+		[isClassic and 14 or 15]    = States.ALLY_CONTROLLED,
+		[isClassic and 13 or 14]    = States.HORDE_CONTESTED,
+		[isClassic and 12 or 13]    = States.HORDE_CONTROLLED,
+		-- Tower/Lighthouse
+		[isClassic and 8 or 9]      = States.ALLY_CONTESTED,
+		[isClassic and 10 or 11]    = States.ALLY_CONTROLLED,
+		[isClassic and 11 or 12]    = States.HORDE_CONTESTED,
+		[isClassic and 9 or 10]     = States.HORDE_CONTROLLED,
+		-- Mine/Quarry
+		[17]                        = State.ALLY_CONTESTED,
+		[18]                        = State.ALLY_CONTROLLED,
+		[19]                        = State.HORDE_CONTESTED,
+		[20]                        = State.HORDE_CONTROLLED,
+		-- Lumber
+		[22]                        = State.ALLY_CONTESTED,
+		[23]                        = State.ALLY_CONTROLLED,
+		[24]                        = State.HORDE_CONTESTED,
+		[25]                        = State.HORDE_CONTROLLED,
+		-- Blacksmith/Waterworks
+		[27]                        = State.ALLY_CONTESTED,
+		[28]                        = State.ALLY_CONTROLLED,
+		[29]                        = State.HORDE_CONTESTED,
+		[30]                        = State.HORDE_CONTROLLED,
+		-- Farm
+		[32]                        = State.ALLY_CONTESTED,
+		[33]                        = State.ALLY_CONTROLLED,
+		[34]                        = State.HORDE_CONTESTED,
+		[35]                        = State.HORDE_CONTROLLED,
+		-- Stables
+		[37]                        = State.ALLY_CONTESTED,
+		[38]                        = State.ALLY_CONTROLLED,
+		[39]                        = State.HORDE_CONTESTED,
+		[40]                        = State.HORDE_CONTROLLED,
+		-- Workshop
+		[137]                       = State.ALLY_CONTESTED,
+		[138]                       = State.ALLY_CONTROLLED,
+		[139]                       = State.HORDE_CONTESTED,
+		[140]                       = State.HORDE_CONTROLLED,
+		-- Hangar
+		[142]                       = State.ALLY_CONTESTED,
+		[143]                       = State.ALLY_CONTROLLED,
+		[144]                       = State.HORDE_CONTESTED,
+		[145]                       = State.HORDE_CONTROLLED,
+		-- Docks
+		[147]                       = State.ALLY_CONTESTED,
+		[148]                       = State.ALLY_CONTROLLED,
+		[149]                       = State.HORDE_CONTESTED,
+		[150]                       = State.HORDE_CONTROLLED,
+		-- Refinery
+		[152]                       = State.ALLY_CONTESTED,
+		[153]                       = State.ALLY_CONTROLLED,
+		[154]                       = State.HORDE_CONTESTED,
+		[155]                       = State.HORDE_CONTROLLED,
+		-- Market
+		[208]                       = State.ALLY_CONTESTED,
+		[205]                       = State.ALLY_CONTROLLED,
+		[209]                       = State.HORDE_CONTESTED,
+		[206]                       = State.HORDE_CONTROLLED,
+		-- Ruins
+		[213]                       = State.ALLY_CONTESTED,
+		[210]                       = State.ALLY_CONTROLLED,
+		[214]                       = State.HORDE_CONTESTED,
+		[211]                       = State.HORDE_CONTROLLED,
+		-- Shrine
+		[218]                       = State.ALLY_CONTESTED,
+		[215]                       = State.ALLY_CONTROLLED,
+		[219]                       = State.HORDE_CONTESTED,
+		[216]                       = State.HORDE_CONTROLLED
+	}
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
 		local widgetID = widget and widget.widgetID
-		if not widgetID and WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+		if not widgetID and not isClassic then
 			return
 		end
 		-- Standard battleground score predictor: 1671. Deepwind rework: 2074
-		if subscribedMapID ~= 0 and (widgetID == 1671 or widgetID == 2074 or WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
+		if subscribedMapID ~= 0 and (widgetID == 1671 or widgetID == 2074 or isClassic) then
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
@@ -372,10 +455,9 @@ do
 						isAllyCapping = atlasName:find('leftIcon')
 						isHordeCapping = atlasName:find('rightIcon')
 					elseif infoTexture then
-						local capStates = objectives[infoName]
 						if capStates then
-							isAllyCapping = infoTexture == capStates[1]
-							isHordeCapping = infoTexture == capStates[3]
+							isAllyCapping = icons[infoTexture] == State.ALLY_CONTESTED
+							isHordeCapping = icons[infoTexture] == State.HORDE_CONTESTED
 						end
 					end
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
@@ -394,28 +476,29 @@ do
 					end
 				end
 			end
-			if isAtlas then
-				for _, v in pairs(objectivesStore) do
-					if type(v) ~= "string" then
-						-- Do nothing
-					elseif v:find('leftIcon') then
-						allyBases = allyBases + 1
-					elseif v:find('rightIcon') then
-						hordeBases = hordeBases + 1
+			if not isClassic then
+				if isAtlas then
+					for _, v in pairs(objectivesStore) do
+						if type(v) ~= "string" then
+							-- Do nothing
+						elseif v:find('leftIcon') then
+							allyBases = allyBases + 1
+						elseif v:find('rightIcon') then
+							hordeBases = hordeBases + 1
+						end
+					end
+				else
+					for _, v in pairs(objectivesStore) do
+						if icons[v] == State.ALLY_CONTROLLED then
+							allyBases = allyBases + 1
+						elseif icons[v] == State.HORDE_CONTROLLED then
+							hordeBases = hordeBases + 1
+						end
 					end
 				end
-			else
-				for k, v in pairs(objectivesStore) do
-					local obj = objectives[k]
-					if v == obj[2] then
-						allyBases = allyBases + 1
-					elseif v == obj[4] then
-						hordeBases = hordeBases + 1
-					end
-				end
+				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
+				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
-			local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
-			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 		elseif widgetID == 1683 then -- TempleOfKotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do

@@ -14,10 +14,7 @@ do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 566 or DBM:GetCurrentArea() == 968 then
 			local modz = DBM:GetModByName("PvPGeneral")
-			modz:SubscribeAssault(
-				DBM:GetCurrentArea() == 566 and 112 or 397,
-				{{}, {}, {}, {}} -- 4 objectives
-			)
+			modz:SubscribeAssault(DBM:GetCurrentArea() == 566 and 112 or 397, 4)
 			modz:SubscribeFlags()
 		end
 	end

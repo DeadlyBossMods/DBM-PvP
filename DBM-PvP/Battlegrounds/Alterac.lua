@@ -30,34 +30,8 @@ do
 			elseif zoneID == 2197 then
 				assaultID = 1537
 			end
-			local graveyards = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and {3, 14, 13, 12} or {4, 15, 14, 13}
-			local towers = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and {8, 10, 11, 9} or {9, 11, 12, 10}
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
-				assaultID,
-				{
-					-- Graveyards
-					["Frostwolf Relief Hut"]	= graveyards,
-					["Stonehearth Graveyard"]	= graveyards,
-					["Frostwolf Graveyard"]		= graveyards,
-					["Iceblood Graveyard"]		= graveyards,
-					["Snowfall Graveyard"]		= graveyards,
-					["Stormpike Aid Station"]	= graveyards,
-					["Stormpike Graveyard"]		= graveyards,
-					-- Horde Towers
-					["East Frostwolf Tower"]	= towers,
-					["West Frostwolf Tower"]	= towers,
-					["Tower Point"]				= towers,
-					["Iceblood Tower"]			= towers,
-					-- Alliance towers
-					["Stonehearth Bunker"]		= towers,
-					["Icewing Bunker"]			= towers,
-					["Dun Baldar North Bunker"]	= towers,
-					["Dun Baldar South Bunker"]	= towers,
-					-- Mines (There's no capping state, just own)
-					--["Irondeep Mine"]			= {nil, 3, nil, 2}, -- Classic {nil, 2, nil, 1}
-					--["Coldtooth Mine"]		= {nil, 3, nil, 2}, -- Classic {nil, 2, nil, 1}
-				}
-			)
+			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 0)
+			-- TODO: Add boss health
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()

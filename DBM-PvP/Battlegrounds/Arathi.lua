@@ -26,16 +26,7 @@ do
 			elseif zoneID == 2177 then
 				assaultID = 1383
 			end
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
-				assaultID,
-				{
-					["Farm"]		= {32,33,34,35},
-					["Gold Mine"]	= {17,18,19,20},
-					["Lumber Mill"]	= {22,23,24,25},
-					["Stables"]		= {37,38,39,40},
-					["Blacksmith"]	= {27,28,29,30}
-				}
-			)
+			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 5)
 		end
 	end
 

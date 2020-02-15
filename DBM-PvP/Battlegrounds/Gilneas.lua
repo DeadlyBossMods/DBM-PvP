@@ -13,14 +13,7 @@ mod:RegisterEvents(
 do
 	function mod:OnInitialize()
 		if DBM:GetCurrentArea() == 761 then
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(
-				275,
-				{
-					["Lighthouse"]	= {9,11,12,13},
-					["Mines"]		= {17,18,19,20},
-					["Waterworks"]	= {27,28,29,30}
-				}
-			)
+			DBM:GetModByName("PvPGeneral"):SubscribeAssault(275, 3)
 		end
 	end
 
