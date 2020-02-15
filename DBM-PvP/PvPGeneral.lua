@@ -355,11 +355,11 @@ do
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
 		local widgetID = widget and widget.widgetID
-		if not widgetID then
+		if not widgetID and WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
 			return
 		end
 		-- Standard battleground score predictor: 1671. Deepwind rework: 2074
-		if subscribedMapID ~= 0 and (widgetID == 1671 or widgetID == 2074) then
+		if subscribedMapID ~= 0 and (widgetID == 1671 or widgetID == 2074 or WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
@@ -381,7 +381,7 @@ do
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
-							capTimer:Start(nil, infoName)
+							capTimer:Start((subscribedMapID == 30 or subscribedMapID == 91) then 304 or nil, infoName)
 							if isAllyCapping then
 								capTimer:SetColor({r=0, g=0, b=1}, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
