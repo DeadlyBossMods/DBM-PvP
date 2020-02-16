@@ -1,3 +1,4 @@
+local addonName = "PvPGeneral"
 local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
@@ -153,6 +154,7 @@ local subscribedMapID = 0
 local numObjectives, objectivesStore
 
 function mod:SubscribeAssault(mapID, objectsCount)
+	DBM:Debug(addonName.." SubscribeAssault "..tostring(mapID), 1)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
 		if self.Options.ShowEstimatedPoints then
 			ShowEstimatedPoints()
@@ -268,7 +270,7 @@ do
 			if (allianceScore - prevAScore) ~= resPerSec[allianceBases + 1] and DBM:AntiSpam(30, "PvPAWarn") then
 				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (A," .. (allianceScore - prevAScore) .. "," .. allianceBases .. "," .. resPerSec[allianceBases + 1]  .. ")")
 			end
-			DBM:Debug("Alliance: +" .. allianceScore - prevAScore .. " (" .. allianceBases .. ")")
+			DBM:Debug("Alliance: +" .. allianceScore - prevAScore .. " (" .. allianceBases .. ")", 3)
 			prevAScore = allianceScore
 		end
 		if prevHScore == 0 then
@@ -279,7 +281,7 @@ do
 			if (hordeScore - prevHScore) ~= resPerSec[hordeBases + 1] and DBM:AntiSpam(30, "PvPHWarn") then
 				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (H," .. (hordeScore - prevHScore) .. "," .. hordeBases .. "," .. resPerSec[hordeBases + 1]  .. ")")
 			end
-			DBM:Debug("Horde: +" .. hordeScore - prevHScore .. " (" .. hordeBases .. ")")
+			DBM:Debug("Horde: +" .. hordeScore - prevHScore .. " (" .. hordeBases .. ")", 3)
 			prevHScore = hordeScore
 		end
 		-- End debug
@@ -352,9 +354,12 @@ do
 		[397]   = true
 	}
 	local overrideTimers = {
-		[30]    = 304,
-		[91]    = 304,
-		[1537]  = 240
+		-- retail av
+		[91]    = 243,
+		-- classic av
+		[1459]  = 304,
+		-- korrak
+		[1537]  = 243
 	}
 	local State = {
 		["ALLY_CONTESTED"]      = 1,
@@ -439,11 +444,8 @@ do
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
 		local widgetID = widget and widget.widgetID
-		if not widgetID and not isClassic then
-			return
-		end
-		-- Standard battleground score predictor: 1671. Deepwind rework: 2074
-		if subscribedMapID ~= 0 and (widgetID == 1671 or widgetID == 2074 or isClassic) then
+		DBM:Debug(addonName.." AREA_POIS_UPDATED "..tostring(widgetID), 2)
+		if subscribedMapID ~= 0 then
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
@@ -458,11 +460,20 @@ do
 						isAllyCapping = icons[infoTexture] == State.ALLY_CONTESTED
 						isHordeCapping = icons[infoTexture] == State.HORDE_CONTESTED
 					end
+					DBM:Debug(addonName.." APU "..tostring(infoName)..", "..tostring(	isAllyCapping)..", "..tostring(isHordeCapping), 3)
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
-							capTimer:Start(overrideTimers[subscribedMapID] or nil, infoName)
+							local timeLeft = (
+								-- GetAreaPOISecondsLeft doesn't work in retail?
+								-- Classic never got GetAreaPOISecondsLeft, it still uses GetAreaPOITimeLeft which retail deprecated
+								C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPOIID)
+								or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) * 60
+								or overrideTimers[subscribedMapID]
+								or nil
+							)
+							capTimer:Start(timeLeft, infoName)
 							if isAllyCapping then
 								capTimer:SetColor({r=0, g=0, b=1}, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
@@ -474,7 +485,8 @@ do
 					end
 				end
 			end
-			if not isClassic then
+			-- Standard battleground score predictor: 1671. Deepwind rework: 2074
+			if widgetID == 1671 or widgetID == 2074 then
 				if isAtlas then
 					for _, v in pairs(objectivesStore) do
 						if type(v) ~= "string" then
