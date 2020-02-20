@@ -48,6 +48,7 @@ globals = {
 	"C_ChatInfo",
 	"C_CVar",
 	"C_DateAndTime",
+	"C_DeathInfo",
 	"C_EncounterJournal",
 	"C_FriendList",
 	"C_QuestLog",
