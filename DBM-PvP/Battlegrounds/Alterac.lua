@@ -18,18 +18,12 @@ do
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 30 or zoneID == 2197 then--Regular AV (retail and classic), Korrak
 			bgzone = true
-			uiMap = C_Map.GetBestMapForUnit("player")
 			self:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			local assaultID
-			if zoneID == 30 then
-				assaultID = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and 30 or 91
-			elseif zoneID == 2197 then
-				assaultID = 1537
-			end
+			local assaultID = C_Map.GetBestMapForUnit("player")
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 0)
 			-- TODO: Add boss health
 		elseif bgzone then
