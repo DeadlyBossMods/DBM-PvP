@@ -252,7 +252,7 @@ do
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 	local resourcesPerSec = {
-		[3] = {1e-300, 1, 3, 30--[[Unknown]]}, -- Gilneas
+		[3] = {1e-300, 3, 5--[[Unknown]], 30--[[Unknown]]}, -- Gilneas
 		[4] = {1e-300, 2, 3, 5--[[Unknown]], 10--[[Unknown]]}, -- TempleOfKotmogu/EyeOfTheStorm
 		[5] = {1e-300, 2, 3, 4, 7, 10--[[Unknown]], 30--[[Unknown]]} -- Arathi/Deepwind
 	}
