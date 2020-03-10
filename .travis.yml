@@ -14,7 +14,7 @@ script: /home/travis/.luarocks/bin/luacheck . --no-color -q
 
 after_success:
     - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
-    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -g 1.13.4; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
+    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -g 1.13.3; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
 
 notifications:
     email:
