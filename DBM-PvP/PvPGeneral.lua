@@ -462,31 +462,17 @@ do
 					end
 				end
 			end
-			-- Standard battleground score predictor: 1671. Deepwind rework: 2074
-			if widgetID == 1671 or widgetID == 2074 then
-				if isAtlas then
-					for _, v in pairs(objectivesStore) do
-						if type(v) ~= "string" then
-							-- Do nothing
-						elseif v:find('leftIcon') then
-							allyBases = allyBases + 1
-						elseif v:find('rightIcon') then
-							hordeBases = hordeBases + 1
-						end
-					end
-				else
-					for _, v in pairs(objectivesStore) do
-						if icons[v] == State.ALLY_CONTROLLED then
-							allyBases = allyBases + 1
-						elseif icons[v] == State.HORDE_CONTROLLED then
-							hordeBases = hordeBases + 1
-						end
+			if isAtlas then
+				for _, v in pairs(objectivesStore) do
+					if type(v) ~= "string" then
+						-- Do nothing
+					elseif v:find('leftIcon') then
+						allyBases = allyBases + 1
+					elseif v:find('rightIcon') then
+						hordeBases = hordeBases + 1
 					end
 				end
-				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
-				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
-			end
-			if widgetID == 1893 or widgetID == 1894 then
+			else
 				for _, v in pairs(objectivesStore) do
 					if icons[v] == State.ALLY_CONTROLLED then
 						allyBases = allyBases + 1
@@ -494,6 +480,14 @@ do
 						hordeBases = hordeBases + 1
 					end
 				end
+			end
+			-- Standard battleground score predictor: 1671. Deepwind rework: 2074
+			if widgetID == 1671 or widgetID == 2074 then
+				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
+				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+			end
+			-- Classic Arathi Basin
+			if widgetID == 1893 or widgetID == 1894 then
 				local allyScore, hordeScore = 0, 0
 				for x in string.gmatch(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000') do
 					allyScore = tonumber(x)
