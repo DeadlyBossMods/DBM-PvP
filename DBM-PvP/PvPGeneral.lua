@@ -487,6 +487,13 @@ do
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
 			if widgetID == 1893 or widgetID == 1894 then
+				for _, v in pairs(objectivesStore) do
+					if icons[v] == State.ALLY_CONTROLLED then
+						allyBases = allyBases + 1
+					elseif icons[v] == State.HORDE_CONTROLLED then
+						hordeBases = hordeBases + 1
+					end
+				end
 				local allyScore, hordeScore = 0, 0
 				for x in string.gmatch(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000') do
 					allyScore = tonumber(x)
