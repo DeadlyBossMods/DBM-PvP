@@ -509,6 +509,15 @@ do
 				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
+			if (widgetID == 1893 or widgetID == 1894) and DBM:AntiSpam(10, "PvPCABUpdate") then
+				local ally = mod:ExtractIconAndTextScore(1893)
+				local horde = mod:ExtractIconAndTextScore(1894)
+				DBM:Debug(tostring(widgetID)..
+					', ally: '..tostring(ally.bases)..':'..tostring(ally.score)..
+					', horde: '..tostring(horde.bases)..':'..tostring(horde.score), 2)
+				self:UpdateWinTimer(2000, ally.score, horde.score, ally.bases, horde.bases)
+			end
+
 		elseif widgetID == 1683 then -- TempleOfKotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do
@@ -526,6 +535,27 @@ do
 		end
 	end
 	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED
+end
+
+function mod:ExtractIconAndTextScore(widgetID)
+	local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(widgetID)
+	local text = info.text
+	local score = 0;
+	for x in string.gmatch(text, '(%d+)/2000') do
+		score = tonumber(x)
+	end
+	local bases = score;
+	for x in string.gmatch(text, '(%d+)') do
+		local n = tonumber(x)
+		if n ~= 2000 and n ~= score then
+			bases = n
+		end
+	end
+	return {
+	  ['score'] = score,
+	  -- could get bases from areapois, which might be more reliable
+	  ['bases'] = bases,
+	}
 end
 
 --[[
