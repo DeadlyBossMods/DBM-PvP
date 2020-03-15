@@ -488,16 +488,7 @@ do
 			end
 			-- Classic Arathi Basin
 			if widgetID == 1893 or widgetID == 1894 then
-				local allyScore, hordeScore = 0, 0
-				for x in string.gmatch(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000') do
-					allyScore = tonumber(x)
-					break
-				end
-				for x in string.gmatch(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000') do
-					hordeScore = tonumber(x)
-					break
-				end
-				self:UpdateWinTimer(2000, allyScore, hordeScore, allyBases, hordeBases)
+				self:UpdateWinTimer(2000, tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
 			end
 		elseif widgetID == 1683 then -- TempleOfKotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
