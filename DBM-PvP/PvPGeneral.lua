@@ -259,6 +259,11 @@ do
 		[5] = {1e-300, 2, 3, 4, 7, 10--[[Unknown]], 30--[[Unknown]]} -- Arathi/Deepwind
 	}
 
+	if isClassic then
+		-- 2014 values seem ok https://github.com/DeadlyBossMods/DBM-PvP/blob/843a882eae2276c2be0646287c37b114c51fcffb/DBM-PvP/Battlegrounds/Arathi.lua#L32-L39
+		resourcesPerSec[5] = {1e-300, 10/12, 10/9, 10/6, 10/3, 30}
+	end
+
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
 		local resPerSec = resourcesPerSec[numObjectives]
 		-- Start debug
@@ -509,7 +514,7 @@ do
 				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
-			if (widgetID == 1893 or widgetID == 1894) and DBM:AntiSpam(10, "PvPCABUpdate") then
+			if widgetID == 1893 or widgetID == 1894 then
 				local ally = mod:ExtractIconAndTextScore(1893)
 				local horde = mod:ExtractIconAndTextScore(1894)
 				DBM:Debug(tostring(widgetID)..
