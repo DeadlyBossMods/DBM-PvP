@@ -14,6 +14,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 --mod:AddBoolOption("ColorByClass", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
+mod:AddBoolOption("ShowRelativeGameTime", true)
 
 mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
@@ -150,6 +151,26 @@ local function HideBasesToWin()
 	end
 end
 
+local get_gametime, update_gametime
+do
+	local gametime = 0
+	function update_gametime()
+		gametime = time()
+	end
+	function get_gametime()
+		if mod.options.ShowRelativeGameTime then
+			local systime = GetBattlefieldInstanceRunTime()
+			if systime and systime > 0 then
+				return systime / 1000
+			else
+				return time() - gametime
+			end
+		else
+			return GetTime()
+		end
+	end
+end
+
 local subscribedMapID = 0
 local prevAScore, prevHScore = 0, 0
 local numObjectives, objectivesStore
@@ -182,6 +203,7 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	subscribedMapID = mapID
 	objectivesStore = {}
 	numObjectives = objectsCount
+	update_gametime()
 end
 
 function mod:UnsubscribeAssault()
@@ -264,7 +286,7 @@ do
 			prevHScore = hordeScore
 		end
 		-- End debug
-		local gameTime = GetTime()
+		local gameTime = get_gametime()
 		local allyTime = math.min(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
 		local hordeTime = math.min(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
 		if allyTime == hordeTime then
