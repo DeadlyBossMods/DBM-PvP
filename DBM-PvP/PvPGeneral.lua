@@ -158,7 +158,7 @@ do
 		gametime = time()
 	end
 	function get_gametime()
-		if mod.options.ShowRelativeGameTime then
+		if mod.Options.ShowRelativeGameTime then
 			local systime = GetBattlefieldInstanceRunTime()
 			if systime and systime > 0 then
 				return systime / 1000
