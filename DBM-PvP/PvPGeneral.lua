@@ -125,6 +125,7 @@ local function ShowEstimatedPoints()
 end
 
 local function ShowBasesToWin()
+	if not AlwaysUpFrame2 then return end
 	if not scoreFrameToWin then
 		scoreFrameToWin = CreateFrame("Frame", nil, AlwaysUpFrame2)
 		scoreFrameToWin:SetHeight(10)
