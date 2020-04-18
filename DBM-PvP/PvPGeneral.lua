@@ -177,6 +177,7 @@ end
 local subscribedMapID = 0
 local prevAScore, prevHScore = 0, 0
 local numObjectives, objectivesStore
+local warnAtEnd = {}
 
 function mod:SubscribeAssault(mapID, objectsCount)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
@@ -216,6 +217,14 @@ function mod:UnsubscribeAssault()
 	self:Stop()
 	subscribedMapID = 0
 	prevAScore, prevHScore = 0, 0
+	if #warnAtEnd > 0 then
+		DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
+		for k, _ in warnAtEnd do
+			DBM:AddMsg(k)
+		end
+		DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
+		warnAtEnd = {}
+	end
 end
 
 function mod:SubscribeFlags()
@@ -277,14 +286,14 @@ do
 		local resPerSec = resourcesPerSec[numObjectives]
 		-- Start debug
 		if prevAScore ~= allianceScore then
-			if resPerSec[allianceBases + 1] == 1000 and DBM:AntiSpam(30, "PvPAWarn") then
-				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (A," .. (allianceScore - prevAScore) .. "," .. allianceBases .. "," .. resPerSec[allianceBases + 1]  .. ")")
+			if resPerSec[allianceBases + 1] == 1000 then
+				warnAtEnd["%d,%d":format(allianceScore - prevAScore, allianceBases)] = true
 			end
 			prevAScore = allianceScore
 		end
 		if prevHScore ~= hordeScore then
-			if resPerSec[hordeBases + 1] == 1000 and DBM:AntiSpam(30, "PvPHWarn") then
-				DBM:AddMsg("DBM-PvP missing data, please report to our discord. (H," .. (hordeScore - prevHScore) .. "," .. hordeBases .. "," .. resPerSec[hordeBases + 1]  .. ")")
+			if resPerSec[hordeBases + 1] == 1000 then
+				warnAtEnd["%d,%d":format(hordeScore - prevHScore, hordeBases)] = true
 			end
 			prevHScore = hordeScore
 		end
