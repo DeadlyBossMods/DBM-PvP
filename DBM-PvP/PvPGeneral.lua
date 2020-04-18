@@ -125,7 +125,9 @@ local function ShowEstimatedPoints()
 end
 
 local function ShowBasesToWin()
-	if not AlwaysUpFrame2 then return end
+	if not AlwaysUpFrame2 then
+		return
+	end
 	if not scoreFrameToWin then
 		scoreFrameToWin = CreateFrame("Frame", nil, AlwaysUpFrame2)
 		scoreFrameToWin:SetHeight(10)
@@ -261,7 +263,7 @@ do
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
 	local resourcesPerSec = {
-		[3] = {1e-300, 1, 3, 1000--[[Unknown]]}, -- Gilneas
+		[3] = {1e-300, 1, 3, 4}, -- Gilneas
 		[4] = {1e-300, 2, 3, 4, 1000--[[Unknown]]}, -- TempleOfKotmogu/EyeOfTheStorm
 		[5] = {1e-300, 2, 3, 4, 7, 1000--[[Unknown]], 1000--[[Unknown]]} -- Arathi/Deepwind
 	}
