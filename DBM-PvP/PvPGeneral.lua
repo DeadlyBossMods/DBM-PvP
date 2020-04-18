@@ -287,13 +287,13 @@ do
 		-- Start debug
 		if prevAScore ~= allianceScore then
 			if resPerSec[allianceBases + 1] == 1000 then
-				warnAtEnd["%d,%d":format(allianceScore - prevAScore, allianceBases)] = true
+				warnAtEnd[string.format("%d,%d", allianceScore - prevAScore, allianceBases)] = true
 			end
 			prevAScore = allianceScore
 		end
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
-				warnAtEnd["%d,%d":format(hordeScore - prevHScore, hordeBases)] = true
+				warnAtEnd[string.format("%d,%d", format(hordeScore - prevHScore, hordeBases)] = true
 			end
 			prevHScore = hordeScore
 		end
