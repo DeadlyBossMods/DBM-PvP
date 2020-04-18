@@ -293,7 +293,7 @@ do
 		end
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
-				warnAtEnd[string.format("%d,%d", format(hordeScore - prevHScore, hordeBases)] = true
+				warnAtEnd[string.format("%d,%d", hordeScore - prevHScore, hordeBases)] = true
 			end
 			prevHScore = hordeScore
 		end
