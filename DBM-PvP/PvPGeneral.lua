@@ -60,40 +60,6 @@ do
 	end
 end
 
-do
-	local tonumber = tonumber
-	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
-	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
-	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
-	local timerShadow		= mod:NewNextTimer(90, 34709)
-	local timerDamp			= mod:NewCastTimer(300, 110310)
-
-	function mod:START_TIMER(_, timeSeconds)
-		local _, instanceType = IsInInstance()
-		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
-			if TimerTracker then
-				for _, bar in ipairs(TimerTracker.timerList) do
-					bar.bar:Hide()
-				end
-			end
-			remainingTimer:Start(timeSeconds)
-		end
-		self:Schedule(timeSeconds + 1, function()
-			if instanceType == "arena" then
-				timerShadow:Start()
-				timerDamp:Start()
-			end
-			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
-			if info and info.state == 1 and self.Options.TimerRemaining then
-				local minutes, seconds = info.text:match("(%d+):(%d+)")
-				if minutes and seconds then
-					remainingTimer:Start(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
-				end
-			end
-		end, self)
-	end
-end
-
 -- Utility functions
 local scoreFrame1, scoreFrame2, scoreFrameToWin, scoreFrame1Text, scoreFrame2Text, scoreFrameToWinText
 
@@ -241,8 +207,39 @@ function mod:UnsubscribeFlags()
 end
 
 do
+	local tonumber = tonumber
+	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- interface/icons/inv_banner_02.blp
 	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
+	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
+	local timerShadow		= mod:NewNextTimer(90, 34709)
+	local timerDamp			= mod:NewCastTimer(300, 110310)
+
+	function mod:START_TIMER(_, timeSeconds)
+		local _, instanceType = IsInInstance()
+		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
+			if TimerTracker then
+				for _, bar in ipairs(TimerTracker.timerList) do
+					bar.bar:Hide()
+				end
+			end
+			remainingTimer:Start(timeSeconds)
+		end
+		self:Schedule(timeSeconds + 1, function()
+			if instanceType == "arena" then
+				timerShadow:Start()
+				timerDamp:Start()
+			end
+			local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
+			if info and info.state == 1 and self.Options.TimerRemaining then
+				local minutes, seconds = info.text:match("(%d+):(%d+)")
+				if minutes and seconds then
+					remainingTimer:Start(tonumber(seconds) + (tonumber(minutes) * 60) + 1)
+				end
+			end
+		end, self)
+	end
 
 	local function updateflagcarrier(_, msg)
 		if msg:match(L.ExprFlagCaptured) then
@@ -260,7 +257,11 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
+		if msg:find(L.BgStart60) then
+			remainingTimer:Start(60)
+		elseif msg:find(L.BgStart30) then
+			remainingTimer:Start(30)
+		elseif msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
 			vulnerableTimer:Start()
 		end
 	end
@@ -274,7 +275,7 @@ do
 	local resourcesPerSec = {
 		[3] = {1e-300, 1, 3, 4}, -- Gilneas
 		[4] = {1e-300, 2, 3, 4, 1000--[[Unknown]]}, -- TempleOfKotmogu/EyeOfTheStorm
-		[5] = {1e-300, 2, 3, 4, 7, 1000--[[Unknown]], 1000--[[Unknown]]} -- Arathi/Deepwind
+		[5] = {1e-300, 2, 3, 4, 7, 1000--[[Unknown]]} -- Arathi/Deepwind
 	}
 
 	if isClassic then
