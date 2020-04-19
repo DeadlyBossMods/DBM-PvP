@@ -258,9 +258,9 @@ do
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 		if msg:find(L.BgStart60) then
-			remainingTimer:Update(60)
+			remainingTimer:Update(60, 120)
 		elseif msg:find(L.BgStart30) then
-			remainingTimer:Update(30)
+			remainingTimer:Update(30, 120)
 		elseif msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
 			vulnerableTimer:Start()
 		end
