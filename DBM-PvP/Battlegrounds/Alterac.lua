@@ -23,7 +23,12 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-			local assaultID = C_Map.GetBestMapForUnit("player")
+			local assaultID
+			if zoneID == 30 then
+				assaultID = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and 1459 or 91
+			elseif zoneID == 2197 then
+				assaultID = 1537
+			end
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 0)
 			-- TODO: Add boss health
 		elseif bgzone then
