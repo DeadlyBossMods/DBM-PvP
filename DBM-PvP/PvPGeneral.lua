@@ -210,11 +210,13 @@ do
 	local tonumber = tonumber
 	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- interface/icons/inv_banner_02.blp
-	local vulnerableTimer	= mod:NewNextTimer(60, 46392)
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
-	local timerShadow		= mod:NewNextTimer(90, 34709)
-	local timerDamp			= mod:NewCastTimer(300, 110310)
+	if not isClassic then
+		local vulnerableTimer	= mod:NewNextTimer(60, 46392)
+		local timerShadow		= mod:NewNextTimer(90, 34709)
+		local timerDamp			= mod:NewCastTimer(300, 110310)
+	end
 
 	function mod:START_TIMER(_, timeSeconds)
 		local _, instanceType = IsInInstance()
@@ -227,7 +229,7 @@ do
 			remainingTimer:Start(timeSeconds)
 		end
 		self:Schedule(timeSeconds + 1, function()
-			if instanceType == "arena" then
+			if not isClassic and instanceType == "arena" then
 				timerShadow:Start()
 				timerDamp:Start()
 			end
@@ -244,7 +246,9 @@ do
 	local function updateflagcarrier(_, msg)
 		if msg:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
-			vulnerableTimer:Cancel()
+			if not isClassic then
+				vulnerableTimer:Cancel()
+			end
 		end
 	end
 
@@ -261,7 +265,7 @@ do
 			remainingTimer:Update(60, 120)
 		elseif msg:find(L.BgStart30) then
 			remainingTimer:Update(90, 120)
-		elseif msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2) then
+		elseif not isClassic and (msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
 			vulnerableTimer:Start()
 		end
 	end
