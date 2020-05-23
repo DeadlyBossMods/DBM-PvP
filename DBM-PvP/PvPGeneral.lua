@@ -294,11 +294,17 @@ do
 			if resPerSec[allianceBases + 1] == 1000 then
 				warnAtEnd[string.format("%d,%d", allianceScore - prevAScore, allianceBases)] = true
 			end
+			if allianceScore < maxScore then
+				DBM:Debug(string.format("Alliance: +%d (%d)", allianceScore - prevAScore, allianceBases), 3)
+			end
 			prevAScore = allianceScore
 		end
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
 				warnAtEnd[string.format("%d,%d", hordeScore - prevHScore, hordeBases)] = true
+			end
+			if hordeScore < maxScore then
+				DBM:Debug(string.format("Horde: +%d (%d)", hordeScore - prevHScore, hordeBases), 3)
 			end
 			prevHScore = hordeScore
 		end
@@ -458,11 +464,22 @@ do
 		[216]                       = State.HORDE_CONTROLLED
 	}
 	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
+	local prevTime = 0
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
 		local widgetID = widget and widget.widgetID
 		if subscribedMapID ~= 0 then
+			local time = GetTime()
+			if prevTime == 0 then
+				prevTime = time
+				return
+			end
+			local elapsed = time - prevTime
+			prevTime = time
+			if elapsed < 0.5 then
+				return
+			end
 			local isAtlas = false
 			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
 				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
