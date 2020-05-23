@@ -212,10 +212,11 @@ do
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- interface/icons/inv_banner_02.blp
 	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
+	local vulnerableTimer, timerShadow, timerDamp
 	if not isClassic then
-		local vulnerableTimer	= mod:NewNextTimer(60, 46392)
-		local timerShadow		= mod:NewNextTimer(90, 34709)
-		local timerDamp			= mod:NewCastTimer(300, 110310)
+		vulnerableTimer	= mod:NewNextTimer(60, 46392)
+		timerShadow		= mod:NewNextTimer(90, 34709)
+		timerDamp		= mod:NewCastTimer(300, 110310)
 	end
 
 	function mod:START_TIMER(_, timeSeconds)
