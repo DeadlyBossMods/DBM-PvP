@@ -1,22 +1,17 @@
 local mod	= DBM:NewMod("z30", "DBM-PvP")
 
-local pairs, ipairs, type, tonumber, select, math = pairs, ipairs, type, tonumber, select, math
-
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 mod:AddBoolOption("AutoTurnIn")
-
-mod:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA"
-)
 
 do
 	local bgzone = false
 
 	function mod:OnInitialize()
 		local zoneID = DBM:GetCurrentArea()
-		if zoneID == 30 or zoneID == 2197 then--Regular AV (retail and classic), Korrak
+		if zoneID == 30 or zoneID == 2197 then -- Regular AV (retail and classic), Korrak
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
@@ -43,6 +38,7 @@ do
 end
 
 do
+	local ipairs, type = ipairs, type
 	local UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward = UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward
 
 	local quests = {

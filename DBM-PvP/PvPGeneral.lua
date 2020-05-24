@@ -1,30 +1,26 @@
-local addonName = "PvPGeneral"
 local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
+local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup -- Classic Compat fix
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-
-local ipairs, math = ipairs, math
-local IsInInstance, CreateFrame = IsInInstance, CreateFrame
-local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup--Classic Compat fix
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:RegisterEvents(
+	"ZONE_CHANGED_NEW_AREA",
+	"PLAYER_ENTERING_WORLD",
+	"PLAYER_DEAD",
+	"START_TIMER",
+	"AREA_POIS_UPDATED"
+)
 
 --mod:AddBoolOption("ColorByClass", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 mod:AddBoolOption("ShowRelativeGameTime", true)
 
-mod:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
-	"PLAYER_ENTERING_WORLD",
-	"PLAYER_DEAD",
-	"START_TIMER"
-)
-
 do
-	local C_ChatInfo = C_ChatInfo
+	local IsInInstance, C_ChatInfo = IsInInstance, C_ChatInfo
 	local bgzone = false
 
 	function mod:ZONE_CHANGED_NEW_AREA()
@@ -50,7 +46,7 @@ do
 end
 
 do
-	local C_DeathInfo = C_DeathInfo
+	local IsInInstance, C_DeathInfo, RepopMe = IsInInstance, C_DeathInfo, RepopMe
 
 	function mod:PLAYER_DEAD()
 		local _, instanceType = IsInInstance()
@@ -61,6 +57,7 @@ do
 end
 
 -- Utility functions
+local CreateFrame, AlwaysUpFrame1, AlwaysUpFrame2 = CreateFrame, AlwaysUpFrame1, AlwaysUpFrame2
 local scoreFrame1, scoreFrame2, scoreFrameToWin, scoreFrame1Text, scoreFrame2Text, scoreFrameToWinText
 
 local function ShowEstimatedPoints()
@@ -120,30 +117,29 @@ local function HideBasesToWin()
 	end
 end
 
-local get_gametime, update_gametime
+local getGametime, updateGametime
 do
-	local gametime = 0
-	function update_gametime()
-		gametime = time()
+	local time, GetTime, GetBattlefieldInstanceRunTime = time, GetTime, GetBattlefieldInstanceRunTime
+	local gameTime = 0
+
+	function updateGametime()
+		gameTime = time()
 	end
-	function get_gametime()
+
+	function getGametime()
 		if mod.Options.ShowRelativeGameTime then
-			local systime = GetBattlefieldInstanceRunTime()
-			if systime and systime > 0 then
-				return systime / 1000
-			else
-				return time() - gametime
+			local sysTime = GetBattlefieldInstanceRunTime()
+			if sysTime and sysTime > 0 then
+				return sysTime / 1000
 			end
-		else
-			return GetTime()
+			return time() - gameTime
 		end
+		return GetTime()
 	end
 end
 
-local subscribedMapID = 0
-local prevAScore, prevHScore = 0, 0
+local subscribedMapID, prevAScore, prevHScore, warnAtEnd = 0, 0, 0, {}
 local numObjectives, objectivesStore
-local warnAtEnd = {}
 
 function mod:SubscribeAssault(mapID, objectsCount)
 	self:AddBoolOption("ShowEstimatedPoints", true, nil, function()
@@ -173,7 +169,7 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	subscribedMapID = mapID
 	objectivesStore = {}
 	numObjectives = objectsCount
-	update_gametime()
+	updateGametime()
 end
 
 function mod:UnsubscribeAssault()
@@ -207,11 +203,10 @@ function mod:UnsubscribeFlags()
 end
 
 do
-	local tonumber = tonumber
-	local C_UIWidgetManager, TimerTracker = C_UIWidgetManager, TimerTracker
-	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- interface/icons/inv_banner_02.blp
-	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
-	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
+	local tonumber, ipairs = tonumber, ipairs
+	local C_UIWidgetManager, TimerTracker, IsInInstance = C_UIWidgetManager, TimerTracker, IsInInstance
+	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
+	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local vulnerableTimer, timerShadow, timerDamp
 	if not isClassic then
 		vulnerableTimer	= mod:NewNextTimer(60, 46392)
@@ -273,10 +268,9 @@ do
 end
 
 do
-	local type = type
+	local type, string, mfloor, mmin = type, string, math.floor, math.min
 	local GetTime, FACTION_HORDE, FACTION_ALLIANCE = GetTime, FACTION_HORDE, FACTION_ALLIANCE
-	-- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
-	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485")
+	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local resourcesPerSec = {
 		[3] = {1e-300, 1, 3, 4}, -- Gilneas
 		[4] = {1e-300, 2, 3, 4, 1000--[[Unknown]]}, -- TempleOfKotmogu/EyeOfTheStorm
@@ -310,9 +304,9 @@ do
 			prevHScore = hordeScore
 		end
 		-- End debug
-		local gameTime = get_gametime()
-		local allyTime = math.min(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
-		local hordeTime = math.min(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
+		local gameTime = getGametime()
+		local allyTime = mmin(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
+		local hordeTime = mmin(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
 		if allyTime == hordeTime then
 			winTimer:Stop()
 			if scoreFrame1Text then
@@ -321,7 +315,7 @@ do
 			end
 		elseif allyTime > hordeTime then
 			if scoreFrame1Text and scoreFrame2Text then
-				scoreFrame1Text:SetText("(" .. math.floor(math.floor(((hordeTime * resPerSec[allianceBases + 1]) + allianceScore) / 10) * 10) .. ")")
+				scoreFrame1Text:SetText("(" .. mfloor(mfloor(((hordeTime * resPerSec[allianceBases + 1]) + allianceScore) / 10) * 10) .. ")")
 				scoreFrame2Text:SetText("(" .. maxScore .. ")")
 			end
 			winTimer:Update(gameTime, gameTime + hordeTime)
@@ -331,7 +325,7 @@ do
 			winTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
 		elseif hordeTime > allyTime then
 			if scoreFrame1Text and scoreFrame2Text then
-				scoreFrame2Text:SetText("(" .. math.floor(math.floor(((allyTime * resPerSec[hordeBases + 1]) + hordeScore) / 10) * 10) .. ")")
+				scoreFrame2Text:SetText("(" .. mfloor(mfloor(((allyTime * resPerSec[hordeBases + 1]) + hordeScore) / 10) * 10) .. ")")
 				scoreFrame1Text:SetText("(" .. maxScore .. ")")
 			end
 			winTimer:Update(gameTime, gameTime + allyTime)
@@ -359,8 +353,8 @@ do
 					enemyTime = (maxScore - enemyLast) / resPerSec[3 - i]
 					friendlyTime = (maxScore - friendlyLast) / resPerSec[i]
 					baseLowest = friendlyTime < enemyTime and friendlyTime or enemyTime
-					enemyFinal = math.floor((enemyLast + math.floor(baseLowest * resPerSec[3] + 0.5)) / 10) * 10
-					friendlyFinal = math.floor((friendlyLast + math.floor(baseLowest * resPerSec[i] + 0.5)) / 10) * 10
+					enemyFinal = mfloor((enemyLast + mfloor(baseLowest * resPerSec[3] + 0.5)) / 10) * 10
+					friendlyFinal = mfloor((friendlyLast + mfloor(baseLowest * resPerSec[i] + 0.5)) / 10) * 10
 					if friendlyFinal >= maxScore and enemyFinal < maxScore then
 						scoreFrameToWinText:SetText(L.BasesToWin:format(i))
 						break
@@ -372,7 +366,7 @@ do
 		end
 	end
 
-	local pairs = pairs
+	local ipairs, pairs, tonumber = ipairs, pairs, tonumber
 	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
 	local ignoredAtlas = {
 		[112]   = true,
@@ -464,7 +458,7 @@ do
 		[219]                       = State.HORDE_CONTESTED,
 		[216]                       = State.HORDE_CONTROLLED
 	}
-	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- interface/icons/spell_misc_hellifrepvphonorholdfavor.blp
+	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
 	local prevTime = 0
 
 	function mod:AREA_POIS_UPDATED(widget)
@@ -538,16 +532,14 @@ do
 					end
 				end
 			end
-			-- Standard battleground score predictor: 1671. Deepwind rework: 2074
-			if widgetID == 1671 or widgetID == 2074 then
+			if widgetID == 1671 or widgetID == 2074 then -- Standard battleground score predictor: 1671. Deepwind rework: 2074
 				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
-			-- Classic Arathi Basin
-			if widgetID == 1893 or widgetID == 1894 then
+			if widgetID == 1893 or widgetID == 1894 then -- Classic Arathi Basin
 				self:UpdateWinTimer(2000, tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
 			end
-		elseif widgetID == 1683 then -- TempleOfKotmogu
+		elseif widgetID == 1683 then -- Temple Of Kotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do
 				if v.iconState == 1 then
