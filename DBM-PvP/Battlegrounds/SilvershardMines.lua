@@ -185,10 +185,10 @@ do
 				elseif getDistance(newCart.x, newCart.y, cart.x, cart.y) < 1 and isValidUpdate(cart.dir, newCart.dir) then
 					if newCart.c ~= cart.c then
 						local name = names[cart.dir]
-						if c == 1 then
+						if newCart.c == 1 then
 							cartTimer:SetColor({r=0, g=0, b=1}, name)
 							cartTimer:UpdateIcon("132486", name) -- Interface\\Icons\\INV_BannerPVP_02.blp
-						elseif c == 0 then
+						elseif newCart.c == 0 then
 							cartTimer:SetColor({r=1, g=0, b=0}, name)
 							cartTimer:UpdateIcon("132485", name) -- Interface\\Icons\\INV_BannerPVP_01.blp
 						else
