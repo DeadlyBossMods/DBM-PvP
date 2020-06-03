@@ -18,6 +18,9 @@ L:SetOptionLocalization({
 	ColorByClass		= "得分板上玩家按职业着色",
 	TimerInvite			= "计时条：进入战场",
 	AutoSpirit			= "自动释放灵魂",
+	ShowFlagCarrier		  = "显示旗帜携带者",  --
+	TimerRemaining		  = "计时条：比赛开始和结束的剩余时间",  --
+	TimerWin			  = "计时条：胜利时间",  --
 	HideBossEmoteFrame	= "隐藏团队首领表情框体"
 })
 
