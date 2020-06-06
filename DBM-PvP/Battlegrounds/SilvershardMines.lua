@@ -137,7 +137,7 @@ do
 		end
 		local closestID, distance = 0, 1000
 		for d = 1, GetNumBattlefieldVehicles() do
-			local x, y = GetBattlefieldVehicleInfo(d, 443)
+			local x, y = GetBattlefieldVehicleInfo(d, 423)
 			x = x * 100
 			y = y * 100
 			local dist = getDistance(56.87, 47.117, x, y)
@@ -156,7 +156,7 @@ do
 			end
 		end
 		if closestID ~= 0 then
-			local x, y = GetBattlefieldVehicleInfo(closestID, 443)
+			local x, y = GetBattlefieldVehicleInfo(closestID, 423)
 			cart.x		= x * 100
 			cart.y		= y * 100
 			cart.dir	= identifyCart(cart.x, cart.y)
@@ -166,7 +166,7 @@ do
 	function mod:PVP_VEHICLE_INFO_UPDATED()
 		local cache = {}
 		for i = 1, GetNumBattlefieldVehicles() do
-			local x, y, _, _, vType = GetBattlefieldVehicleInfo(i, 443)
+			local x, y, _, _, vType = GetBattlefieldVehicleInfo(i, 423)
 			x = x * 100
 			y = y * 100
 			cache[i] = {
