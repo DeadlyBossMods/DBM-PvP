@@ -99,13 +99,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerCap	= "Show capture timer",
-	TimerWin	= "Show win timer"
+	TimerCap	= "计时条：占领资源点",
+	TimerWin	= "计时条：胜利时间"
 })
 
 L:SetMiscLocalization({
 	ScoreExpr	= "(%d+)/1500",
-	WinBarText	= "%s wins"
+	WinBarText	= "%s 获胜"
 })
 
 ------------------------
