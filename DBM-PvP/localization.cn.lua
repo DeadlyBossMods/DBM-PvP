@@ -3,6 +3,8 @@ local L
 
 --------------------------
 --  General BG Options  --
+--- 枫聖--阿什坎迪
+---Last update: 2019/02/22
 --------------------------
 L = DBM:GetModLocalization("PvPGeneral")
 
@@ -17,10 +19,13 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass		= "得分板上玩家按职业着色",
 	TimerInvite			= "计时条：进入战场",
-	AutoSpirit			= "自动释放灵魂",
-	ShowFlagCarrier		  = "显示旗帜携带者",  --
+	TimerCap			= "计时条：占领资源点",   ---
 	TimerRemaining		  = "计时条：比赛开始和结束的剩余时间",  --
+	ShowRelativeGameTime= "计时条：战场开始到获胜的计时（如果禁用，则计时条总是看起来满了）", --
 	TimerWin			  = "计时条：胜利时间",  --
+	TimerFlag			= "计时条：旗帜重置", --
+	AutoSpirit			= "自动释放灵魂",
+	ShowFlagCarrier		  = "显示旗帜携带者",  ---
 	HideBossEmoteFrame	= "隐藏团队首领表情框体"
 })
 
