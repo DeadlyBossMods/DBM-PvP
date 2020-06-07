@@ -4,7 +4,7 @@ local L
 --------------------------
 --  General BG Options  --
 --- 枫聖--阿什坎迪
----Last update: 2019/02/22
+---Last update: 2020/06/07
 --------------------------
 L = DBM:GetModLocalization("PvPGeneral")
 
