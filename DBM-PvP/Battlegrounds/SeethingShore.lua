@@ -57,7 +57,7 @@ do
 		for i = 1, #vignetteids do
 			local vignette = C_VignetteInfo.GetVignetteInfo(vignetteids[i])
 			if vignette and vignette.vignetteGUID then
-				local poss = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907):GetXY()
+				local poss = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907)
 				if not poss then
 					return
 				end
