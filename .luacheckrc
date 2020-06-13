@@ -4,16 +4,10 @@ exclude_files = {
 	".luacheckrc"
 }
 ignore = {
-	"211", -- Unused local variable
 	"212", -- Unused argument
-	"213", -- Unused loop variable
-	"311", -- Value assigned to a local variable is unused
-	"43.", -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
 	"542", -- An empty if branch
 }
 globals = {
-	"_G",
-
 	-- DeadlyBossMods
 	"DBM",
 	"DBM_DISABLE_ZONE_DETECTION",
