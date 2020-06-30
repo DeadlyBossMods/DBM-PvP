@@ -39,6 +39,7 @@ globals = {
 	"GetNumGossipOptions",
 	"GetPlayerFactionGroup",
 	"GetQuestReward",
+	"GetServerTime",
 	"GetTime",
 	"IsInInstance",
 	"IsQuestCompletable",

@@ -458,7 +458,9 @@ do
 		[219]                       = State.HORDE_CONTESTED,
 		[216]                       = State.HORDE_CONTROLLED
 	}
-	local capTimer = mod:NewTimer(60, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+	local defaultCapTime = isClassic and 64 or 60
+	local capTimer = mod:NewTimer(defaultCapTime, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+	capTimer.keep = true
 	local prevTime = 0
 
 	function mod:AREA_POIS_UPDATED(widget)
@@ -492,6 +494,9 @@ do
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
+						DBM:Debug(string.format(
+							"pvp objective update: %s,%s,%s",
+							GetServerTime(), infoName, objectivesStore[infoName]), 1)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
 							local timeLeft = (
 								-- GetAreaPOISecondsLeft doesn't work in retail?
