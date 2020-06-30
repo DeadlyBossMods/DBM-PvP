@@ -494,9 +494,7 @@ do
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
-						DBM:Debug(string.format(
-							"pvp objective update: %s,%s,%s",
-							GetServerTime(), infoName, objectivesStore[infoName]), 1)
+						DBM:Debug(string.format("pvp objective update: %s,%s,%s", GetServerTime(), infoName, objectivesStore[infoName]), 2)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
 							local timeLeft = (
 								-- GetAreaPOISecondsLeft doesn't work in retail?
