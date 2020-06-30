@@ -458,8 +458,7 @@ do
 		[219]                       = State.HORDE_CONTESTED,
 		[216]                       = State.HORDE_CONTROLLED
 	}
-	local defaultCapTime = isClassic and 64 or 60
-	local capTimer = mod:NewTimer(defaultCapTime, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+	local capTimer = mod:NewTimer(isClassic and 64 or 60, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
 	capTimer.keep = true
 	local prevTime = 0
 
