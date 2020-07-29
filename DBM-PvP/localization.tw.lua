@@ -50,6 +50,19 @@ L:SetMiscLocalization({
 })
 
 ----------------------
+--  Seething Shore  --
+----------------------
+L = DBM:GetModLocalization("z1803")
+
+L:SetTimerLocalization({
+	TimerSpawn	= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerSpawn	= "Show azerite spawn timer"
+})
+
+----------------------
 --  Alterac Valley  --
 ----------------------
 L = DBM:GetModLocalization("z30")
@@ -253,15 +266,19 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z727")
 
 L:SetTimerLocalization({
-	TimerCart	= "礦坑推車重生"
+	TimerRespawn	= "礦坑推車重生",
+	TimerCart		= "%s"
 })
 
 L:SetOptionLocalization({
-	TimerCart	= "顯示礦坑推車重生計時器"
+	TimerResapwn	= "顯示礦坑推車重生計時器",
+	TimerCart		= "Show cart cap timer"
 })
 
 L:SetMiscLocalization({
-	Capture	= "奪走了"
+	Capture	= "奪走了",
+	Arrived	= "has arived",
+	Begun	= "has begun"
 })
 
 -------------------------
