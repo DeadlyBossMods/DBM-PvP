@@ -33,7 +33,9 @@ do
 	end
 end
 
-local carts, clearCartCache
+local carts = {}
+local clearCartCache
+
 do
 	local tinsert = table.insert
 	local GetTime = GetTime
