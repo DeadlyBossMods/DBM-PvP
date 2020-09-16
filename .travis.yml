@@ -17,7 +17,7 @@ after_success:
   - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -g 1.13.5; if [[ $? != 0 ]]; then TRAVIS_TEST_RESULT=1; fi
 
 after_script:
-  - if [[ "$TRAVIS_TEST_RESULT" == 1 ]]; then curl -s https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh | bash -s -- failure $WEBHOOK_URL; fi
+  - if [[ "$TRAVIS_TEST_RESULT" == 1 ]]; then curl -s https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/verbose/send.sh | bash -s -- failure $WEBHOOK_URL; fi
 
 notifications:
   email:
