@@ -1,4 +1,3 @@
-I TESTED IT
 local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
