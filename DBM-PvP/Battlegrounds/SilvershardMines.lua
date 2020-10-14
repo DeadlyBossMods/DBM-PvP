@@ -5,7 +5,7 @@ local mod	= DBM:NewMod("z727", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
-mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:SetZone()
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 do
@@ -80,7 +80,7 @@ end
 
 do
 	local pairs, abs, sqrt, tremove = pairs, math.abs, math.sqrt, table.remove
-	local GetTime, GetNumBattlefieldVehicles, GetBattlefieldVehicleInfo = GetTime, GetNumBattlefieldVehicles, GetBattlefieldVehicleInfo
+	local GetTime, GetNumBattlefieldVehicles, GetBattlefieldVehicleInfo = GetTime, GetNumBattlefieldVehicles, C_PvP.GetBattlefieldVehicleInfo
 
 	local times = { 181, 234, 129, 97, 153 }
 	local caps = { {x = 22.848, y = 42.823}, {x = 76.517, y = 21.757}, {x = 41.281, y = 48.239}, {x = 69.326, y = 70.632}, {x = 76.517, y = 21.757} }

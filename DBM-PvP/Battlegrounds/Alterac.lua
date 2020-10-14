@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("z30", "DBM-PvP")
 
 mod:SetRevision("@file-date-integer@")
-mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:SetZone()
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 mod:AddBoolOption("AutoTurnIn")
@@ -39,7 +39,8 @@ end
 
 do
 	local ipairs, type = ipairs, type
-	local UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward = UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward
+	local isNewAPI = WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC
+	local UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward = UnitGUID, GetItemCount, isNewAPI and C_GossipInfo.GetNumActiveQuests or GetNumGossipActiveQuests, isNewAPI and C_GossipInfo.SelectActiveQuest or SelectGossipActiveQuest, isNewAPI and C_GossipInfo.SelectAvailableQuest or SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward
 
 	local quests = {
 		[13442] = { -- Archdruid Renferal [A]

@@ -10,7 +10,6 @@ ignore = {
 globals = {
 	-- DeadlyBossMods
 	"DBM",
-	"DBM_DISABLE_ZONE_DETECTION",
 
 	-- WoW
 	"AlwaysUpFrame1",
@@ -24,19 +23,20 @@ globals = {
 	-- API functions
 	"C_AreaPoiInfo",
 	"C_ChatInfo",
+	"C_CurrencyInfo",
 	"C_DeathInfo",
+	"C_GossipInfo",
+	"C_PvP",
 	"C_UIWidgetManager",
 	"C_VignetteInfo",
 	"CompleteQuest",
 	"CreateFrame",
 	"GetBattlefieldInstanceRunTime",
-	"GetBattlefieldVehicleInfo",
 	"GetCurrencyInfo",
 	"GetItemCount",
 	"GetLocale",
 	"GetNumBattlefieldVehicles",
 	"GetNumGossipActiveQuests",
-	"GetNumGossipOptions",
 	"GetPlayerFactionGroup",
 	"GetQuestReward",
 	"GetServerTime",
@@ -46,7 +46,6 @@ globals = {
 	"RepopMe",
 	"SelectGossipActiveQuest",
 	"SelectGossipAvailableQuest",
-	"SelectGossipOption",
 	"UnitFactionGroup",
 	"UnitGUID",
 	"time"

@@ -4,7 +4,7 @@ end
 local mod	= DBM:NewMod("z1191", "DBM-PvP")
 
 mod:SetRevision("@file-date-integer@")
-mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
+mod:SetZone()
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 mod:AddBoolOption("AutoTurnIn")
@@ -31,7 +31,7 @@ do
 end
 
 do
-	local UnitGUID, GetCurrencyInfo, GetNumGossipOptions, SelectGossipOption = UnitGUID, GetCurrencyInfo, GetNumGossipOptions, SelectGossipOption
+	local UnitGUID, GetCurrencyInfo, GetNumGossipOptions, SelectGossipOption = UnitGUID, C_CurrencyInfo.GetCurrencyInfo, C_GossipInfo.GetNumOptions, C_GossipInfo.SelectOption
 
 	function mod:GOSSIP_SHOW()
 		if not self.Options.AutoTurnIn then
