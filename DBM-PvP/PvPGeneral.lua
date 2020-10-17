@@ -214,7 +214,8 @@ do
 		timerDamp		= mod:NewCastTimer(300, 110310)
 	end
 
-	function mod:START_TIMER(_, timeSeconds)
+	function mod:START_TIMER(timerType, timeSeconds)
+		if timerType ~= 1 then return end--don't run this code if a player started the timer, we only want type 1 events (PVP)
 		local _, instanceType = IsInInstance()
 		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
 			if TimerTracker then
