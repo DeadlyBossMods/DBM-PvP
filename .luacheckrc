@@ -10,6 +10,7 @@ ignore = {
 globals = {
 	-- DeadlyBossMods
 	"DBM",
+	"DBM_DISABLE_ZONE_DETECTION",
 
 	-- WoW
 	"AlwaysUpFrame1",
