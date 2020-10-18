@@ -4,7 +4,7 @@ end
 local mod	= DBM:NewMod("z2118", "DBM-PvP")
 
 mod:SetRevision("@file-date-integer@")
-mod:SetZone()
+mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
