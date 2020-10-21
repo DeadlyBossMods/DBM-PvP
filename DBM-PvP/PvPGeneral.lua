@@ -164,7 +164,8 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	end
 	self:RegisterShortTermEvents(
 		"AREA_POIS_UPDATED",
-		"UPDATE_UI_WIDGET"
+		"UPDATE_UI_WIDGET",
+		"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 	)
 	subscribedMapID = mapID
 	objectivesStore = {}
