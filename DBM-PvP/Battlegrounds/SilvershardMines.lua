@@ -168,14 +168,15 @@ do
 	function mod:PVP_VEHICLE_INFO_UPDATED()
 		local cache = {}
 		for i = 1, GetNumBattlefieldVehicles() do
-			local x, y, _, _, vType = GetBattlefieldVehicleInfo(i, 423)
+			local vInfo = GetBattlefieldVehicleInfo(i, 423)
+			local x, y = vInfo.x, vInfo.y
 			x = x * 100
 			y = y * 100
 			cache[i] = {
 				x	= x,
 				y	= y,
 				dir	= identifyCartCoord(x, y),
-				c	= (vType:match("Red") and 0) or (vType:match("Blue") and 1) or -1
+				c	= (vInfo.name:match("Red") and 0) or (vInfo.name:match("Blue") and 1) or -1
 			}
 		end
 		local prune = #cache < #carts

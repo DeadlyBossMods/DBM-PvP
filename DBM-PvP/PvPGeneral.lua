@@ -164,7 +164,8 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	end
 	self:RegisterShortTermEvents(
 		"AREA_POIS_UPDATED",
-		"UPDATE_UI_WIDGET"
+		"UPDATE_UI_WIDGET",
+		"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 	)
 	subscribedMapID = mapID
 	objectivesStore = {}
@@ -214,7 +215,8 @@ do
 		timerDamp		= mod:NewCastTimer(300, 110310)
 	end
 
-	function mod:START_TIMER(_, timeSeconds)
+	function mod:START_TIMER(timerType, timeSeconds)
+		if timerType ~= 1 then return end--don't run this code if a player started the timer, we only want type 1 events (PVP)
 		local _, instanceType = IsInInstance()
 		if (instanceType == "pvp" or instanceType == "arena" or instanceType == "scenario") and self.Options.TimerRemaining then
 			if TimerTracker then
@@ -260,11 +262,11 @@ do
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
 		if msg == L.BgStart120 or msg:find(L.BgStart120) then
-			remainingTimer:Update(0, 120)
+			remainingTimer:Update(isClassic and 1.5 or 0, 120)
 		elseif msg == L.BgStart60 or msg:find(L.BgStart60) then
-			remainingTimer:Update(60, 120)
+			remainingTimer:Update(isClassic and 61.5 or 60, 120)
 		elseif msg == L.BgStart30 or msg:find(L.BgStart30) then
-			remainingTimer:Update(90, 120)
+			remainingTimer:Update(isClassic and 91.5 or 90, 120)
 		elseif not isClassic and (msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
 			vulnerableTimer:Start()
 		end
