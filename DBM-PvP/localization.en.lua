@@ -67,8 +67,17 @@ L:SetOptionLocalization({
 ----------------------
 L = DBM:GetModLocalization("z30")
 
+L:SetTimerLocalization({
+	TimerBoss	= "%s"
+})
+
 L:SetOptionLocalization({
 	AutoTurnIn	= "Automatically turn-in quests"
+})
+
+L:SetMiscLocalization({
+	BossHorde	= "WHO DARES SUMMON LOKHOLAR?",
+	BossAlly	= "Wicked, wicked, mortals! The forest weeps. The elements recoil at the destruction. Ivus must purge you from this world!"
 })
 
 --------------
