@@ -161,7 +161,7 @@ do
 			local x, y = GetBattlefieldVehicleInfo(closestID, 423)
 			cart.x		= x * 100
 			cart.y		= y * 100
-			cart.dir	= identifyCart(cart.x, cart.y)
+			cart.dir	= identifyCartCoord(cart.x, cart.y)
 		end
 	end
 
@@ -179,12 +179,13 @@ do
 				c	= (vInfo.name:match("Red") and 0) or (vInfo.name:match("Blue") and 1) or -1
 			}
 		end
+		local time = GetTime()
 		local prune = #cache < #carts
 		for _, newCart in pairs(cache) do
 			for i, cart in pairs(carts) do
-				if (cart.x == -1 or cart.y == -1) and cart.spawn + 1 < GetTime() then
+				if (cart.x == -1 or cart.y == -1) and cart.spawn + 1 < time then
 					identifyCart(i)
-					cartTimer:Start(nil, names[cart.dir])
+					cartTimer:Start(cart.spawn + times[cart.dir] - time, names[cart.dir])
 				elseif getDistance(newCart.x, newCart.y, cart.x, cart.y) < 1 and isValidUpdate(cart.dir, newCart.dir) then
 					if newCart.c ~= cart.c then
 						local name = names[cart.dir]
@@ -203,7 +204,7 @@ do
 					cart.x		= newCart.x
 					cart.y		= newCart.y
 					cart.c		= newCart.c
-				elseif prune and (cart.spawn + times[cart.dir] - GetTime() < -1) then
+				elseif prune and (cart.spawn + times[cart.dir] - time < -1) then
 					carts[i] = nil
 				end
 			end
