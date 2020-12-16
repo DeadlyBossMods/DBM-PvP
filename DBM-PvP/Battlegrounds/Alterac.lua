@@ -1,4 +1,5 @@
 local mod	= DBM:NewMod("z30", "DBM-PvP")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
@@ -14,6 +15,7 @@ do
 		if zoneID == 30 or zoneID == 2197 then -- Regular AV (retail and classic), Korrak
 			bgzone = true
 			self:RegisterShortTermEvents(
+				"CHAT_MSG_MONSTER_YELL",
 				"GOSSIP_SHOW",
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
@@ -96,5 +98,24 @@ do
 
 	function mod:QUEST_COMPLETE()
 		GetQuestReward(0)
+	end
+end
+
+do
+	local bossTimer	= mod:NewTimer(600, "TimerBoss")
+
+	function mod:CHAT_MSG_MONSTER_YELL(msg, npc)
+		local isAlly = msg == L.BossAlly or msg:match(L.BossAlly)
+		if not isAlly and msg ~= L.BossHorde and not msg:match(L.BossHorde) then
+			return
+		end
+		bossTimer:Start(nil, npc)
+		if isAlly then
+			bossTimer:SetColor({r=0, g=0, b=1})
+			bossTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
+		else
+			bossTimer:SetColor({r=1, g=0, b=0})
+			bossTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
+		end
 	end
 end
