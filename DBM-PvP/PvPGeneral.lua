@@ -206,6 +206,7 @@ end
 do
 	local tonumber, ipairs = tonumber, ipairs
 	local C_UIWidgetManager, TimerTracker, IsInInstance = C_UIWidgetManager, TimerTracker, IsInInstance
+	local FACTION_ALLIANCE = FACTION_ALLIANCE
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
 	local remainingTimer	= mod:NewTimer(0, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local vulnerableTimer, timerShadow, timerDamp
@@ -246,6 +247,13 @@ do
 	local function updateflagcarrier(_, msg)
 		if msg == L.ExprFlagCaptured or msg:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
+			if msg:find(FACTION_ALLIANCE) then
+				flagTimer:SetColor({r=0, g=0, b=1})
+				flagTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
+			else
+				flagTimer:SetColor({r=1, g=0, b=0})
+				flagTimer:UpdateIcon("132485") -- Interface\\Icons\\INV_BannerPVP_01.blp
+			end
 			if not isClassic then
 				vulnerableTimer:Cancel()
 			end
