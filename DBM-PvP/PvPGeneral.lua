@@ -238,9 +238,7 @@ do
 			if info and info.state == 1 and self.Options.TimerRemaining then
 				local minutes, seconds = info.text:match("(%d+):(%d+)")
 				if minutes and seconds then
-					local remaining = tonumber(seconds) + (tonumber(minutes) * 60) + 1
-					local elapsed = 120 - remaining
-					remainingTimer:Update(elapsed, 120)
+					remainingTimer:Update(119 - tonumber(seconds) - (tonumber(minutes) * 60), 120)
 				end
 			end
 		end, self)
