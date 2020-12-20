@@ -225,7 +225,9 @@ do
 					bar.bar:Hide()
 				end
 			end
-			remainingTimer:Start(timeSeconds)
+			if not remainingTimer:IsStarted() then
+				remainingTimer:Start(timeSeconds)
+			end
 		end
 		self:Schedule(timeSeconds + 1, function()
 			if not isClassic and instanceType == "arena" then
