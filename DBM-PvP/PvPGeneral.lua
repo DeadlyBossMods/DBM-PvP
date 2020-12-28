@@ -24,19 +24,19 @@ do
 	local IsInInstance, C_ChatInfo = IsInInstance, C_ChatInfo
 	local bgzone = false
 
-	local function Init()
+	local function Init(self)
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
 			C_ChatInfo.SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
-			mod:Schedule(3, DBM.RequestTimers, DBM)
-			if not bgzone and mod.Options.HideBossEmoteFrame then
+			self:Schedule(3, DBM.RequestTimers, DBM)
+			if not bgzone and self.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(1, true)
 			end
 			bgzone = true
 		elseif bgzone then
 			bgzone = false
-			mod:UnsubscribeAssault()
-			mod:UnsubscribeFlags()
+			self:UnsubscribeAssault()
+			self:UnsubscribeFlags()
 			if mod.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
 			end
@@ -44,7 +44,7 @@ do
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(0.5, Init)
+		self:Schedule(0.5, Init, self)
 	end
 	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
 	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
