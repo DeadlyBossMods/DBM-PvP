@@ -11,10 +11,10 @@ mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 do
 	local bgzone = false
 
-	local function Init()
+	local function Initself)
 		if DBM:GetCurrentArea() == 727 then
 			bgzone = true
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
@@ -23,13 +23,13 @@ do
 			)
 		elseif bgzone then
 			bgzone = false
-			mod:UnregisterShortTermEvents()
-			mod:Stop()
+			self:UnregisterShortTermEvents()
+			selfmod:Stop()
 		end
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, Init)
+		self:Schedule(1, Init, self)
 	end
 	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
 	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA

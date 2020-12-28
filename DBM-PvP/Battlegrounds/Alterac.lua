@@ -10,11 +10,11 @@ mod:AddBoolOption("AutoTurnIn")
 do
 	local bgzone = false
 
-	local function Init()
+	local function Init(self)
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 30 or zoneID == 2197 then -- Regular AV (retail and classic), Korrak
 			bgzone = true
-			mod:RegisterShortTermEvents(
+			self:RegisterShortTermEvents(
 				"CHAT_MSG_MONSTER_YELL",
 				"GOSSIP_SHOW",
 				"QUEST_PROGRESS",
@@ -30,12 +30,12 @@ do
 			-- TODO: Add boss health
 		elseif bgzone then
 			bgzone = false
-			mod:UnregisterShortTermEvents()
+			self:UnregisterShortTermEvents()
 		end
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:Schedule(1, Init)
+		self:Schedule(1, Init, self)
 	end
 	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
 	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
