@@ -5,13 +5,16 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 do
-	function mod:OnInitialize()
+	local function doShit()
 		if DBM:GetCurrentArea() == 489 or DBM:GetCurrentArea() == 2106 then -- Classic, Retail
 			DBM:GetModByName("PvPGeneral"):SubscribeFlags()
 		end
 	end
+	function mod:OnInitialize()
+		self:Schedule(1, doShit)
+	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, doShit)
 	end
 end

@@ -9,8 +9,7 @@ mod:AddBoolOption("AutoTurnIn")
 
 do
 	local bgzone = false
-
-	function mod:OnInitialize()
+	local function doShit(self)
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 30 or zoneID == 2197 then -- Regular AV (retail and classic), Korrak
 			bgzone = true
@@ -33,9 +32,12 @@ do
 			self:UnregisterShortTermEvents()
 		end
 	end
+	function mod:OnInitialize()
+		self:Schedule(1, doShit, self)
+	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, doShit, self)
 	end
 end
 

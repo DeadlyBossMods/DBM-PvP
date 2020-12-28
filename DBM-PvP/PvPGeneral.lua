@@ -41,8 +41,9 @@ do
 			end
 		end
 	end
-	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
-	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
+	function mod:OnInitialize()
+		self:ScheduleMethod(0.5, "ZONE_CHANGED_NEW_AREA")
+	end
 end
 
 do
