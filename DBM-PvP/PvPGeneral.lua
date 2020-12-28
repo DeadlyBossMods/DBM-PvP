@@ -1,6 +1,7 @@
 local mod	= DBM:NewMod("PvPGeneral", "DBM-PvP")
 local L		= mod:GetLocalizedStrings()
 
+local DBM = DBM
 local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup -- Classic Compat fix
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
@@ -23,23 +24,27 @@ do
 	local IsInInstance, C_ChatInfo = IsInInstance, C_ChatInfo
 	local bgzone = false
 
-	function mod:ZONE_CHANGED_NEW_AREA()
+	local function Init()
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
 			C_ChatInfo.SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
-			self:Schedule(3, DBM.RequestTimers, DBM)
-			if not bgzone and self.Options.HideBossEmoteFrame then
+			mod:Schedule(3, DBM.RequestTimers, DBM)
+			if not bgzone and mod.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(1, true)
 			end
 			bgzone = true
 		elseif bgzone then
 			bgzone = false
-			self:UnsubscribeAssault()
-			self:UnsubscribeFlags()
-			if self.Options.HideBossEmoteFrame then
+			mod:UnsubscribeAssault()
+			mod:UnsubscribeFlags()
+			if mod.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
 			end
 		end
+	end
+
+	function mod:ZONE_CHANGED_NEW_AREA()
+		self:Schedule(0.5, Init)
 	end
 	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
 	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA

@@ -5,7 +5,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 do
-	function mod:OnInitialize()
+	local function Init()
 		local zoneID = DBM:GetCurrentArea()
 		if zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then -- Classic Arathi, Winter, Remastered Retail, AI
 			local assaultID
@@ -23,6 +23,8 @@ do
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, Init)
 	end
+	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
 end

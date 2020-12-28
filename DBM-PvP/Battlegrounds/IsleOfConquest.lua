@@ -8,7 +8,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 
 do
-	function mod:OnInitialize()
+	local function Init()
 		if DBM:GetCurrentArea() == 628 then
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(169, 5)
 			-- TODO: Add gate health
@@ -17,6 +17,8 @@ do
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, Init)
 	end
+	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
 end

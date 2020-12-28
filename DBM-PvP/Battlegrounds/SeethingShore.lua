@@ -10,20 +10,22 @@ mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 do
 	local bgzone = false
 
-	function mod:OnInitialize()
+	local function Init()
 		if DBM:GetCurrentArea() == 1803 then
 			bgzone = true
-			self:RegisterShortTermEvents("VIGNETTES_UPDATED")
+			mod:RegisterShortTermEvents("VIGNETTES_UPDATED")
 		elseif bgzone then
 			bgzone = false
-			self:UnregisterShortTermEvents()
-			self:Stop()
+			mod:UnregisterShortTermEvents()
+			mod:Stop()
 		end
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, Init)
 	end
+	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
 end
 
 do

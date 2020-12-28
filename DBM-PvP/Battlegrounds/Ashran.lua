@@ -12,22 +12,24 @@ mod:AddBoolOption("AutoTurnIn")
 do
 	local bgzone = false
 
-	function mod:OnInitialize()
+	local function Init()
 		if DBM:GetCurrentArea() == 1191 then
 			bgzone = true
-			self:RegisterShortTermEvents(
+			mod:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
 		elseif bgzone then
-			self:UnregisterShormTermEvents()
+			mod:UnregisterShormTermEvents()
 		end
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, Init)
 	end
+	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
 end
 
 do

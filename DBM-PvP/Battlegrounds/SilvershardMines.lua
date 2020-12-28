@@ -11,10 +11,10 @@ mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 do
 	local bgzone = false
 
-	function mod:OnInitialize()
+	local function Init()
 		if DBM:GetCurrentArea() == 727 then
 			bgzone = true
-			self:RegisterShortTermEvents(
+			mod:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
 				"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 				"CHAT_MSG_BG_SYSTEM_NEUTRAL",
@@ -23,14 +23,16 @@ do
 			)
 		elseif bgzone then
 			bgzone = false
-			self:UnregisterShortTermEvents()
-			self:Stop()
+			mod:UnregisterShortTermEvents()
+			mod:Stop()
 		end
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
-		self:ScheduleMethod(1, "OnInitialize")
+		self:Schedule(1, Init)
 	end
+	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
+	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
 end
 
 local carts = {}
