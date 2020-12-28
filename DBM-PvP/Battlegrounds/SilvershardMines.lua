@@ -24,7 +24,7 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
-			selfmod:Stop()
+			self:Stop()
 		end
 	end
 
