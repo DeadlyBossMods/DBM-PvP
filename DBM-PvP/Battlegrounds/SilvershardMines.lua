@@ -11,7 +11,7 @@ mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
 do
 	local bgzone = false
 
-	local function Initself)
+	local function Init(self)
 		if DBM:GetCurrentArea() == 727 then
 			bgzone = true
 			self:RegisterShortTermEvents(
