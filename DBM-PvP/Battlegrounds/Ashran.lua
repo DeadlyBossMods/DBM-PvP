@@ -40,7 +40,7 @@ do
 			return
 		end
 		local cid = self:GetCIDFromGUID(UnitGUID("target") or "")
-		if cid == 81870 or cid == 83830 then -- Anenga (Alliance) | Kalgan (Horde)
+		if cid == 81870 or cid == 82204 then -- Anenga (Alliance) | Atomik (Horde)
 			local _, currency = GetCurrencyInfo(944) -- Artifact Fragment
 			if currency > 0 and GetNumGossipOptions() == 3 then -- If boss isn't already summoned
 				SelectGossipOption(1)
