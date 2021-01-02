@@ -245,7 +245,7 @@ do
 		if not healthScan then
 			healthScan = C_Timer.NewTicker(1, healthScanFunc)
 		end
-		trackedUnits[cid] = name
+		trackedUnits[cid] = L[name] or name
 		trackedUnitsCount = trackedUnitsCount + 1
 		self:RegisterShortTermEvents("CHAT_MSG_ADDON")
 		if not DBM.InfoFrame:IsShown() then
