@@ -34,7 +34,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	InfoFrameHeader		= "Boss Health",
 	BgStart120          = "The battle begins in 2 minutes.",
 	BgStart60           = "The battle begins in 1 minute.",
 	BgStart30           = "The battle begins in 30 seconds.",
@@ -53,6 +52,7 @@ L:SetMiscLocalization({
 	Vulnerable1			= "The flag carriers have become vulnerable to attack!",
 	Vulnerable2			= "The flag carriers have become increasingly vulnerable to attack!",
 	-- Alterac/IsleOfConquest bosses
+	InfoFrameHeader		= "Boss Health",
 	HordeBoss			= "Horde Boss",
 	AllianceBoss		= "Alliance Boss",
 	Galvangar			= "Galvangar",
