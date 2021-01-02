@@ -244,6 +244,7 @@ do
 	function mod:TrackHealth(cid, name)
 		if not healthScan then
 			healthScan = C_Timer.NewTicker(1, healthScanFunc)
+			C_ChatInfo.RegisterAddonMessagePrefix("DBM-PvP")
 		end
 		trackedUnits[cid] = L[name] or name
 		trackedUnitsCount = trackedUnitsCount + 1
