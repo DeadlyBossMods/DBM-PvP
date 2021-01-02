@@ -34,6 +34,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	InfoFrameHeader		= "Boss Health",
 	BgStart120          = "The battle begins in 2 minutes.",
 	BgStart60           = "The battle begins in 1 minute.",
 	BgStart30           = "The battle begins in 30 seconds.",
