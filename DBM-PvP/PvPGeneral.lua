@@ -209,7 +209,7 @@ function mod:UnsubscribeFlags()
 end
 
 do
-	local pairs, strsplit, format, tinsert, twipe = pairs, strsplit, string.format, table.insert, table.wipe
+	local pairs, strsplit, format, twipe = pairs, strsplit, string.format, table.wipe
 	local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
 	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits = nil, {}, 0, {}
 
