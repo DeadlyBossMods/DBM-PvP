@@ -245,7 +245,9 @@ do
 		if not healthScan then
 			healthScan = C_Timer.NewTicker(1, healthScanFunc)
 			C_ChatInfo.RegisterAddonMessagePrefix("DBM-PvP")
-			C_ChatInfo.RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Capping") then
+				C_ChatInfo.RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+			end
 		end
 		trackedUnits[cid] = L[name] or name
 		trackedUnitsCount = trackedUnitsCount + 1
