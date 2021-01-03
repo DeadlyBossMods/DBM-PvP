@@ -26,11 +26,18 @@ do
 			elseif zoneID == 2197 then
 				assaultID = 1537
 			end
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 0)
-			-- TODO: Add boss health
+			local generalMod = DBM:GetModByName("PvPGeneral")
+			generalMod:SubscribeAssault(assaultID, 0)
+			generalMod:TrackHealth(11946, "HordeBoss")
+			generalMod:TrackHealth(11948, "AllianceBoss")
+			generalMod:TrackHealth(11947, "Galvangar")
+			generalMod:TrackHealth(11949, "Balinda")
+			generalMod:TrackHealth(13419, "Ivus")
+			generalMod:TrackHealth(13256, "Lokholar")
 		elseif bgzone then
 			bgzone = false
 			self:UnregisterShortTermEvents()
+			DBM:GetModByName("PvPGeneral"):StopTrackHealth()
 		end
 	end
 

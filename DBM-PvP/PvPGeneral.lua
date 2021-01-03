@@ -209,6 +209,77 @@ function mod:UnsubscribeFlags()
 end
 
 do
+	local pairs, strsplit, format, twipe = pairs, strsplit, string.format, table.wipe
+	local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
+	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits = nil, {}, 0, {}
+
+	local function updateInfoFrame()
+		local lines, sortedLines = {}, {}
+		for cid, health in pairs(syncTrackedUnits) do
+			lines[trackedUnits[cid]] = health .. "%"
+			sortedLines[#sortedLines + 1] = trackedUnits[cid]
+		end
+		return lines, sortedLines
+	end
+
+	local function healthScanFunc()
+		local syncs, syncCount = {}, 0
+		for i = 1, 40 do
+			if syncCount >= trackedUnitsCount then -- We've already scanned all our tracked units, exit out to save CPU
+				break
+			end
+			local target = "raid" .. i .. "target"
+			local guid = UnitGUID(target)
+			if guid then
+				local cid = mod:GetCIDFromGUID(guid)
+				if trackedUnits[cid] and not syncs[cid] then
+					syncs[cid] = true
+					syncCount = syncCount + 1
+					C_ChatInfo.SendAddonMessage("DBM-PvP", format("%s:%.1f", cid, UnitHealth(target) / UnitHealthMax(target) * 100), "INSTANCE_CHAT")
+				end
+			end
+		end
+	end
+
+	function mod:TrackHealth(cid, name)
+		if not healthScan then
+			healthScan = C_Timer.NewTicker(1, healthScanFunc)
+			C_ChatInfo.RegisterAddonMessagePrefix("DBM-PvP")
+			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Capping") then
+				C_ChatInfo.RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+			end
+		end
+		trackedUnits[cid] = L[name] or name
+		trackedUnitsCount = trackedUnitsCount + 1
+		self:RegisterShortTermEvents("CHAT_MSG_ADDON")
+		if not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:SetHeader(L.InfoFrameHeader)
+			DBM.InfoFrame:Show(42, "function", updateInfoFrame, false, false)
+			DBM.InfoFrame:SetColumns(1)
+		end
+	end
+
+	function mod:StopTrackHealth()
+		if healthScan then
+			healthScan:Cancel()
+			healthScan = nil
+		end
+		twipe(trackedUnits)
+		twipe(syncTrackedUnits)
+		self:UnregisterShortTermEvents()
+		DBM.InfoFrame:Hide()
+	end
+
+	function mod:CHAT_MSG_ADDON(prefix, msg, channel)
+		if channel ~= "INSTANCE_CHAT" or (prefix ~= "DBM-PvP" and prefix ~= "Capping") then -- Lets listen to capping as well, for extra data.
+			return
+		end
+		local cid, hp = strsplit(":", msg)
+		syncTrackedUnits[cid] = hp
+	end
+end
+
+do
 	local tonumber, ipairs = tonumber, ipairs
 	local C_UIWidgetManager, TimerTracker, IsInInstance = C_UIWidgetManager, TimerTracker, IsInInstance
 	local FACTION_ALLIANCE = FACTION_ALLIANCE

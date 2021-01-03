@@ -21,6 +21,11 @@ globals = {
 	"WOW_PROJECT_ID",
 	"WOW_PROJECT_CLASSIC",
 
+	-- Lua functions
+	"strsplit",
+	"time",
+	"table.wipe",
+
 	-- API functions
 	"C_AreaPoiInfo",
 	"C_ChatInfo",
@@ -28,6 +33,7 @@ globals = {
 	"C_DeathInfo",
 	"C_GossipInfo",
 	"C_PvP",
+	"C_Timer",
 	"C_UIWidgetManager",
 	"C_VignetteInfo",
 	"CompleteQuest",
@@ -49,5 +55,6 @@ globals = {
 	"SelectGossipAvailableQuest",
 	"UnitFactionGroup",
 	"UnitGUID",
-	"time"
+	"UnitHealth",
+	"UnitHealthMax"
 }
