@@ -209,7 +209,7 @@ function mod:UnsubscribeFlags()
 end
 
 do
-	local pairs, strsplit, format, twipe = pairs, strsplit, string.format, table.wipe
+	local pairs, strsplit, tostring, format, twipe = pairs, strsplit, tostring, string.format, table.wipe
 	local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
 	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits = nil, {}, 0, {}
 
@@ -249,7 +249,7 @@ do
 				C_ChatInfo.RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
 			end
 		end
-		trackedUnits[cid] = L[name] or name
+		trackedUnits[tostring(cid)] = L[name] or name
 		trackedUnitsCount = trackedUnitsCount + 1
 		self:RegisterShortTermEvents("CHAT_MSG_ADDON")
 		if not DBM.InfoFrame:IsShown() then
