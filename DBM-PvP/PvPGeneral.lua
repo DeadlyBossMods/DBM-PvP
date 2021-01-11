@@ -143,7 +143,7 @@ do
 	end
 end
 
-local subscribedMapID, prevAScore, prevHScore, warnAtEnd = 0, 0, 0, {}
+local subscribedMapID, prevAScore, prevHScore, warnAtEnd, hasWarns = 0, 0, 0, {}, false
 local numObjectives, objectivesStore
 
 function mod:SubscribeAssault(mapID, objectsCount)
@@ -185,13 +185,14 @@ function mod:UnsubscribeAssault()
 	self:Stop()
 	subscribedMapID = 0
 	prevAScore, prevHScore = 0, 0
-	if #warnAtEnd > 0 then
+	if hasWarns then
 		DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
 		for k, _ in warnAtEnd do
 			DBM:AddMsg(k)
 		end
 		DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
 		warnAtEnd = {}
+		hasWarns = false
 	end
 end
 
@@ -276,6 +277,9 @@ do
 		end
 		local cid, hp = strsplit(":", msg)
 		syncTrackedUnits[cid] = hp
+		if prefix == "Capping" then
+			print("Capping: " .. msg)
+		end
 	end
 end
 
@@ -378,6 +382,7 @@ do
 		if prevAScore ~= allianceScore then
 			if resPerSec[allianceBases + 1] == 1000 then
 				warnAtEnd[string.format("%d,%d", allianceScore - prevAScore, allianceBases)] = true
+				hasWarns = true
 			end
 			if allianceScore < maxScore then
 				DBM:Debug(string.format("Alliance: +%d (%d)", allianceScore - prevAScore, allianceBases), 3)
@@ -387,6 +392,7 @@ do
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
 				warnAtEnd[string.format("%d,%d", hordeScore - prevHScore, hordeBases)] = true
+				hasWarns = true
 			end
 			if hordeScore < maxScore then
 				DBM:Debug(string.format("Horde: +%d (%d)", hordeScore - prevHScore, hordeBases), 3)
