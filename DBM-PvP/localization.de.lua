@@ -83,7 +83,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "Zeige Zeit bis zum Respawn der Wagen",
+	TimerRespawn	= "Zeige Zeit bis zum Respawn der Wagen",
 	TimerCart		= "Show cart cap timer"
 })
 

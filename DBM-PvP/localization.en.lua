@@ -80,7 +80,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "Automatically turn-in quests"
+	AutoTurnIn	= "Automatically turn-in quests",
+	TimerBoss	= "Show boss remaining timer"
 })
 
 L:SetMiscLocalization({
@@ -142,7 +143,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "Show cart respawn timer",
+	TimerRespawn	= "Show cart respawn timer",
 	TimerCart		= "Show cart cap timer"
 })
 

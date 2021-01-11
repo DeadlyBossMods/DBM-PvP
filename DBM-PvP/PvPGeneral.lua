@@ -401,8 +401,8 @@ do
 		end
 		-- End debug
 		local gameTime = getGametime()
-		local allyTime = mmin(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1])
-		local hordeTime = mmin(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1])
+		local allyTime = mfloor(mmin(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1]))
+		local hordeTime = mfloor(mmin(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1]))
 		if allyTime == hordeTime then
 			winTimer:Stop()
 			if scoreFrame1Text then

@@ -124,7 +124,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "礦坑推車重生",
+	TimerRespawn	= "礦坑推車重生",
 	TimerCart		= "顯示礦坑推車重生計時器"
 })
 
