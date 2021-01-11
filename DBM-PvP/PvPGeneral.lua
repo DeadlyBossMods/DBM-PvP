@@ -15,7 +15,6 @@ mod:RegisterEvents(
 	"AREA_POIS_UPDATED"
 )
 
---mod:AddBoolOption("ColorByClass", true)
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 mod:AddBoolOption("ShowRelativeGameTime", true)
@@ -445,11 +444,11 @@ do
 			end
 			if (maxScore - friendlyLast) / resPerSec[friendlyBases + 1] > (maxScore - enemyLast) / resPerSec[enemyBases + 1] then
 				local enemyTime, friendlyTime, baseLowest, enemyFinal, friendlyFinal
-				for i = 1, 3 do
-					enemyTime = (maxScore - enemyLast) / resPerSec[3 - i]
+				for i = 1, numObjectives do
+					enemyTime = (maxScore - enemyLast) / resPerSec[numObjectives - i]
 					friendlyTime = (maxScore - friendlyLast) / resPerSec[i]
 					baseLowest = friendlyTime < enemyTime and friendlyTime or enemyTime
-					enemyFinal = mfloor((enemyLast + mfloor(baseLowest * resPerSec[3] + 0.5)) / 10) * 10
+					enemyFinal = mfloor((enemyLast + mfloor(baseLowest * resPerSec[numObjectives - 3] + 0.5)) / 10) * 10
 					friendlyFinal = mfloor((friendlyLast + mfloor(baseLowest * resPerSec[i] + 0.5)) / 10) * 10
 					if friendlyFinal >= maxScore and enemyFinal < maxScore then
 						scoreFrameToWinText:SetText(L.BasesToWin:format(i))
@@ -589,17 +588,8 @@ do
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
-						DBM:Debug(string.format("pvp objective update: %s,%s,%s", GetServerTime(), infoName, objectivesStore[infoName]), 2)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
-							local timeLeft = (
-								-- GetAreaPOISecondsLeft doesn't work in retail?
-								-- Classic never got GetAreaPOISecondsLeft, it still uses GetAreaPOITimeLeft which retail deprecated
-								C_AreaPoiInfo.GetAreaPOISecondsLeft and C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPOIID)
-								or C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) * 60
-								or overrideTimers[subscribedMapID]
-								or nil
-							)
-							capTimer:Start(timeLeft, infoName)
+							capTimer:Start(isClassic and (C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) or 0) * 60 or C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPOIID) or overrideTimers[subscribedMapID] or 60, infoName)
 							if isAllyCapping then
 								capTimer:SetColor({r=0, g=0, b=1}, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
@@ -655,38 +645,3 @@ do
 	end
 	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED
 end
-
---[[
-hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
-	if not mod.Options.ColorByClass then
-		return
-	end
-	local isArena = IsActiveBattlefieldArena()
-	for i = 1, MAX_WORLDSTATE_SCORE_BUTTONS do
-		local index = (FauxScrollFrame_GetOffset(WorldStateScoreScrollFrame) or 0) + i
-		local name, _, _, _, _, faction, _, _, classToken = GetBattlefieldScore(index)
-		if (name ~= UnitName("player")) and classToken and RAID_CLASS_COLORS[classToken] and _G["WorldStateScoreButton"..i.."NameText"] then
-			_G["WorldStateScoreButton"..i.."NameText"]:SetTextColor(RAID_CLASS_COLORS[classToken].r, RAID_CLASS_COLORS[classToken].g, RAID_CLASS_COLORS[classToken].b)
-			local playerName = _G["WorldStateScoreButton"..i.."NameText"]:GetText()
-			if playerName then
-				local _, _, playerName, playerServer = string.find(playerName, "([^%-]+)%-(.+)")
-				if playerServer and playerName then
-					if faction == 0 then
-						if isArena then --green team
-							_G["WorldStateScoreButton"..i.."NameText"]:SetText(playerName.."|cffffffff-|r|cff19ff19"..playerServer.."|r")
-						else --horde
-							_G["WorldStateScoreButton"..i.."NameText"]:SetText(playerName.."|cffffffff-|r|cffff1919"..playerServer.."|r")
-						end
-					else
-						if isArena then --golden team
-							_G["WorldStateScoreButton"..i.."NameText"]:SetText(playerName.."|cffffffff-|r|cffffd100"..playerServer.."|r")
-						else --alliance
-							_G["WorldStateScoreButton"..i.."NameText"]:SetText(playerName.."|cffffffff-|r|cff00adf0"..playerServer.."|r")
-						end
-					end
-				end
-			end
-		end
-	end
-end)
---]]
