@@ -276,9 +276,6 @@ do
 		end
 		local cid, hp = strsplit(":", msg)
 		syncTrackedUnits[cid] = hp
-		if prefix == "Capping" then
-			print("Capping: " .. msg)
-		end
 	end
 end
 
