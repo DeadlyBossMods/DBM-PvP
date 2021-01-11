@@ -90,7 +90,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "수레 재생성 바 보기",
+	TimerRespawn	= "수레 재생성 바 보기",
 	TimerCart		= "Show cart cap timer"
 })
 

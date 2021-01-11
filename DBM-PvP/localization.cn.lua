@@ -116,7 +116,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "显示矿车刷新计时",
+	TimerRespawn	= "显示矿车刷新计时",
 	TimerCart		= "计时条：矿车刷新"
 })
 

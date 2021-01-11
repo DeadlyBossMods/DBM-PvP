@@ -86,7 +86,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "тсчет времени до восстановления вагонетки",
+	TimerRespawn	= "тсчет времени до восстановления вагонетки",
 	TimerCart		= "Show cart cap timer"
 })
 

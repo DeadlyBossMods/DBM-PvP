@@ -85,7 +85,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerResapwn	= "Afficher le temps de respawn des chariots",
+	TimerRespawn	= "Afficher le temps de respawn des chariots",
 	TimerCart		= "Show cart cap timer"
 })
 
