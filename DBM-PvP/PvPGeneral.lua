@@ -621,7 +621,7 @@ do
 					end
 				end
 			end
-			if widgetID == 1671 or widgetID == 2074 then -- Standard battleground score predictor: 1671. Deepwind rework: 2074
+			if widgetID == 1671 or widgetID == 2073 then -- Standard battleground score predictor: 1671. Deepwind rework: 2073
 				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
