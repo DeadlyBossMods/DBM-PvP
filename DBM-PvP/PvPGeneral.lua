@@ -177,21 +177,25 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	updateGametime()
 end
 
-function mod:UnsubscribeAssault()
-	HideEstimatedPoints()
-	HideBasesToWin()
-	self:UnregisterShortTermEvents()
-	self:Stop()
-	subscribedMapID = 0
-	prevAScore, prevHScore = 0, 0
-	if hasWarns then
-		DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
-		for k, _ in warnAtEnd do
-			DBM:AddMsg(k)
+do
+	local pairs = pairs
+
+	function mod:UnsubscribeAssault()
+		HideEstimatedPoints()
+		HideBasesToWin()
+		self:UnregisterShortTermEvents()
+		self:Stop()
+		subscribedMapID = 0
+		prevAScore, prevHScore = 0, 0
+		if hasWarns then
+			DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
+			for k, _ in pairs(warnAtEnd) do
+				DBM:AddMsg(k)
+			end
+			DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
+			warnAtEnd = {}
+			hasWarns = false
 		end
-		DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
-		warnAtEnd = {}
-		hasWarns = false
 	end
 end
 
