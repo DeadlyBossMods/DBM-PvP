@@ -220,8 +220,14 @@ do
 	local function updateInfoFrame()
 		local lines, sortedLines = {}, {}
 		for cid, health in pairs(syncTrackedUnits) do
-			lines[trackedUnits[cid]] = health .. "%"
-			sortedLines[#sortedLines + 1] = trackedUnits[cid]
+			if not trackedUnits[cid] then
+				if self:AntiSpam(60, cid) then
+					DBM:Debug("Tracking an unknown unit by ID: " .. cid)
+				end
+			else
+				lines[trackedUnits[cid]] = health .. "%"
+				sortedLines[#sortedLines + 1] = trackedUnits[cid]
+			end
 		end
 		return lines, sortedLines
 	end
