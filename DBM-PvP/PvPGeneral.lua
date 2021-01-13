@@ -221,7 +221,7 @@ do
 		local lines, sortedLines = {}, {}
 		for cid, health in pairs(syncTrackedUnits) do
 			if not trackedUnits[cid] then
-				if self:AntiSpam(60, cid) then
+				if mod:AntiSpam(60, cid) then
 					DBM:Debug("Tracking an unknown unit by ID: " .. cid)
 				end
 			else
