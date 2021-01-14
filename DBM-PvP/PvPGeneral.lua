@@ -629,25 +629,34 @@ do
 			end
 			if widgetID == 1671 or widgetID == 2073 then -- Standard battleground score predictor: 1671. Deepwind rework: 2073
 				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
-				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+				if info then
+					self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+				end
 			end
 			if widgetID == 1893 or widgetID == 1894 then -- Classic Arathi Basin
-				self:UpdateWinTimer(2000, tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
+				local info, info2 = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1893), C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1894)
+				if info and info2 then
+					self:UpdateWinTimer(2000, tonumber(string.match(info.text, '(%d+)/2000')), tonumber(string.match(info2.text, '(%d+)/2000')), allyBases, hordeBases)
+				end
 			end
 		elseif widgetID == 1683 then -- Temple Of Kotmogu
 			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
-			for _, v in pairs(widgetInfo.leftIcons) do
-				if v.iconState == 1 then
-					allyBases = allyBases + 1
+			if widgetInfo then
+				for _, v in pairs(widgetInfo.leftIcons) do
+					if v.iconState == 1 then
+						allyBases = allyBases + 1
+					end
 				end
-			end
-			for _, v in pairs(widgetInfo.rightIcons) do
-				if v.iconState == 1 then
-					hordeBases = hordeBases + 1
+				for _, v in pairs(widgetInfo.rightIcons) do
+					if v.iconState == 1 then
+						hordeBases = hordeBases + 1
+					end
 				end
 			end
 			local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1689)
-			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+			if info then
+				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+			end
 		end
 	end
 	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED
