@@ -32,6 +32,7 @@ globals = {
 	"C_CurrencyInfo",
 	"C_DeathInfo",
 	"C_GossipInfo",
+	"C_Map",
 	"C_PvP",
 	"C_Timer",
 	"C_UIWidgetManager",
