@@ -181,21 +181,22 @@ do
 	local pairs = pairs
 
 	function mod:UnsubscribeAssault()
+		if hasWarns then
+			DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
+			DBM:AddMsg("Battleground: " .. C_Map.GetMapInfo(subscribedMapID).name)
+			for k, v in pairs(warnAtEnd) do
+				DBM:AddMsg(v .. "x " .. k)
+			end
+			DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
+			warnAtEnd = {}
+			hasWarns = false
+		end
 		HideEstimatedPoints()
 		HideBasesToWin()
 		self:UnregisterShortTermEvents()
 		self:Stop()
 		subscribedMapID = 0
 		prevAScore, prevHScore = 0, 0
-		if hasWarns then
-			DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
-			for k, _ in pairs(warnAtEnd) do
-				DBM:AddMsg(k)
-			end
-			DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
-			warnAtEnd = {}
-			hasWarns = false
-		end
 	end
 end
 
@@ -364,7 +365,7 @@ do
 end
 
 do
-	local type, string, mfloor, mmin = type, string, math.floor, math.min
+	local type, mfloor, mmin, sformat = type, math.floor, math.min, string.format
 	local FACTION_HORDE, FACTION_ALLIANCE = FACTION_HORDE, FACTION_ALLIANCE
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local resourcesPerSec = {
@@ -383,21 +384,29 @@ do
 		-- Start debug
 		if prevAScore ~= allianceScore then
 			if resPerSec[allianceBases + 1] == 1000 then
-				warnAtEnd[string.format("%d,%d", allianceScore - prevAScore, allianceBases)] = true
+				local key = sformat("%d,%d", allianceScore - prevAScore, allianceBases)
+				if not warnAtEnd[key] then
+					warnAtEnd[key] = 0
+				end
+				warnAtEnd[key] = warnAtEnd[key] + 1
 				hasWarns = true
 			end
 			if allianceScore < maxScore then
-				DBM:Debug(string.format("Alliance: +%d (%d)", allianceScore - prevAScore, allianceBases), 3)
+				DBM:Debug(sformat("Alliance: +%d (%d)", allianceScore - prevAScore, allianceBases), 3)
 			end
 			prevAScore = allianceScore
 		end
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
-				warnAtEnd[string.format("%d,%d", hordeScore - prevHScore, hordeBases)] = true
+				local key = sformat("%d,%d", hordeScore - prevAScore, hordeBases)
+				if not warnAtEnd[key] then
+					warnAtEnd[key] = 0
+				end
+				warnAtEnd[key] = warnAtEnd[key] + 1
 				hasWarns = true
 			end
 			if hordeScore < maxScore then
-				DBM:Debug(string.format("Horde: +%d (%d)", hordeScore - prevHScore, hordeBases), 3)
+				DBM:Debug(sformat("Horde: +%d (%d)", hordeScore - prevHScore, hordeBases), 3)
 			end
 			prevHScore = hordeScore
 		end
