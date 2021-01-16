@@ -399,7 +399,7 @@ do
 		end
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
-				local key = sformat("%d,%d", hordeScore - prevAScore, hordeBases)
+				local key = sformat("%d,%d", hordeScore - prevHScore, hordeBases)
 				local warnCount = warnAtEnd[key] or 0
 				warnAtEnd[key] = warnCount + 1
 				if warnCount > 2 then
