@@ -182,15 +182,16 @@ do
 
 	function mod:UnsubscribeAssault()
 		if hasWarns then
+			local map = C_Map.GetMapInfo(subscribedMapID)
 			DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
-			DBM:AddMsg("Battleground: " .. C_Map.GetMapInfo(subscribedMapID).name)
+			DBM:AddMsg("Battleground: " .. map and map.name or "Unknown")
 			for k, v in pairs(warnAtEnd) do
 				DBM:AddMsg(v .. "x " .. k)
 			end
 			DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
-			warnAtEnd = {}
-			hasWarns = false
 		end
+		warnAtEnd = {}
+		hasWarns = false
 		HideEstimatedPoints()
 		HideBasesToWin()
 		self:UnregisterShortTermEvents()
@@ -385,11 +386,11 @@ do
 		if prevAScore ~= allianceScore then
 			if resPerSec[allianceBases + 1] == 1000 then
 				local key = sformat("%d,%d", allianceScore - prevAScore, allianceBases)
-				if not warnAtEnd[key] then
-					warnAtEnd[key] = 0
+				local warnCount = warnAtEnd[key] or 0
+				warnAtEnd[key] = warnCount + 1
+				if warnCount > 2 then
+					hasWarns = true
 				end
-				warnAtEnd[key] = warnAtEnd[key] + 1
-				hasWarns = true
 			end
 			if allianceScore < maxScore then
 				DBM:Debug(sformat("Alliance: +%d (%d)", allianceScore - prevAScore, allianceBases), 3)
@@ -399,11 +400,11 @@ do
 		if prevHScore ~= hordeScore then
 			if resPerSec[hordeBases + 1] == 1000 then
 				local key = sformat("%d,%d", hordeScore - prevAScore, hordeBases)
-				if not warnAtEnd[key] then
-					warnAtEnd[key] = 0
+				local warnCount = warnAtEnd[key] or 0
+				warnAtEnd[key] = warnCount + 1
+				if warnCount > 2 then
+					hasWarns = true
 				end
-				warnAtEnd[key] = warnAtEnd[key] + 1
-				hasWarns = true
 			end
 			if hordeScore < maxScore then
 				DBM:Debug(sformat("Horde: +%d (%d)", hordeScore - prevHScore, hordeBases), 3)
