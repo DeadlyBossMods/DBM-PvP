@@ -184,7 +184,7 @@ do
 		if hasWarns then
 			local map = C_Map.GetMapInfo(subscribedMapID)
 			DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
-			DBM:AddMsg("Battleground: " .. map and map.name or "Unknown")
+			DBM:AddMsg("Battleground: " .. (map and map.name or "Unknown"))
 			for k, v in pairs(warnAtEnd) do
 				DBM:AddMsg(v .. "x " .. k)
 			end
