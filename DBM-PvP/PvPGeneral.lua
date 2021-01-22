@@ -588,9 +588,10 @@ do
 						isHordeCapping = icons[infoTexture] == State.HORDE_CONTESTED
 					end
 					if objectivesStore[infoName] ~= (atlasName and atlasName or infoTexture) then
+						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
-							capTimer:Update(0, isClassic and (C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) or 0) * 60 or C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPOIID) or overrideTimers[subscribedMapID] or 60, infoName)
+							capTimer:Start(isClassic and (C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) or 0) * 60 or C_AreaPoiInfo.GetAreaPOISecondsLeft(areaPOIID) or overrideTimers[subscribedMapID] or 60, infoName)
 							if isAllyCapping then
 								capTimer:SetColor({r=0, g=0, b=1}, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
@@ -598,8 +599,6 @@ do
 								capTimer:SetColor({r=1, g=0, b=0}, infoName)
 								capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
 							end
-						else
-							capTimer:Stop(infoName)
 						end
 					end
 				end
