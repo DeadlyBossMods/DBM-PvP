@@ -567,7 +567,6 @@ do
 		[216]                       = State.HORDE_CONTROLLED
 	}
 	local capTimer = mod:NewTimer(isClassic and 64 or 60, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
-	capTimer.keep = true
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
