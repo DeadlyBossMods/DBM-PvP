@@ -309,7 +309,7 @@ do
 					bar.bar:Hide()
 				end
 			end
-			if not timeSeconds or timeSeconds < 1 then
+			if not timeSeconds or type(timeSeconds) ~= "number" or timeSeconds < 1 then
 				DBM:Debug("Uh oh, START_TIMER returned an invalid value: " .. (timeSeconds or "nil"))
 			end
 			if not remainingTimer:IsStarted() then
