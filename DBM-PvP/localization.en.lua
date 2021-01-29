@@ -13,7 +13,7 @@ L:SetTimerLocalization({
 	TimerCap		= "%s",
 	TimerFlag		= "Flag respawn",
 	TimerInvite		= "%s",
-	TimerRemaining	= "Time Remaining: ",
+	TimerRemaining	= "Starting in",
 	TimerShadow		= "Shadow Sight"
 })
 
@@ -65,6 +65,10 @@ L:SetMiscLocalization({
 --  Seething Shore  --
 ----------------------
 L = DBM:GetModLocalization("z1803")
+
+L:SetTimerLocalization({
+	TimerSpawn		= "%s"
+})
 
 L:SetOptionLocalization({
 	TimerSpawn	= "Show azerite spawn timer"
