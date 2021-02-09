@@ -64,6 +64,9 @@ do
 					return
 				end
 				local pos = round(poss.x) .. ":" .. round(poss.y)
+				if not azeriteNames[pos] then
+					DBM:Debug(("Found azerite at position unknown: %d, %d"):format(poss.x, poss.y))
+				end
 				checkedThisRound[pos] = true
 				if not knownAzerite[pos] then
 					knownAzerite[pos] = true
