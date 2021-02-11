@@ -60,7 +60,7 @@ do
 			local vignette = C_VignetteInfo.GetVignetteInfo(vignetteids[i])
 			if vignette and vignette.vignetteGUID then
 				local poss = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907)
-				if not poss then
+				if not poss or poss.x == 0 or poss.y == 0 then
 					return
 				end
 				local pos = round(poss.x) .. ":" .. round(poss.y)
