@@ -312,8 +312,7 @@ do
 			end
 			if not timeSeconds or type(timeSeconds) ~= "number" or timeSeconds < 1 then
 				DBM:Debug("Uh oh, START_TIMER returned an invalid value: " .. (timeSeconds or "nil"))
-			end
-			if not startTimer:IsStarted() then
+			elseif not startTimer:IsStarted() then
 				startTimer:Update(timeSeconds, 120)
 			end
 			self:Schedule(timeSeconds + 1, function()
@@ -597,8 +596,9 @@ do
 							local timeSeconds = C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) * 60 or overrideTimers[subscribedMapID] or 60
 							if not timeSeconds or type(timeSeconds) ~= "number" or timeSeconds < 1 then
 								DBM:Debug("Uh oh, AREA_POS_UPDATED returned an invalid value: " .. (timeSeconds or "nil"))
+							else
+								capTimer:Start(timeSeconds, infoName)
 							end
-							capTimer:Start(timeSeconds, infoName)
 							if isAllyCapping then
 								capTimer:SetColor({r=0, g=0, b=1}, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
