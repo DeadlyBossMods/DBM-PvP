@@ -72,7 +72,7 @@ do
 					knownAzerite[pos] = true
 					local atlasName = vignette.atlasName
 					if atlasName == "AzeriteSpawning" then
-						spawnTimer:Start(nil, azeriteNames[pos])
+						spawnTimer:Start(30, azeriteNames[pos])
 					elseif atlasName == "AzeriteReady" then
 						spawnTimer:Stop(azeriteNames[pos])
 					end
