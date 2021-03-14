@@ -6,7 +6,7 @@ local mod	= DBM:NewMod("z2118", "DBM-PvP")
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
-mod:RegisterEvents("ZONE_CHANGED_NEW_AREA")
+mod:RegisterEvents("LOADING_SCREEN_DISABLED")
 
 do
 	local function Init()
@@ -15,9 +15,9 @@ do
 		end
 	end
 
-	function mod:ZONE_CHANGED_NEW_AREA()
+	function mod:LOADING_SCREEN_DISABLED()
 		self:Schedule(1, Init)
 	end
-	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
-	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
+	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
+	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
 end

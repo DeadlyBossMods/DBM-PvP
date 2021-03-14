@@ -8,7 +8,7 @@ local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
-	"ZONE_CHANGED_NEW_AREA",
+	"LOADING_SCREEN_DISABLED",
 	"PLAYER_ENTERING_WORLD",
 	"PLAYER_DEAD",
 	"START_TIMER",
@@ -35,18 +35,19 @@ do
 		elseif bgzone then
 			bgzone = false
 			self:UnsubscribeAssault()
-			self:UnsubscribeFlags()
+			self:UnregisterShortTermEvents()
+			self:Stop()
 			if mod.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
 			end
 		end
 	end
 
-	function mod:ZONE_CHANGED_NEW_AREA()
+	function mod:LOADING_SCREEN_DISABLED()
 		self:Schedule(0.5, Init, self)
 	end
-	mod.PLAYER_ENTERING_WORLD	= mod.ZONE_CHANGED_NEW_AREA
-	mod.OnInitialize			= mod.ZONE_CHANGED_NEW_AREA
+	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
+	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
 end
 
 do
@@ -194,8 +195,6 @@ do
 		hasWarns = false
 		HideEstimatedPoints()
 		HideBasesToWin()
-		self:UnregisterShortTermEvents()
-		self:Stop()
 		subscribedMapID = 0
 		prevAScore, prevHScore = 0, 0
 	end
@@ -207,11 +206,6 @@ function mod:SubscribeFlags()
 		"CHAT_MSG_BG_SYSTEM_HORDE",
 		"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 	)
-end
-
-function mod:UnsubscribeFlags()
-	self:UnregisterShortTermEvents()
-	self:Stop()
 end
 
 do
