@@ -20,42 +20,11 @@ mod:AddBoolOption("AutoSpirit", false)
 mod:AddBoolOption("ShowRelativeGameTime", true)
 
 do
-	local IsInInstance, C_ChatInfo = IsInInstance, C_ChatInfo
-	local bgzone = false
-
-	local function Init(self)
-		local _, instanceType = IsInInstance()
-		if instanceType == "pvp" or instanceType == "arena" then
-			C_ChatInfo.SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
-			self:Schedule(3, DBM.RequestTimers, DBM)
-			if not bgzone and self.Options.HideBossEmoteFrame then
-				DBM:HideBlizzardEvents(1, true)
-			end
-			bgzone = true
-		elseif bgzone then
-			bgzone = false
-			self:UnsubscribeAssault()
-			self:UnregisterShortTermEvents()
-			self:Stop()
-			if mod.Options.HideBossEmoteFrame then
-				DBM:HideBlizzardEvents(0, true)
-			end
-		end
-	end
-
-	function mod:LOADING_SCREEN_DISABLED()
-		self:Schedule(0.5, Init, self)
-	end
-	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
-	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
-end
-
-do
-	local IsInInstance, C_DeathInfo, RepopMe = IsInInstance, C_DeathInfo, RepopMe
+	local IsInInstance, RepopMe, GetSelfResurrectOptions = IsInInstance, RepopMe, C_DeathInfo.GetSelfResurrectOptions
 
 	function mod:PLAYER_DEAD()
 		local _, instanceType = IsInInstance()
-		if instanceType == "pvp" and #C_DeathInfo.GetSelfResurrectOptions() == 0 and self.Options.AutoSpirit then
+		if instanceType == "pvp" and #GetSelfResurrectOptions() == 0 and self.Options.AutoSpirit then
 			RepopMe()
 		end
 	end
@@ -178,28 +147,6 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	updateGametime()
 end
 
-do
-	local pairs = pairs
-
-	function mod:UnsubscribeAssault()
-		if hasWarns then
-			local map = C_Map.GetMapInfo(subscribedMapID)
-			DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
-			DBM:AddMsg("Battleground: " .. (map and map.name or "Unknown"))
-			for k, v in pairs(warnAtEnd) do
-				DBM:AddMsg(v .. "x " .. k)
-			end
-			DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
-		end
-		warnAtEnd = {}
-		hasWarns = false
-		HideEstimatedPoints()
-		HideBasesToWin()
-		subscribedMapID = 0
-		prevAScore, prevHScore = 0, 0
-	end
-end
-
 function mod:SubscribeFlags()
 	self:RegisterShortTermEvents(
 		"CHAT_MSG_BG_SYSTEM_ALLIANCE",
@@ -209,8 +156,54 @@ function mod:SubscribeFlags()
 end
 
 do
+	local pairs = pairs
+	local IsInInstance, SendAddonMessage, GetMapInfo = IsInInstance, C_ChatInfo.SendAddonMessage, C_Map.GetMapInfo
+	local bgzone = false
+
+	local function Init(self)
+		local _, instanceType = IsInInstance()
+		if instanceType == "pvp" or instanceType == "arena" then
+			SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
+			self:Schedule(3, DBM.RequestTimers, DBM)
+			if not bgzone and self.Options.HideBossEmoteFrame then
+				DBM:HideBlizzardEvents(1, true)
+			end
+			bgzone = true
+		elseif bgzone then
+			bgzone = false
+			if hasWarns then
+				local map = GetMapInfo(subscribedMapID)
+				DBM:AddMsg("DBM-PvP missing data, please report to our discord.")
+				DBM:AddMsg("Battleground: " .. (map and map.name or "Unknown"))
+				for k, v in pairs(warnAtEnd) do
+					DBM:AddMsg(v .. "x " .. k)
+				end
+				DBM:AddMsg("Thank you for making DBM-PvP a better addon.")
+			end
+			self:UnregisterShortTermEvents()
+			self:Stop()
+			warnAtEnd = {}
+			hasWarns = false
+			HideEstimatedPoints()
+			HideBasesToWin()
+			subscribedMapID = 0
+			prevAScore, prevHScore = 0, 0
+			if mod.Options.HideBossEmoteFrame then
+				DBM:HideBlizzardEvents(0, true)
+			end
+		end
+	end
+
+	function mod:LOADING_SCREEN_DISABLED()
+		self:Schedule(0.5, Init, self)
+	end
+	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
+	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
+end
+
+do
 	local pairs, strsplit, tostring, format, twipe = pairs, strsplit, tostring, string.format, table.wipe
-	local UnitGUID, UnitHealth, UnitHealthMax = UnitGUID, UnitHealth, UnitHealthMax
+	local UnitGUID, UnitHealth, UnitHealthMax, SendAddonMessage, RegisterAddonMessagePrefix, IsAddonMessagePrefixRegistered, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.SendAddonMessage, C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.IsAddonMessagePrefixRegistered, C_Timer.NewTicker
 	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits = nil, {}, 0, {}
 
 	local function updateInfoFrame()
@@ -237,7 +230,7 @@ do
 				if trackedUnits[cid] and not syncs[cid] then
 					syncs[cid] = true
 					syncCount = syncCount + 1
-					C_ChatInfo.SendAddonMessage("DBM-PvP", format("%s:%.1f", cid, UnitHealth(target) / UnitHealthMax(target) * 100), "INSTANCE_CHAT")
+					SendAddonMessage("DBM-PvP", format("%s:%.1f", cid, UnitHealth(target) / UnitHealthMax(target) * 100), "INSTANCE_CHAT")
 				end
 			end
 		end
@@ -245,10 +238,10 @@ do
 
 	function mod:TrackHealth(cid, name)
 		if not healthScan then
-			healthScan = C_Timer.NewTicker(1, healthScanFunc)
-			C_ChatInfo.RegisterAddonMessagePrefix("DBM-PvP")
-			if not C_ChatInfo.IsAddonMessagePrefixRegistered("Capping") then
-				C_ChatInfo.RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+			healthScan = NewTicker(1, healthScanFunc)
+			RegisterAddonMessagePrefix("DBM-PvP")
+			if not IsAddonMessagePrefixRegistered("Capping") then
+				RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
 			end
 		end
 		trackedUnits[tostring(cid)] = L[name] or name
@@ -283,8 +276,9 @@ end
 
 do
 	local tonumber, ipairs = tonumber, ipairs
-	local C_UIWidgetManager, TimerTracker, IsInInstance = C_UIWidgetManager, TimerTracker, IsInInstance
+	local TimerTracker, IsInInstance, GetIconAndTextWidgetVisualizationInfo = TimerTracker, IsInInstance, C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo
 	local FACTION_ALLIANCE = FACTION_ALLIANCE
+
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
 	local startTimer		= mod:NewTimer(120, "TimerStart", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local remainingTimer	= mod:NewTimer(780, "TimerRemaining", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
@@ -314,7 +308,7 @@ do
 					timerShadow:Start()
 					timerDamp:Start()
 				end
-				local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(6)
+				local info = GetIconAndTextWidgetVisualizationInfo(6)
 				if info and info.state == 1 and self.Options.TimerRemaining then
 					local minutes, seconds = info.text:match("(%d+):(%d+)")
 					if minutes and seconds then
@@ -363,8 +357,10 @@ do
 end
 
 do
-	local type, mfloor, mmin, sformat = type, math.floor, math.min, string.format
+	local ipairs, pairs, tonumber, type, mfloor, mmin, sformat, smatch = ipairs, pairs, tonumber, type, math.floor, math.min, string.format, string.match
+	local GetAreaPOIInfo, GetAreaPOITimeLeft, GetAreaPOIForMap, GetDoubleStatusBarWidgetVisualizationInfo, GetIconAndTextWidgetVisualizationInfo, GetDoubleStateIconRowVisualizationInfo = C_AreaPoiInfo.GetAreaPOIInfo, C_AreaPoiInfo.GetAreaPOITimeLeft, C_AreaPoiInfo.GetAreaPOIForMap, C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo, C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo, C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo
 	local FACTION_HORDE, FACTION_ALLIANCE = FACTION_HORDE, FACTION_ALLIANCE
+
 	local winTimer = mod:NewTimer(30, "TimerWin", GetPlayerFactionGroup("player") == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local resourcesPerSec = {
 		[3] = {1e-300, 0.5, 1.5, 2}, -- Gilneas
@@ -471,8 +467,6 @@ do
 		end
 	end
 
-	local ipairs, pairs, tonumber = ipairs, pairs, tonumber
-	local C_AreaPoiInfo, C_UIWidgetManager = C_AreaPoiInfo, C_UIWidgetManager
 	local ignoredAtlas = {
 		[112]   = true,
 		[397]   = true
@@ -570,8 +564,8 @@ do
 		local widgetID = widget and widget.widgetID
 		if subscribedMapID ~= 0 then
 			local isAtlas = false
-			for _, areaPOIID in ipairs(C_AreaPoiInfo.GetAreaPOIForMap(subscribedMapID)) do
-				local areaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo(subscribedMapID, areaPOIID)
+			for _, areaPOIID in ipairs(GetAreaPOIForMap(subscribedMapID)) do
+				local areaPOIInfo = GetAreaPOIInfo(subscribedMapID, areaPOIID)
 				local infoName, atlasName, infoTexture = areaPOIInfo.name, areaPOIInfo.atlasName, areaPOIInfo.textureIndex
 				if infoName then
 					local isAllyCapping, isHordeCapping
@@ -587,7 +581,7 @@ do
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
-							local timeSeconds = C_AreaPoiInfo.GetAreaPOITimeLeft and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) and C_AreaPoiInfo.GetAreaPOITimeLeft(areaPOIID) * 60 or overrideTimers[subscribedMapID] or 60
+							local timeSeconds = GetAreaPOITimeLeft and GetAreaPOITimeLeft(areaPOIID) and GetAreaPOITimeLeft(areaPOIID) * 60 or overrideTimers[subscribedMapID] or 60
 							if not timeSeconds or type(timeSeconds) ~= "number" or timeSeconds < 1 then
 								DBM:Debug("Uh oh, AREA_POS_UPDATED returned an invalid value: " .. (timeSeconds or "nil"))
 							else
@@ -624,14 +618,14 @@ do
 				end
 			end
 			if widgetID == 1671 or widgetID == 2074 then -- Standard battleground score predictor: 1671. Deepwind rework: 2074
-				local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
+				local info = GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
 			if widgetID == 1893 or widgetID == 1894 then -- Classic Arathi Basin
-				self:UpdateWinTimer(2000, tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(string.match(C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
+				self:UpdateWinTimer(2000, tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
 			end
 		elseif widgetID == 1683 then -- Temple Of Kotmogu
-			local widgetInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo(1683)
+			local widgetInfo = GetDoubleStateIconRowVisualizationInfo(1683)
 			for _, v in pairs(widgetInfo.leftIcons) do
 				if v.iconState == 1 then
 					allyBases = allyBases + 1
@@ -642,7 +636,7 @@ do
 					hordeBases = hordeBases + 1
 				end
 			end
-			local info = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo(1689)
+			local info = GetDoubleStatusBarWidgetVisualizationInfo(1689)
 			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 		end
 	end
