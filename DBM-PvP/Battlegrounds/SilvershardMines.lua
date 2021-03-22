@@ -187,7 +187,9 @@ do
 			for i, cart in pairs(carts) do
 				if (cart.x == -1 or cart.y == -1) and cart.spawn + 1 < time then
 					identifyCart(i)
-					cartTimer:Start(cart.spawn + times[cart.dir] - time, names[cart.dir])
+					if not cartTimer:IsStarted(names[cart.dir]) then -- Prevent duplicate cart timers.
+						cartTimer:Start(cart.spawn + times[cart.dir] - time, names[cart.dir])
+					end
 				elseif getDistance(newCart.x, newCart.y, cart.x, cart.y) < 1 and isValidUpdate(cart.dir, newCart.dir) then
 					if newCart.c ~= cart.c then
 						local name = names[cart.dir]
