@@ -41,15 +41,17 @@ local clearCartCache
 do
 	local tinsert = table.insert
 	local GetTime = GetTime
-	local cartRespawn	= mod:NewTimer(9.5, "TimerRespawn", "134376") -- interface/icons/inv_misc_pocketwatch_01.blp
+	local cartRespawn = mod:NewTimer(9.5, "TimerRespawn", "134376") -- interface/icons/inv_misc_pocketwatch_01.blp
 	local cartCount	= 0
 
 	function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-		if msg:find(L.Capture) then
+		if msg == L.Capture or msg:find(L.Capture) then
 			cartCount = cartCount + 1
-			cartRespawn:Start(nil, cartCount)
-			clearCartCache()
-		elseif msg:find(L.Arrived) then
+			if cartCount % 2 == 1 then -- Event is fired twice, due to being fired both on neutral and faction.
+				cartRespawn:Start(nil, cartCount)
+				clearCartCache()
+			end
+		elseif msg == L.Arrived or msg:find(L.Arrived) then
 			tinsert(carts, 1, {
 				dir		= 0,
 				spawn	= GetTime(),
@@ -57,7 +59,7 @@ do
 				y		= -1,
 				c		= -1
 			})
-		elseif msg:find(L.Begun) then
+		elseif msg == L.Begun or msg:find(L.Begun) then
 			carts = {}
 			tinsert(carts, 1, {
 				dir		= 1,
@@ -85,7 +87,13 @@ do
 	local GetTime, GetNumBattlefieldVehicles, GetBattlefieldVehicleInfo = GetTime, GetNumBattlefieldVehicles, C_PvP.GetBattlefieldVehicleInfo
 
 	local times = { 181, 234, 129, 97, 153 }
-	local caps = { {x = 22.848, y = 42.823}, {x = 76.517, y = 21.757}, {x = 41.281, y = 48.239}, {x = 69.326, y = 70.632}, {x = 76.517, y = 21.757} }
+	local caps = {
+		{ x = 22.848, y = 42.823 },
+		{ x = 76.517, y = 21.757 },
+		{ x = 41.281, y = 48.239 },
+		{ x = 69.326, y = 70.632 },
+		{ x = 76.517, y = 21.757 }
+	}
 	local names = { "Top - Down", "Top - Up", "Middle", "Lava - Down", "Lava - Up" }
 	local cartTimer	= mod:NewTimer(9.5, "TimerCart", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
 
