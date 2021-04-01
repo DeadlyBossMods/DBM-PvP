@@ -1,4 +1,4 @@
-if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+if DBM:GetTOC() < 20000 then
 	return
 end
 local mod	= DBM:NewMod("z566", "DBM-PvP")
