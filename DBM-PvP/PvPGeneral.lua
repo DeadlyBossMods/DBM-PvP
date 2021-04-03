@@ -163,10 +163,12 @@ do
 	local function Init(self)
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
-			SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
-			self:Schedule(3, DBM.RequestTimers, DBM)
-			if not bgzone and self.Options.HideBossEmoteFrame then
-				DBM:HideBlizzardEvents(1, true)
+			if not bgzone then
+				SendAddonMessage(isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
+				self:Schedule(3, DBM.RequestTimers, DBM)
+				if self.Options.HideBossEmoteFrame then
+					DBM:HideBlizzardEvents(1, true)
+				end
 			end
 			bgzone = true
 		elseif bgzone then
