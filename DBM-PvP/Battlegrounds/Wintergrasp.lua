@@ -9,9 +9,15 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("LOADING_SCREEN_DISABLED")
 
 do
+	local bgzone = false
+
 	local function Init()
-		if DBM:GetCurrentArea() == 2118 then
+		local zoneID = DBM:GetCurrentArea()
+		if not bgzone and zoneID == 2118 then
+			bgzone = true
 			-- TODO
+		elseif bgzone and zoneID ~= 2118 then
+			bgzone = false
 		end
 	end
 

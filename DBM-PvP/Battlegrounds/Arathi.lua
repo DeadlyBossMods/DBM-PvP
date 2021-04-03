@@ -5,9 +5,12 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("LOADING_SCREEN_DISABLED")
 
 do
+	local bgzone = false
+
 	local function Init()
 		local zoneID = DBM:GetCurrentArea()
-		if zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177 then -- Classic Arathi, Winter, Remastered Retail, AI
+		if not bgzone and (zoneID == 529 or zoneID == 1681 or zoneID == 2107 or zoneID == 2177) then -- Classic Arathi, Winter, Remastered Retail, AI
+			bgzone = true
 			local assaultID
 			if zoneID == 529 then
 				assaultID = 1461
@@ -19,6 +22,8 @@ do
 				assaultID = 1383
 			end
 			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 5)
+		elseif bgzone and (zoneID ~= 529 and zoneID ~= 1681 and zoneID ~= 2107 and zoneID ~= 2177) then
+			bgzone = false
 		end
 	end
 

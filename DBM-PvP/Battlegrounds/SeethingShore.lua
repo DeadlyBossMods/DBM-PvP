@@ -11,10 +11,11 @@ do
 	local bgzone = false
 
 	local function Init(self)
-		if DBM:GetCurrentArea() == 1803 then
+		local zoneID = DBM:GetCurrentArea()
+		if not bgzone and zoneID == 1803 then
 			bgzone = true
 			self:RegisterShortTermEvents("VIGNETTES_UPDATED")
-		elseif bgzone then
+		elseif bgzone and zoneID ~= 1803 then
 			bgzone = false
 			self:UnregisterShortTermEvents()
 			self:Stop()

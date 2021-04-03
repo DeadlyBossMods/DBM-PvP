@@ -11,14 +11,15 @@ do
 	local bgzone = false
 
 	local function Init()
-		if DBM:GetCurrentArea() == 628 then
+		local zoneID = DBM:GetCurrentArea()
+		if not bgzone and zoneID == 628 then
 			bgzone = true
 			local generalMod = DBM:GetModByName("PvPGeneral")
 			generalMod:SubscribeAssault(169, 5)
 			generalMod:TrackHealth(34922, "HordeBoss")
 			generalMod:TrackHealth(34924, "AllianceBoss")
 			-- TODO: Add gate health
-		elseif bgzone then
+		elseif bgzone and zoneID ~= 628 then
 			bgzone = false
 			DBM:GetModByName("PvPGeneral"):StopTrackHealth()
 		end

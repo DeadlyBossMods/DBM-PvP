@@ -12,7 +12,8 @@ do
 	local bgzone = false
 
 	local function Init(self)
-		if DBM:GetCurrentArea() == 727 then
+		local zoneID = DBM:GetCurrentArea()
+		if not bgzone and zoneID == 727 then
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"CHAT_MSG_BG_SYSTEM_HORDE",
@@ -21,7 +22,7 @@ do
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"PVP_VEHICLE_INFO_UPDATED"
 			)
-		elseif bgzone then
+		elseif bgzone and zoneID ~= 727 then
 			bgzone = false
 			self:UnregisterShortTermEvents()
 			self:Stop()

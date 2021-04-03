@@ -13,14 +13,15 @@ do
 	local bgzone = false
 
 	local function Init(self)
-		if DBM:GetCurrentArea() == 1191 then
+		local zoneID = DBM:GetCurrentArea()
+		if not bgzone and zoneID == 1191 then
 			bgzone = true
 			self:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
-		elseif bgzone then
+		elseif bgzone and zoneID ~= 1191 then
 			bgzone = false
 			self:UnregisterShormTermEvents()
 		end

@@ -5,9 +5,15 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents("LOADING_SCREEN_DISABLED")
 
 do
+	local bgzone = false
+
 	local function Init()
-		if DBM:GetCurrentArea() == 489 or DBM:GetCurrentArea() == 2106 then -- Classic, Retail
+		local zoneID = DBM:GetCurrentArea()
+		if not bgzone and (zoneID == 489 or zoneID == 2106) then -- Classic, Retail
+			bgzone = true
 			DBM:GetModByName("PvPGeneral"):SubscribeFlags()
+		elseif bgzone and (zoneID ~= 489 and zoneID ~= 2106) then
+			bgzone = false
 		end
 	end
 
