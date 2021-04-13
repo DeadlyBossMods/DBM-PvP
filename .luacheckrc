@@ -19,6 +19,7 @@ globals = {
 	"FACTION_ALLIANCE",
 	"TimerTracker",
 	"WOW_PROJECT_ID",
+	"WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
 	"WOW_PROJECT_CLASSIC",
 
 	-- Lua functions
