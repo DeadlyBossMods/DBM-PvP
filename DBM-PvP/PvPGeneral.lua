@@ -370,7 +370,7 @@ do
 	local resourcesPerSec = {
 		[3] = {1e-300, 0.5, 1.5, 2}, -- Gilneas
 		[4] = {1e-300, 1, 1.5, 2, 6}, -- TempleOfKotmogu/EyeOfTheStorm
-		[5] = {1e-300, 1, 1.5, 2, 3.5, 30--[[Unknown]]} -- Arathi/Deepwind
+		[5] = {1e-300, 1, 1.5, 2, 3.5, 30} -- Arathi/Deepwind
 	}
 
 	if isClassic or isTBC then
