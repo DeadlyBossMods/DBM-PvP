@@ -33,7 +33,7 @@ do
 	local knownAzerite = {}
 	local azeriteNames = {
 		["0.47:0.28"] = "Tar Pits",
-		["0.53:0.40"] = "Bonfire",
+		["0.53:0.4"] = "Bonfire",
 		["0.39:0.75"] = "Overlook",
 		["0.57:0.26"] = "Temple",
 		["0.6:0.55"] = "Shipwreck",
