@@ -9,6 +9,7 @@ local isTBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
+	"ZONE_CHANGED_NEW_AREA",
 	"LOADING_SCREEN_DISABLED",
 	"PLAYER_ENTERING_WORLD",
 	"PLAYER_DEAD",
@@ -200,6 +201,7 @@ do
 	function mod:LOADING_SCREEN_DISABLED()
 		self:Schedule(0.5, Init, self)
 	end
+	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
 	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
 	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
 end

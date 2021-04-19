@@ -3,7 +3,10 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
-mod:RegisterEvents("LOADING_SCREEN_DISABLED")
+mod:RegisterEvents(
+	"LOADING_SCREEN_DISABLED",
+	"ZONE_CHANGED_NEW_AREA"
+)
 
 mod:AddBoolOption("AutoTurnIn")
 
@@ -45,6 +48,7 @@ do
 	function mod:LOADING_SCREEN_DISABLED()
 		self:Schedule(1, Init, self)
 	end
+	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
 	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
 	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
 end
