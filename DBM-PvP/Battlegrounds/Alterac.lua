@@ -25,7 +25,7 @@ do
 			)
 			local assaultID
 			if zoneID == 30 then
-				assaultID = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and 1459 or 91
+				assaultID = WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) and 1459 or 91
 			elseif zoneID == 2197 then
 				assaultID = 1537
 			end

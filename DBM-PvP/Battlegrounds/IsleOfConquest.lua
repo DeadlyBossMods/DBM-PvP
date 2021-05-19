@@ -1,4 +1,4 @@
-if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+if WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) then -- Added in WotLK
 	return
 end
 local mod	= DBM:NewMod("z628", "DBM-PvP")
