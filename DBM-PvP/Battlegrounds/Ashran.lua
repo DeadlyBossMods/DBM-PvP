@@ -1,4 +1,4 @@
-if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+if WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) then -- Added in BfA
 	return
 end
 local mod	= DBM:NewMod("z1191", "DBM-PvP")
