@@ -25,7 +25,6 @@ do
 			)
 			local assaultID
 			if zoneID == 30 then
-				print(WOW_PROJECT_ID)
 				assaultID = WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) and 1459 or 91
 			elseif zoneID == 2197 then
 				assaultID = 1537
