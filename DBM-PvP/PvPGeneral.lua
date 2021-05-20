@@ -480,7 +480,7 @@ do
 		-- retail av
 		[91]    = 243,
 		-- classic av
-		[1459]  = 304,
+		[1459]  = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5) and 243 or 304,
 		-- korrak
 		[1537]  = 243
 	}
