@@ -61,12 +61,12 @@ do
 
 	function mod:VIGNETTES_UPDATED()
 		local checkedThisRound = {}
-		local vignetteids = C_VignetteInfo.GetVignettes()
-		for i = 1, #vignetteids do
-			local vignette = C_VignetteInfo.GetVignetteInfo(vignetteids[i])
+		for _, v in ipairs(C_VignetteInfo.GetVignettes())
+			local vignette = C_VignetteInfo.GetVignetteInfo(v)
 			if vignette and vignette.vignetteGUID then
 				local poss = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907)
 				if not poss or poss.x == 0 or poss.y == 0 then
+					DBM:Debug(("Hello? Vignette position is empty. X: %f, Y: %f"):format(poss.x or "nil", poss.y or "nil"))
 					return
 				end
 				local pos = round(poss.x) .. ":" .. round(poss.y)
@@ -85,9 +85,9 @@ do
 				end
 			end
 		end
-		for _, v in ipairs(knownAzerite) do
-			if not checkedThisRound[v] then
-				knownAzerite[v] = false
+		for k, _ in pairs(knownAzerite) do
+			if not checkedThisRound[k] then
+				knownAzerite[k] = nil
 			end
 		end
 	end
