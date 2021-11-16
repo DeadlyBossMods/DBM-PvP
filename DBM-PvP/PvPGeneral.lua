@@ -202,8 +202,7 @@ do
 		if timerType ~= 1 then -- Only capture type 1 events (PvP)
 			return
 		end
-		local _, instanceType = IsInInstance()
-		if not self.Options.TimerRemaining or (instanceType ~= "pvp" and instanceType ~= "arena" and instanceType ~= "scenario") then
+		if self.Options.TimerStart then
 			if TimerTracker then
 				for _, bar in ipairs(TimerTracker.timerList) do
 					bar.bar:Hide()
@@ -212,13 +211,21 @@ do
 			if not startTimer:IsStarted() then
 				startTimer:Update(timeSeconds, 120)
 			end
+		end
+		if self.Options.TimerRemaining then
+			if TimerTracker then
+				for _, bar in ipairs(TimerTracker.timerList) do
+					bar.bar:Hide()
+				end
+			end
 			self:Schedule(timeSeconds + 1, function()
+				local _, instanceType = IsInInstance()
 				if not isClassic and not isTBC and instanceType == "arena" then
 					timerShadow:Start()
 					timerDamp:Start()
 				end
 				local info = GetIconAndTextWidgetVisualizationInfo(6)
-				if info and info.state == 1 and self.Options.TimerRemaining then
+				if info and info.state == 1 then
 					local minutes, seconds = info.text:match("(%d+):(%d+)")
 					if minutes and seconds then
 						remainingTimer:Update(119 - tonumber(seconds) - (tonumber(minutes) * 60), 120)
@@ -229,6 +236,9 @@ do
 	end
 
 	local function updateflagcarrier(_, msg)
+		if not self.Options.TimerFlag then
+			return
+		end
 		if msg == L.ExprFlagCaptured or msg:match(L.ExprFlagCaptured) then
 			flagTimer:Start()
 			if msg:find(FACTION_ALLIANCE) then
@@ -253,11 +263,11 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if msg == L.BgStart120 or msg:find(L.BgStart120) then
+		if self.Optins.TimerStart and msg == L.BgStart120 or msg:find(L.BgStart120) then
 			remainingTimer:Update(isClassic and 1.5 or 0, 120)
-		elseif msg == L.BgStart60 or msg:find(L.BgStart60) then
+		elseif self.Optins.TimerStart and msg == L.BgStart60 or msg:find(L.BgStart60) then
 			remainingTimer:Update(isClassic and 61.5 or 60, 120)
-		elseif msg == L.BgStart30 or msg:find(L.BgStart30) then
+		elseif self.Optins.TimerStart and msg == L.BgStart30 or msg:find(L.BgStart30) then
 			remainingTimer:Update(isClassic and 91.5 or 90, 120)
 		elseif not isClassic and (msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
 			vulnerableTimer:Start()
