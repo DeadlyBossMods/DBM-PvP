@@ -64,7 +64,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	GatesHealthFrame		= "Поврежденые ворота",
+	GatesHealthFrame		= "Поврежденные ворота",
 	SiegeEngine				= "Осадная машина",
 	GoblinStartAlliance		= "Видите эти взрывчатые бомбы? Используйте их на воротах, пока я ремонтирую осадную машину!",
 	GoblinStartHorde		= "Я буду работать над осадной машиной, я ты меня прикрывай. Вот, можешь пользоваться этими сефориевыми бомбами, если тебе надо взорвать ворота.",
@@ -86,8 +86,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerRespawn	= "тсчет времени до восстановления вагонетки",
-	TimerCart		= "Show cart cap timer"
+	TimerRespawn	= "Отсчет времени до восстановления вагонетки",
+	TimerCart		= "Показать таймер крышки повозки"
 })
 
 L:SetMiscLocalization({
