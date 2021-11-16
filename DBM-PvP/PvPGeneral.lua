@@ -77,8 +77,7 @@ function mod:SubscribeFlags()
 end
 
 do
-	local pairs = pairs
-	local IsInInstance, SendAddonMessage, GetMapInfo = IsInInstance, C_ChatInfo.SendAddonMessage, C_Map.GetMapInfo
+	local IsInInstance, SendAddonMessage = IsInInstance, C_ChatInfo.SendAddonMessage
 	local bgzone = false
 
 	local function Init(self)
