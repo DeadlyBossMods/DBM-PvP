@@ -87,7 +87,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerRespawn	= "Отсчет времени до восстановления вагонетки",
-	TimerCart		= "Показать таймер крышки повозки"
+	TimerCart		= "Таймер захвата повозки"
 })
 
 L:SetMiscLocalization({
