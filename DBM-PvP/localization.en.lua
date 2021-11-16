@@ -21,15 +21,12 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	AutoSpirit			= "Auto-release spirit",
-	ColorByClass		= "Set name color to class color in the score frame",
 	HideBossEmoteFrame	= "Hide the raid boss emote frame and garrison/Guild toasts during battlegrounds",
 	ShowBasesToWin		= "Show bases required to win",
-	ShowEstimatedPoints	= "Show estimated points on win/loss",
-	ShowFlagCarrier		= "Show flag carrier",
 	TimerCap			= "Show capture timer",
 	TimerFlag			= "Show flag respawn timer",
-	TimerInvite			= "Show battleground join timer",
-	TimerRemaining		= "Show time remaining for match start and match end",
+	TimerStart			= "Show timer till match start",
+	TimerRemaining		= "Show timer till match end",
 	TimerShadow			= "Show timer for Shadow Sight",
 	TimerWin			= "Show win timer",
 	ShowRelativeGameTime= "Fill win timer relative to BG start time (If disabled, bar just always looks full)"
