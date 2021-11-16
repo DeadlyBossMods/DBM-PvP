@@ -66,14 +66,14 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	GatesHealthFrame		= "Поврежденые ворота",
 	SiegeEngine				= "Осадная машина",
-	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
+	GoblinStartAlliance		= "Видите эти взрывчатые бомбы? Используйте их на воротах, пока я ремонтирую осадную машину!",
 	GoblinStartHorde		= "Я буду работать над осадной машиной, я ты меня прикрывай. Вот, можешь пользоваться этими сефориевыми бомбами, если тебе надо взорвать ворота.",
-	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here. They don't teach fighting in engineering school!",
-	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
-	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
-	GoblinFinishedHorde		= "The siege engine is ready to roll!",
-	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
-	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
+	GoblinHalfwayAlliance	= "Я на полпути! Держите Орду подальше отсюда. В инженерном училище не учат боевым действиям!",
+	GoblinHalfwayHorde		= "Я примерно на полпути! Держите Альянс подальше - драки не в моем контракте!",
+	GoblinFinishedAlliance	= "Моя лучшая работа на данный момент! Эта осадная машина готова к действию!",
+	GoblinFinishedHorde		= "Осадная машина готова к работе!",
+	GoblinBrokenAlliance	= "Он уже сломан?! Не стоит беспокоиться. Я ничего не могу исправить.",
+	GoblinBrokenHorde		= "Опять сломано?! Я исправлю это ... только не ожидайте, что гарантия покроет это."
 })
 
 -------------------------
@@ -92,8 +92,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Capture	= "захвачена",
-	Arrived	= "has arived",
-	Begun	= "has begun"
+	Arrived	= "прибыл",
+	Begun	= "начался"
 })
 
 -------------------------
