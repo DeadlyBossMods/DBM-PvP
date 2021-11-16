@@ -235,7 +235,7 @@ do
 		end
 	end
 
-	local function updateflagcarrier(_, msg)
+	local function updateflagcarrier(self, msg)
 		if not self.Options.TimerFlag then
 			return
 		end
