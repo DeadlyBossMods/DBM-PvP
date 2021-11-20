@@ -24,9 +24,15 @@ do
 				"QUEST_PROGRESS",
 				"QUEST_COMPLETE"
 			)
+			local generalMod = DBM:GetModByName("PvPGeneral")
+			generalMod:TrackHealth(82876, "Tremblade")
+			generalMod:TrackHealth(82877, "Volrath")
+			generalMod:TrackHealth(81859, "Fangraal")
+			generalMod:TrackHealth(82201, "Kronus")
 		elseif bgzone and zoneID ~= 1191 then
 			bgzone = false
 			self:UnregisterShormTermEvents()
+			DBM:GetModByName("PvPGeneral"):StopTrackHealth()
 		end
 	end
 

@@ -57,7 +57,12 @@ L:SetMiscLocalization({
 	Galvangar			= "Galvangar",
 	Balinda				= "Balinda",
 	Ivus				= "Ivus",
-	Lokholar			= "Lokholar"
+	Lokholar			= "Lokholar",
+	-- Ashran bosses
+	Tremblade			= "Grand Marshall Tremblade",
+	Volrath				= "High WArlord Volrath",
+	Fangraal			= "Fangraal",
+	Kronus				= "Kronus"
 })
 
 ----------------------
