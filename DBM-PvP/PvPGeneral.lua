@@ -186,8 +186,8 @@ do
 end
 
 do
-	local tonumber, ipairs = tonumber, ipairs
-	local TimerTracker, IsInInstance, GetIconAndTextWidgetVisualizationInfo = TimerTracker, IsInInstance, C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo
+	local ipairs = ipairs
+	local TimerTracker, IsInInstance = TimerTracker, IsInInstance
 	local FACTION_ALLIANCE = FACTION_ALLIANCE
 
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
@@ -321,7 +321,7 @@ do
 			if isAlliance then
 				basesX, basesY, scoreX, scoreY, upperLimit = allianceBases, hordeBases, allianceScore, hordeScore, hordeTime
 			else
-				basesX, basesY, scoreX, scoreY, upperLimit = hordeBases, allianceBases, hordeScore, allianceScore, allianceTime
+				basesX, basesY, scoreX, scoreY, upperLimit = hordeBases, allianceBases, hordeScore, allianceScore, allyTime
 			end
 			for y = 1, numObjectives - basesX do
 				-- Opposite faction will either own their current basecount, or 5 - however many you own (aka whats left)
