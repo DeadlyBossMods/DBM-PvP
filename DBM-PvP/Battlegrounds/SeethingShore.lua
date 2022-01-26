@@ -55,7 +55,7 @@ do
 
 	local spawnTimer = mod:NewTimer(30, "TimerSpawn", "1864730") -- interface/lfgframe/lfgicon-seethingshore.blp
 
-	local function round(num)
+	local function Round(num)
 		return mfloor(num * 10 ^ 2 + 0.5) / 10 ^ 2
 	end
 
@@ -69,7 +69,7 @@ do
 					DBM:Debug(("Hello? Vignette position is empty. X: %f, Y: %f"):format(poss.x or "nil", poss.y or "nil"))
 					return
 				end
-				local pos = round(poss.x) .. ":" .. round(poss.y)
+				local pos = Round(poss.x) .. ":" .. Round(poss.y)
 				if not azeriteNames[pos] then
 					DBM:Debug(("Found azerite at position unknown: (%s) %f, %f"):format(pos, poss.x, poss.y))
 				end
