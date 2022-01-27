@@ -11,25 +11,62 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerInvite = "%s"
+	TimerCap		= "%s",
+	TimerInvite		= "%s",
+	TimerWin		= "Победа в",
+	TimerStart		= "Начиная с"
 })
 
 L:SetOptionLocalization({
 	ColorByClass		= "Показывать имена цветом класса в таблице очков",
 	TimerInvite			= "Отсчет времени до входа на поле боя",
 	AutoSpirit			= "Автоматически покидать тело",
-	HideBossEmoteFrame	= "Скрыть фрейм эмоций рейдового босса"
+	HideBossEmoteFrame	= "Скрыть фрейм эмоций рейдового босса",
+	ShowBasesToWin		= "Показать базы, необходимые для победы",
+	TimerCap			= "Показать таймер захвата",
+	TimerStart			= "Показать таймер до начала состязания",
+	TimerWin			= "Показать таймер выигрыша",
+	ShowRelativeGameTime	= "Заполнение таймера выигрыша относительно времени начала БГ (если отключено, полоса всегда выглядит заполненной)"
 })
 
 L:SetMiscLocalization({
+	BgStart120          = "Битва начнется через 2 минуты.",
 	BgStart60			= "Битва начнется через 1 минуту.",
 	BgStart30			= "Битва начнется через 30 секунд. Приготовиться!",
 	ArenaInvite			= "Приглашение на Арену",
+	BasesToWin			= "Базы для победы: %d",
+	WinBarText			= "%s выигрывает",
 	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
 	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
 	Vulnerable1			= "Персонажи, несущие флаг, стали более уязвимы!",
-	Vulnerable2			= "Персонажи, несущие флаг, стали еще более уязвимы!"
+	Vulnerable2			= "Персонажи, несущие флаг, стали еще более уязвимы!",
+	-- Alterac/IsleOfConquest bosses
+	InfoFrameHeader		= "Здоровье босса",
+	HordeBoss			= "Босс Орды",
+	AllianceBoss		= "Босс Альянса",
+	Galvangar			= "Капитан Гальвангар",
+	Balinda				= "Капитан Балинда Каменный Очаг",
+	Ivus				= "Ивус Лесной Властелин",
+	Lokholar			= "Локолар Владыка Льда",
+	-- Ashran bosses
+	Tremblade			= "Верховный маршал Тремблейд",
+	Volrath				= "Верховный полководец Волрат",
+	Fangraal			= "Фанграал",
+	Kronus				= "Крон"
+})
+
+----------------------
+--  Seething Shore  --
+----------------------
+L = DBM:GetModLocalization("z1803")
+
+L:SetTimerLocalization({
+	TimerSpawn		= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerSpawn	= "Показать таймер появления азерита"
 })
 
 ----------------------
@@ -38,7 +75,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z30")
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "Автоматическая сдача заданий"
+	AutoTurnIn	= "Автоматическая сдача заданий",
+	TimerBoss	= "Показать оставшийся таймер босса"
 })
 
 ------------------------
@@ -82,7 +120,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z727")
 
 L:SetTimerLocalization({
-	TimerRespawn	= "Восстановление вагонетки"
+	TimerRespawn	= "Восстановление вагонетки",
+	TimerCart		= "%s"
 })
 
 L:SetOptionLocalization({
@@ -100,6 +139,10 @@ L:SetMiscLocalization({
 --  Temple of Kotmogu  --
 -------------------------
 L = DBM:GetModLocalization("z998")
+
+L:SetOptionLocalization({
+	ShowOrbCarriers	= "Показать носителя сферы"
+})
 
 L:SetMiscLocalization({
 	OrbTaken	= "(%S+) захватывает (%S+) сферу!",
