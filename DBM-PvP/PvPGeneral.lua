@@ -279,6 +279,7 @@ do
 		resourcesPerSec[5] = {1e-300, 10/12, 10/9, 10/6, 10/3, 30}
 	end
 
+	--[[
 	local basesToWin = {}
 	local function UpdateInfoFrame()
 		local lines, sortedLines = {}, {}
@@ -288,6 +289,7 @@ do
 		end
 		return lines, sortedLines
 	end
+	]]--
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
 		local resPerSec = resourcesPerSec[numObjectives]
@@ -309,6 +311,9 @@ do
 			winTimer:SetColor({r=0, g=0, b=1})
 			winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
 		end
+		--[[
+		CODE IS STILL TOO EXPERIMENTAL
+
 		local isAlliance = playerFaction == "Alliance"
 		if self.Options.ShowBasesToWin and (isAlliance and (allyTime > hordeTime) or (hordeTime > allyTime)) then
 			if not DBM.InfoFrame:IsShown() then
@@ -344,6 +349,7 @@ do
 		else
 			DBM.InfoFrame:Hide()
 		end
+		--]]
 	end
 
 	local ignoredAtlas = {
