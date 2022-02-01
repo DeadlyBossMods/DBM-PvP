@@ -79,6 +79,20 @@ L:SetOptionLocalization({
 	TimerBoss	= "Показать оставшийся таймер босса"
 })
 
+L:SetMiscLocalization({
+	BossHorde	= "WHO DARES SUMMON LOKHOLAR?",
+	BossAlly	= "Wicked, wicked, mortals! The forest weeps. The elements recoil at the destruction. Ivus must purge you from this world!"
+})
+
+--------------
+--  Ashran  --
+--------------
+L = DBM:GetModLocalization("z1191")
+
+L:SetOptionLocalization({
+	AutoTurnIn	= "Автоматическая сдача заданий"
+})
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------
