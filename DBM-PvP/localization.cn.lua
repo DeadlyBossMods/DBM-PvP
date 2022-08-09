@@ -35,6 +35,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60           = "战斗将在1分钟内开始。",
+	BgStart30           = "战斗将在30秒钟内开始。做好准备！",
 	ArenaInvite			= "竞技场邀请",
 	BasesToWin			= "胜利需要占领资源点: %d",
 	WinBarText			= "%s 获胜",

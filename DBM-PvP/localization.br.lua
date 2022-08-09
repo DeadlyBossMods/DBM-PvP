@@ -16,3 +16,9 @@ L:SetOptionLocalization({
 	AutoSpirit			= "Libertar espírito automaticamente",
 	HideBossEmoteFrame	= "Esconder quadro de emoção de chefe."
 })
+
+L:SetMiscLocalization({
+	BgStart60	= "A batalha começará em 1 minuto.",
+	BgStart30	= "A batalha começará em 30 segundos. Preparem-se!",
+	ArenaInvite	= "Convite para Arena"
+})

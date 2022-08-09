@@ -16,8 +16,7 @@ mod:RegisterEvents(
 	"PLAYER_ENTERING_WORLD",
 	"PLAYER_DEAD",
 	"START_TIMER",
-	"AREA_POIS_UPDATED",
-	"UPDATE_UI_WIDGET"
+	"AREA_POIS_UPDATED"
 )
 
 mod:AddBoolOption("HideBossEmoteFrame", false)
@@ -61,6 +60,8 @@ local subscribedMapID, numObjectives, objectivesStore
 
 function mod:SubscribeAssault(mapID, objectsCount)
 	self:RegisterShortTermEvents(
+		"AREA_POIS_UPDATED",
+		"UPDATE_UI_WIDGET",
 		"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 	)
 	subscribedMapID = mapID
@@ -185,13 +186,13 @@ do
 	end
 end
 
-local startTimer = mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 do
 	local ipairs = ipairs
 	local TimerTracker, IsInInstance = TimerTracker, IsInInstance
 	local FACTION_ALLIANCE = FACTION_ALLIANCE
 
-	local flagTimer = mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
+	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
+	local startTimer		= mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local vulnerableTimer, timerShadow, timerDamp
 	if not isClassic and not isTBC then
 		vulnerableTimer	= mod:NewNextTimer(60, 46392)
@@ -250,7 +251,13 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if not isClassic and (msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
+		if self.Options.TimerStart and msg == L.BgStart120 or msg:find(L.BgStart120) then
+			startTimer:Update(isClassic and 1.5 or 0, 120)
+		elseif self.Options.TimerStart and msg == L.BgStart60 or msg:find(L.BgStart60) then
+			startTimer:Update(isClassic and 61.5 or 60, 120)
+		elseif self.Options.TimerStart and msg == L.BgStart30 or msg:find(L.BgStart30) then
+			startTimer:Update(isClassic and 91.5 or 90, 120)
+		elseif not isClassic and (msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
 			vulnerableTimer:Start()
 		end
 	end
@@ -500,16 +507,6 @@ do
 			end
 			if widgetID == 1893 or widgetID == 1894 then -- Classic Arathi Basin
 				self:UpdateWinTimer(2000, tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
-			end
-		elseif self.Options.TimerStart and widget.widgetSetID == 1 and widget.widgetType == 0 then -- Arena
-			local widgetInfo = GetIconAndTextWidgetVisualizationInfo(widgetID)
-			if widgetInfo and widgetInfo.text and widgetInfo.state == 1 then
-				local minutes, seconds = smatch(widgetInfo.text, '(%d+):(%d+)')
-				minutes = tonumber(minutes)
-				seconds = tonumber(seconds)
-				if minutes and seconds then
-					startTimer:Update(120 - seconds - (minutes * 60), 120)
-				end
 			end
 		elseif widgetID == 1683 then -- Temple Of Kotmogu
 			local widgetInfo = GetDoubleStateIconRowVisualizationInfo(1683)

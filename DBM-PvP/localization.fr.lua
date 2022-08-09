@@ -22,6 +22,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60			= "Début de la bataille pour le goulet des Chanteguerres dans 1 minute.",
+	BgStart30			= "Début de la bataille pour le goulet des Chanteguerres dans 30 secondes. Préparez-vous!",
+	ArenaInvite			= "Invitation d'arène",
 	ExprFlagPickUp		= "Le Drapeau (%w+) a été pris par (.+)!",
 	ExprFlagCaptured	= "(.+) a capturé le drapeau (%w+)!",
 	ExprFlagReturn		= "Le Drapeau (%w+) a été renvoyé à la base par (.+)!",

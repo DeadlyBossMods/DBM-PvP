@@ -22,6 +22,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	BgStart60		= "1분 후 전투가 시작됩니다!",
+	BgStart30		= "30초 후 전투가 시작됩니다!",
+	ArenaInvite		= "전투 참여",
+	Flag			= "깃발",
 	FlagReset		= "깃발이 다시 제자리로 돌아갔습니다.",
 	FlagTaken		= "^(.+)|1이;가; 깃발을 차지했습니다!",
 	FlagCaptured	= "(.+)|1이;가; 깃발을 차지했습니다!",
