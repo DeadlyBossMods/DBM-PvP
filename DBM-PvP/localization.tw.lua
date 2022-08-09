@@ -35,9 +35,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60           = "戰鬥將在1分鐘內開始。",
-	BgStart30           = "戰鬥將在30秒鐘內開始。做好準備!",
-	ArenaInvite			= "競技場邀請",
 	BasesToWin			= "勝利需要基地: %d",
 	WinBarText			= "%s 勝利",
 	-- TODO: Implement the flag carrying system

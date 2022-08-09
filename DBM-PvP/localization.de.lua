@@ -22,8 +22,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "Die Schlacht beginnt in 1 Minute.",
-	BgStart30			= "Die Schlacht beginnt in 30 Sekunden. Macht Euch bereit!",
 	ExprFlagPickUp		= "(.+) hat die Flagge der (%w+) aufgenommen!",
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
 	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
