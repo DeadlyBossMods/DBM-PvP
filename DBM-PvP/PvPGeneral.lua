@@ -226,7 +226,7 @@ do
 		if not self.Options.TimerFlag then
 			return
 		end
-		if msg == L.ExprFlagCaptured or msg:match(L.ExprFlagCaptured) then
+		if msg == L.FlagCaptured or msg:match(L.FlagCaptured) then
 			flagTimer:Start()
 			if msg:find(FACTION_ALLIANCE) then
 				flagTimer:SetColor({r=0, g=0, b=1})
