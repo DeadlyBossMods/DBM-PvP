@@ -7,7 +7,7 @@ local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup -- Class
 local wowTOC = DBM:GetTOC()
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
-local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
+local isBCC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5) and wowTOC < 30000
 local isWrath = WOW_PROJECT_ID == 5 and wowTOC >= 30000
 
 local playerFaction = GetPlayerFactionGroup("player")
@@ -378,15 +378,16 @@ do
 	}
 	local icons = {
 		-- Graveyard
-		[not isRetail and 3 or 4]   = State.ALLY_CONTESTED,
-		[not isRetail and 14 or 15] = State.ALLY_CONTROLLED,
-		[not isRetail and 13 or 14] = State.HORDE_CONTESTED,
-		[not isRetail and 12 or 13] = State.HORDE_CONTROLLED,
+		--isClassic can be used for now since tbc is retired, and wrath uses retail values. if tbc returns, expand check
+		[isClassic and 3 or 4]   = State.ALLY_CONTESTED,
+		[isClassic and 14 or 15] = State.ALLY_CONTROLLED,
+		[isClassic and 13 or 14] = State.HORDE_CONTESTED,
+		[isClassic and 12 or 13] = State.HORDE_CONTROLLED,
 		-- Tower/Lighthouse
-		[not isRetail and 8 or 9]   = State.ALLY_CONTESTED,
-		[not isRetail and 10 or 11] = State.ALLY_CONTROLLED,
-		[not isRetail and 11 or 12] = State.HORDE_CONTESTED,
-		[not isRetail and 9 or 10]  = State.HORDE_CONTROLLED,
+		[isClassic and 8 or 9]   = State.ALLY_CONTESTED,
+		[isClassic and 10 or 11] = State.ALLY_CONTROLLED,
+		[isClassic and 11 or 12] = State.HORDE_CONTESTED,
+		[isClassic and 9 or 10]  = State.HORDE_CONTROLLED,
 		-- Mine/Quarry
 		[17]                        = State.ALLY_CONTESTED,
 		[18]                        = State.ALLY_CONTROLLED,
@@ -511,7 +512,8 @@ do
 				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
 			end
 			if widgetID == 1893 or widgetID == 1894 then -- Classic Arathi Basin
-				self:UpdateWinTimer(2000, tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/2000')), tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/2000')), allyBases, hordeBases)
+				local totalScore = isWrath and 1600 or 2000
+				self:UpdateWinTimer(totalScore, tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1893).text, '(%d+)/totalScore')), tonumber(smatch(GetIconAndTextWidgetVisualizationInfo(1894).text, '(%d+)/totalScore')), allyBases, hordeBases)
 			end
 		elseif widgetID == 1683 then -- Temple Of Kotmogu
 			local widgetInfo = GetDoubleStateIconRowVisualizationInfo(1683)
