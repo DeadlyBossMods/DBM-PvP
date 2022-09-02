@@ -378,16 +378,15 @@ do
 	}
 	local icons = {
 		-- Graveyard
-		--isClassic can be used for now since tbc is retired, and wrath uses retail values. if tbc returns, expand check
-		[(isClassic or isTBC) and 3 or 4]   = State.ALLY_CONTESTED,
-		[(isClassic or isTBC) and 14 or 15] = State.ALLY_CONTROLLED,
-		[(isClassic or isTBC) and 13 or 14] = State.HORDE_CONTESTED,
-		[(isClassic or isTBC) and 12 or 13] = State.HORDE_CONTROLLED,
+		[(isClassic or isBCC) and 3 or 4]   = State.ALLY_CONTESTED,
+		[(isClassic or isBCC) and 14 or 15] = State.ALLY_CONTROLLED,
+		[(isClassic or isBCC) and 13 or 14] = State.HORDE_CONTESTED,
+		[(isClassic or isBCC) and 12 or 13] = State.HORDE_CONTROLLED,
 		-- Tower/Lighthouse
-		[(isClassic or isTBC) and 8 or 9]   = State.ALLY_CONTESTED,
-		[(isClassic or isTBC) and 10 or 11] = State.ALLY_CONTROLLED,
-		[(isClassic or isTBC) and 11 or 12] = State.HORDE_CONTESTED,
-		[(isClassic or isTBC) and 9 or 10]  = State.HORDE_CONTROLLED,
+		[(isClassic or isBCC) and 8 or 9]   = State.ALLY_CONTESTED,
+		[(isClassic or isBCC) and 10 or 11] = State.ALLY_CONTROLLED,
+		[(isClassic or isBCC) and 11 or 12] = State.HORDE_CONTESTED,
+		[(isClassic or isBCC) and 9 or 10]  = State.HORDE_CONTROLLED,
 		-- Mine/Quarry
 		[17]                        = State.ALLY_CONTESTED,
 		[18]                        = State.ALLY_CONTROLLED,
