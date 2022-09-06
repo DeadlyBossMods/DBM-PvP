@@ -25,7 +25,7 @@ mod:RegisterEvents(
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 mod:AddBoolOption("ShowRelativeGameTime", true)
-mod:AddBoolOption("ShowBasesToWin", false)
+--mod:AddBoolOption("ShowBasesToWin", false)
 
 do
 	local IsInInstance, RepopMe, GetSelfResurrectOptions = IsInInstance, RepopMe, C_DeathInfo.GetSelfResurrectOptions
