@@ -18,7 +18,7 @@ do
 			bgzone = true
 			local generalMod = DBM:GetModByName("PvPGeneral")
 			local assaultID
-			if WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
+			if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then--TBC and Wrath classic
 				assaultID = 1956
 			elseif zoneID == 566 then
 				assaultID = 122
