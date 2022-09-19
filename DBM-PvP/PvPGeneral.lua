@@ -172,6 +172,7 @@ do
 			healthScan:Cancel()
 			healthScan = nil
 		end
+		trackedUnitsCount = 0
 		twipe(trackedUnits)
 		twipe(syncTrackedUnits)
 		self:UnregisterShortTermEvents()
