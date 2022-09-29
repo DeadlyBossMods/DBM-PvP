@@ -31,6 +31,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	-- Supports "The battle begins in 2 minutes." and "The battle for Wintergrasp begins in 2 minutes." (Because.. wrath classic)
 	BgStart120          = "The battle(.*) begins in 2 minutes.",
 	BgStart60           = "The battle(.*) begins in 1 minute.",
 	BgStart30           = "The battle(.*) begins in 30 seconds.",
