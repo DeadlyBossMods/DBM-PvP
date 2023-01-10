@@ -45,7 +45,7 @@ do
 end
 
 do
-	local UnitGUID, GetCurrencyInfo, GetNumGossipOptions, SelectGossipOption = UnitGUID, C_CurrencyInfo.GetCurrencyInfo, C_GossipInfo.GetNumOptions, C_GossipInfo.SelectOption
+	local UnitGUID, GetCurrencyInfo, GetNumGossipOptions = UnitGUID, C_CurrencyInfo.GetCurrencyInfo, C_GossipInfo.GetNumOptions
 
 	function mod:GOSSIP_SHOW()
 		if not self.Options.AutoTurnIn then
