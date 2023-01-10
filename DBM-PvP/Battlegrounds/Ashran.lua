@@ -55,7 +55,10 @@ do
 		if cid == 81870 or cid == 82204 or cid == 183198 then -- Anenga (Alliance) | Atomik/Narduke (Horde)
 			local _, currency = GetCurrencyInfo(944) -- Artifact Fragment
 			if currency > 0 and GetNumGossipOptions() == 3 then -- If boss isn't already summoned
-				SelectGossipOption(1)
+				local gossipOptionID = self:GetGossipID()
+				if gossipOptionID then
+					self:SelectGossip(gossipOptionID)
+				end
 			end
 		end
 	end

@@ -80,7 +80,7 @@ do
 	}
 
 	function mod:GOSSIP_SHOW()
-		if not self.Options.AutoTurnIn then
+		if not self.Options.AutoTurnIn or DBM.Options.DontAutoGossip then
 			return
 		end
 		local quest = quests[self:GetCIDFromGUID(UnitGUID("target") or "") or 0]
