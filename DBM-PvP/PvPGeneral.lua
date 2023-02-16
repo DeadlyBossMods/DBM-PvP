@@ -88,6 +88,7 @@ do
 		if instanceType == "pvp" or instanceType == "arena" then
 			if not bgzone then
 				SendAddonMessage(isWrath and "D4WC" or isBCC and "D4BC" or isClassic and "D4C" or "D4", "H", "INSTANCE_CHAT")
+				SendAddonMessage(isWrath and "D5WC" or isBCC and "D5BC" or isClassic and "D5C" or "D5", "H", "INSTANCE_CHAT")
 				self:Schedule(3, DBM.RequestTimers, DBM)
 				if self.Options.HideBossEmoteFrame then
 					DBM:HideBlizzardEvents(1, true)
