@@ -50,6 +50,7 @@ globals = {
 	"GetNumGossipActiveQuests",
 	"GetPlayerFactionGroup",
 	"GetQuestReward",
+	"GetRealmName",
 	"GetServerTime",
 	"GetTime",
 	"IsInInstance",
@@ -60,5 +61,6 @@ globals = {
 	"UnitFactionGroup",
 	"UnitGUID",
 	"UnitHealth",
-	"UnitHealthMax"
+	"UnitHealthMax",
+	"UnitName",
 }
