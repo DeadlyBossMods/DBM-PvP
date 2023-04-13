@@ -16,6 +16,7 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariables: DBMPvP_AllSavedVars
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Type: OTHER
 ## X-DBM-Mod-Category: OTHER
