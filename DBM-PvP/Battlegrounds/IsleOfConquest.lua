@@ -1,5 +1,4 @@
-local wowTOC = DBM:GetTOC()
-if WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) or (WOW_PROJECT_ID == 5 and wowTOC >= 30000) then -- Added in WotLK
+if WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) then -- Added in WotLK
 	return
 end
 local mod	= DBM:NewMod("z628", "DBM-PvP")
