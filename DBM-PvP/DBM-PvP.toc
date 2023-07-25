@@ -2,16 +2,16 @@
 ## Interface-Classic: 11403
 ## Interface-BCC: 20504
 ## Interface-Wrath: 30402
-## Title:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
-## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000JcJ|r
-## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000JcJ|r
-## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000JxJ|r
-## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Module|r|cffffe00a>|r |cffff0000PvP|r
+## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000JcJ|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000JcJ|r
+## Title-ptBR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000JxJ|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
 ## Author: QartemisT
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
