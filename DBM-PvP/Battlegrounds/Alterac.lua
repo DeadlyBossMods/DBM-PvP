@@ -55,8 +55,7 @@ end
 
 do
 	local ipairs, type = ipairs, type
-	local isNewAPI = WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC
-	local UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward = UnitGUID, GetItemCount, isNewAPI and C_GossipInfo.GetNumActiveQuests or GetNumGossipActiveQuests, isNewAPI and C_GossipInfo.SelectActiveQuest or SelectGossipActiveQuest, isNewAPI and C_GossipInfo.SelectAvailableQuest or SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward
+	local UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward = UnitGUID, GetItemCount, C_GossipInfo and C_GossipInfo.GetNumActiveQuests or GetNumGossipActiveQuests, C_GossipInfo and C_GossipInfo.SelectActiveQuest or SelectGossipActiveQuest, C_GossipInfo and C_GossipInfo.SelectAvailableQuest or SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward
 
 	local quests = {
 		[13442] = { -- Archdruid Renferal [A]
