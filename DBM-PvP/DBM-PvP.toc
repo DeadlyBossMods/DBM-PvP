@@ -50,6 +50,7 @@ localization.tw.lua
 
 PvPGeneral.lua
 
+Ashenvale.lua
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua
 Battlegrounds\Deepwind.lua

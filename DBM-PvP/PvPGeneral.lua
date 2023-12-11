@@ -118,41 +118,62 @@ do
 end
 
 do
-	local pairs, strsplit, tostring, format, twipe = pairs, strsplit, tostring, string.format, table.wipe
+	local strsplit, format, twipe = strsplit, string.format, table.wipe
 	local UnitGUID, UnitHealth, UnitHealthMax, SendAddonMessage, RegisterAddonMessagePrefix, IsAddonMessagePrefixRegistered, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.SendAddonMessage, C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.IsAddonMessagePrefixRegistered, C_Timer.NewTicker
-	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits = nil, {}, 0, {}
+	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits, sortedTrackedUnits = nil, {}, 0, {}, {}
 
 	local function UpdateInfoFrame()
 		local lines, sortedLines = {}, {}
-		for cid, health in pairs(syncTrackedUnits) do
-			if trackedUnits[cid] then
-				lines[trackedUnits[cid]] = health .. "%"
-				sortedLines[#sortedLines + 1] = trackedUnits[cid]
+		for _, cid in ipairs(sortedTrackedUnits) do
+			local health = syncTrackedUnits[cid]
+			local hp = health and health.hp or 100
+			local lastUpdate = GetTime() - (health and health.time or 0)
+			if lastUpdate < 60 then
+				lines[trackedUnits[cid]] = ("%d%%"):format(hp)
+			else
+				lines[trackedUnits[cid]] = ("(stale) %d%%"):format(hp)
 			end
+			sortedLines[#sortedLines + 1] = trackedUnits[cid]
 		end
 		return lines, sortedLines
 	end
 
+	local scanTargetsRaid = {"target"}
+	local scanTargetsWithNameplates = {"target"}
+	for i = 1, 40 do
+		scanTargetsRaid[#scanTargetsRaid + 1] = "raid" .. i .. "target"
+		scanTargetsWithNameplates[#scanTargetsWithNameplates + 1] = "raid" .. i .. "target"
+		scanTargetsWithNameplates[#scanTargetsWithNameplates + 1] = "nameplate" .. i
+	end
+
+	local function sendSync(cid, hp)
+		hp = math.floor(hp + 0.5)
+		if not syncTrackedUnits[cid] or syncTrackedUnits[cid].hp ~= hp then
+			SendAddonMessage("DBM-PvP", format("%s:%d", cid, hp), mod.syncChannel)
+		end
+	end
+
 	local function HealthScanFunc()
 		local syncs, syncCount = {}, 0
-		for i = 1, 40 do
+		for _, target in ipairs(mod.scanNameplates and scanTargetsWithNameplates or scanTargetsRaid) do
 			if syncCount >= trackedUnitsCount then -- We've already scanned all our tracked units, exit out to save CPU
 				break
 			end
-			local target = "raid" .. i .. "target"
 			local guid = UnitGUID(target)
 			if guid then
 				local cid = mod:GetCIDFromGUID(guid)
 				if trackedUnits[cid] and not syncs[cid] then
 					syncs[cid] = true
 					syncCount = syncCount + 1
-					SendAddonMessage("DBM-PvP", format("%s:%.1f", cid, UnitHealth(target) / UnitHealthMax(target) * 100), "INSTANCE_CHAT")
+					sendSync(cid, UnitHealth(target) / UnitHealthMax(target) * 100)
 				end
 			end
 		end
 	end
 
-	function mod:TrackHealth(cid, name)
+	function mod:TrackHealth(cid, name, scanNameplates, syncChannel)
+		self.scanNameplates = scanNameplates
+		self.syncChannel = syncChannel or "INSTANCE_CHAT"
 		if not healthScan then
 			healthScan = NewTicker(1, HealthScanFunc)
 			RegisterAddonMessagePrefix("DBM-PvP")
@@ -160,8 +181,9 @@ do
 				RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
 			end
 		end
-		trackedUnits[tostring(cid)] = L[name] or name
+		trackedUnits[cid] = L[name] or name
 		trackedUnitsCount = trackedUnitsCount + 1
+		sortedTrackedUnits[#sortedTrackedUnits + 1] = cid
 		self:RegisterShortTermEvents("CHAT_MSG_ADDON")
 		if not DBM.InfoFrame:IsShown() then
 			DBM.InfoFrame:SetHeader(L.InfoFrameHeader)
@@ -178,16 +200,26 @@ do
 		trackedUnitsCount = 0
 		twipe(trackedUnits)
 		twipe(syncTrackedUnits)
+		twipe(sortedTrackedUnits)
+		self.scanNameplates = nil
+		self.syncChannel = nil
 		self:UnregisterShortTermEvents()
 		DBM.InfoFrame:Hide()
 	end
 
 	function mod:CHAT_MSG_ADDON(prefix, msg, channel)
-		if channel ~= "INSTANCE_CHAT" or (prefix ~= "DBM-PvP" and prefix ~= "Capping") then -- Lets listen to capping as well, for extra data.
+		if channel ~= self.syncChannel or (prefix ~= "DBM-PvP" and prefix ~= "Capping") then -- Lets listen to capping as well, for extra data.
 			return
 		end
 		local cid, hp = strsplit(":", msg)
-		syncTrackedUnits[cid] = hp
+		if cid and tonumber(cid) and hp and tonumber(hp) and tonumber(hp) >= 0 and tonumber(hp) <= 100 then
+			hp = tonumber(hp)
+			cid = tonumber(cid)
+			local tbl = syncTrackedUnits[cid] or {}
+			syncTrackedUnits[cid] = tbl
+			tbl.hp = math.floor(hp + 0.5)
+			tbl.time = GetTime()
+		end
 	end
 end
 
