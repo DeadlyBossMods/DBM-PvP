@@ -128,12 +128,24 @@ do
 			local health = syncTrackedUnits[cid]
 			local hp = health and health.hp or 100
 			local lastUpdate = GetTime() - (health and health.time or 0)
-			if lastUpdate < 60 then
-				lines[trackedUnits[cid]] = ("%d%%"):format(hp)
-			else
-				lines[trackedUnits[cid]] = ("(stale) %d%%"):format(hp)
+			local name = trackedUnits[cid].name
+			local color = NORMAL_FONT_COLOR
+			if trackedUnits[cid].color then
+				color = trackedUnits[cid].color
+				name = color:GenerateHexColorMarkup() .. name .. "|r"
 			end
-			sortedLines[#sortedLines + 1] = trackedUnits[cid]
+			if lastUpdate < 60 then
+				lines[name] = ("%s%d%%|r"):format(
+					color:GenerateHexColorMarkup(),
+					hp
+				)
+			else
+				lines[name] = ("%s(stale) %d%%|r"):format(
+					GRAY_FONT_COLOR:GenerateHexColorMarkup(),
+					hp
+				)
+			end
+			sortedLines[#sortedLines + 1] = name
 		end
 		return lines, sortedLines
 	end
@@ -171,7 +183,8 @@ do
 		end
 	end
 
-	function mod:TrackHealth(cid, name, scanNameplates, syncChannel)
+	---@param color ColorMixin
+	function mod:TrackHealth(cid, name, scanNameplates, syncChannel, color)
 		self.scanNameplates = scanNameplates
 		self.syncChannel = syncChannel or "INSTANCE_CHAT"
 		if not healthScan then
@@ -181,7 +194,10 @@ do
 				RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
 			end
 		end
-		trackedUnits[cid] = L[name] or name
+		trackedUnits[cid] = {
+			name = L[name] or name,
+			color = color
+		}
 		trackedUnitsCount = trackedUnitsCount + 1
 		sortedTrackedUnits[#sortedTrackedUnits + 1] = cid
 		self:RegisterShortTermEvents("CHAT_MSG_ADDON")
