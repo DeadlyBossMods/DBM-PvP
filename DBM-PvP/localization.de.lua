@@ -28,7 +28,10 @@ L:SetMiscLocalization({
 	ExprFlagCaptured	= "(.+) hat die Flagge der (%w+) errungen!",
 	ExprFlagReturn		= "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
 	Vulnerable1			= "Eure Angriffe verursachen nun schwerere Verletzungen bei Flaggenträgern!",
-	Vulnerable2			= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!"
+	Vulnerable2			= "Eure Angriffe verursachen nun sehr schwere Verletzungen bei Flaggenträgern!",
+	InfoFrameHeader		= "[DBM] Boss HP",
+	HordeBoss			= "Horde-Boss",
+	AllianceBoss		= "Allianz-Boss",
 })
 ----------------------
 --  Alterac Valley  --

@@ -52,14 +52,22 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "The (%w+) Flag was returned to its base by (.+)!", -- Unused
 	Vulnerable1			= "The flag carriers have become vulnerable to attack!",
 	Vulnerable2			= "The flag carriers have become increasingly vulnerable to attack!",
-	-- Alterac/IsleOfConquest bosses
-	InfoFrameHeader		= "Boss Health",
+	-- Alterac/IsleOfConquest/Ashenvale bosses
+	InfoFrameHeader		= "[DBM] Boss Health",
 	HordeBoss			= "Horde Boss",
 	AllianceBoss		= "Alliance Boss",
 	Galvangar			= "Galvangar",
 	Balinda				= "Balinda",
 	Ivus				= "Ivus",
 	Lokholar			= "Lokholar",
+	RunestoneBoss		= "Runestone",
+	GlaiveBoss			= "Glaive",
+	ResearchBoss		= "Research",
+	MoonwellBoss		= "Moonwell",
+	ShredderBoss		= "Shredder",
+	CatapultBoss		= "Catapult",
+	LumberBoss			= "Lumber",
+	BonfireBoss			= "Bonfire",
 	-- Ashran bosses
 	Tremblade			= "Grand Marshall Tremblade",
 	Volrath				= "High WArlord Volrath",
