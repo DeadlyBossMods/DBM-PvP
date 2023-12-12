@@ -105,3 +105,17 @@ L:SetMiscLocalization({
 	OrbTaken	= "(%S+) hat die (%S+) Kugel genommen!",
 	OrbReturn	= "Die (%S+) Kugel wurde zurückgebracht!"
 })
+
+----------------
+--  Ashenvale --
+----------------
+L = DBM:GetModLocalization("m1440")
+
+L:SetOptionLocalization({
+	EstimatedStartTimer = "Zeige Timer für geschätzte Startzeit des Events"
+})
+
+L:SetMiscLocalization({
+	TimerEstimate = "Event startet",
+	TimerSoon     = "Event startet gleich!",
+})
