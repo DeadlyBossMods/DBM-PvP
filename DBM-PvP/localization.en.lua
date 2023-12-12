@@ -184,3 +184,17 @@ L:SetMiscLocalization({
 	OrbTaken	= "(%S+) has taken the (%S+) orb!",
 	OrbReturn	= "The (%S+) orb has been returned!"
 })
+
+----------------
+--  Ashenvale --
+----------------
+L = DBM:GetModLocalization("m1440")
+
+L:SetOptionLocalization({
+	EstimatedStartTimer = "Show timer for estimated event start time"
+})
+
+L:SetMiscLocalization({
+	TimerEstimate = "Event starts",
+	TimerSoon     = "Event starts soon!",
+})
