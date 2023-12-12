@@ -44,12 +44,13 @@ local function getEstimate(data)
 	for i = #data - 2, 1, -1 do -- estimate based on at least 2 ticks
 		local entry = data[i]
 		local timeDiff = latest.time - entry.time
+		local diff = latest.percent - entry.percent
 		if timeDiff > 120 then -- and at least 2 minutes
-			local rate = (latest.percent - entry.percent) / timeDiff
-			if rate == 0 then
-				-- shouldn't happen, but avoid stupid errors when returning infinity
+			if diff <= 0 then
+				-- early in the prep phase it likes to randomly jump around a bit
 				return
 			end
+			local rate = diff / timeDiff
 			local totalTime = 100 / rate
 			local remaining = (100 - latest.percent) / rate
 			return remaining, totalTime
@@ -58,6 +59,11 @@ local function getEstimate(data)
 end
 
 function mod:updateStartTimer()
+	if self.eventRunning then
+		-- prevent an update for the prep phase immediately after event start from re-starting timers
+		-- (yes, this happened)
+		return
+	end
 	-- Raw data dump example: https://docs.google.com/spreadsheets/d/15K8YfAKg0_cho0Ebj8iOlCCFbwoWj-QLcrDpZBpmuaA/edit#gid=0
 	-- Layering can mess this up, we may want to detect large discontinuities in the data and just abort in that case
 	-- TODO: we may want to consider rate limiting the timer update if it jumps around a lot
@@ -133,9 +139,19 @@ function mod:UPDATE_UI_WIDGET(tbl)
 		local percent = info and info.text and info.text:match("(%d+)")
 		if percent then
 			percent = tonumber(percent)
+			if percent < 5 then
+				-- progress seems to reset a few times when the prep phase is starting
+				-- i guess this may be related to different layers finishing resetting it?
+				-- anyways, let's just start at 5% to avoid reporting nonsense at the beginning
+				return
+			end
 			local data = tbl.widgetID == 5360 and self.stateTracking.alliance or self.stateTracking.horde
 			if data[#data] and data[#data].percent >= 100 then
 				-- stop updating once it reaches 100. yes it can go down by a few percent(who knows why?), but we don't care
+				return
+			end
+			-- sometimes it drops by exactly one percent, usually only for half a second, so just ignore drops by exactly one in general
+			if data[#data] and data[#data].percent == percent + 1 then
 				return
 			end
 			local time = GetTime()
