@@ -191,10 +191,13 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
-	EstimatedStartTimer = "Show timer for estimated event start time"
+	EstimatedStartTimer = "Show timer for estimated event start time",
+	HealthFrame         = "Show info frame with boss health, this works by syncing health across your raid and yell chat. This means this only works if someone with DBM-PvP in your raid is close to other bosses as yell chat has a low range/is unreliable."
 })
 
 L:SetMiscLocalization({
-	TimerEstimate = "Event starts",
-	TimerSoon     = "Event starts soon!",
+	TimerEstimate   = "Event starts",
+	TimerSoon       = "Event starts soon!",
+	ErrorSuddenDrop = "Detected sudden drop in event progress, re-calculating estimate, timer will update in 2-3 minutes.",
+	InfoMsgPrefix   = "DBM-PvP", -- Default for :AddMsg is the mod name which is just "Ashenvale" which doesn't look like a message from DBM
 })
