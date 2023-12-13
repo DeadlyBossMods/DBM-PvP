@@ -159,9 +159,13 @@ do
 	end
 
 	local function sendSync(cid, hp)
-		hp = math.floor(hp + 0.5)
-		if not syncTrackedUnits[cid] or syncTrackedUnits[cid].hp ~= hp then
-			SendAddonMessage("DBM-PvP", format("%s:%d", cid, hp), mod.syncChannel)
+		local lastSync = syncTrackedUnits[cid] and syncTrackedUnits[cid].hp
+		-- only send if we either haven't seen a sync for it yet, if the hp is decreasing
+		-- or if it is increasing by more than 10% or if it jumps back to 100 (boss reset)
+		if not lastSync or hp - lastSync < 0 or hp - lastSync > 10 or lastSync ~= 100 and hp == 100 then
+			for c in pairs(mod.syncChannel) do
+				SendAddonMessage("DBM-PvP", format("%s:%d", cid, hp), c)
+			end
 		end
 	end
 
@@ -177,7 +181,10 @@ do
 				if trackedUnits[cid] and not syncs[cid] then
 					syncs[cid] = true
 					syncCount = syncCount + 1
-					sendSync(cid, UnitHealth(target) / UnitHealthMax(target) * 100)
+					local percent = math.floor(UnitHealth(target) / UnitHealthMax(target) * 100 + 0.5)
+					C_Timer.After(mod.syncDelay, function()
+						sendSync(cid, percent)
+					end)
 				end
 			end
 		end
@@ -186,7 +193,12 @@ do
 	---@param color ColorMixin
 	function mod:TrackHealth(cid, name, scanNameplates, syncChannel, color)
 		self.scanNameplates = scanNameplates
-		self.syncChannel = syncChannel or "INSTANCE_CHAT"
+		syncChannel = syncChannel or {"INSTANCE_CHAT"}
+		local syncChannelSet = {}
+		for _, v in ipairs(syncChannel) do
+			syncChannelSet[v] = true
+		end
+		self.syncChannel = syncChannelSet
 		if not healthScan then
 			healthScan = NewTicker(1, HealthScanFunc)
 			RegisterAddonMessagePrefix("DBM-PvP")
@@ -206,6 +218,18 @@ do
 			DBM.InfoFrame:Show(42, "function", UpdateInfoFrame, false, false)
 			DBM.InfoFrame:SetColumns(1)
 		end
+		if not self.syncDelay then
+			local h = 0
+			-- simple hash to give everyone a unique delay of up to 1 second, updates are only posted if we are the first to post a specific update
+			-- this is effectively a poor man's leader election scheme to avoid spamming yell chat when multiple raids are present
+			-- i originally hoped that the effectively random scanning interval together with the anti-stomping is sufficient, but most updates were duplicated multiple times
+			local playerName = UnitName("player") or ""
+			for i = 1, #playerName do
+				h = h * 31 + playerName:byte(i, i)
+				h = h % 4294967311
+			end
+			self.syncDelay = (h % 1000) / 1000
+		end
 	end
 
 	function mod:StopTrackHealth()
@@ -224,7 +248,7 @@ do
 	end
 
 	function mod:CHAT_MSG_ADDON(prefix, msg, channel)
-		if channel ~= self.syncChannel or (prefix ~= "DBM-PvP" and prefix ~= "Capping") then -- Lets listen to capping as well, for extra data.
+		if not self.syncChannel or not self.syncChannel[channel] or (prefix ~= "DBM-PvP" and prefix ~= "Capping") then -- Lets listen to capping as well, for extra data.
 			return
 		end
 		local cid, hp = strsplit(":", msg)

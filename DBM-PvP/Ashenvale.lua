@@ -16,6 +16,7 @@ mod:RegisterEvents(
 	"UPDATE_UI_WIDGET"
 )
 
+mod:AddBoolOption("HealthFrame", nil, nil, function() mod:healthFrameOptionChanged() end)
 local startTimer = mod:NewStageTimer(0, 20230, "EstimatedStart", nil, "EstimatedStartTimer", nil, nil, nil, true) -- last arg is "keep"
 
 local widgetIDs = {
@@ -26,15 +27,20 @@ local widgetIDs = {
 	[5378] = true, -- Event time remaining
 }
 
-mod.stateTracking = {}
+mod.stateTracking = {
+	alliance = {},
+	horde = {},
+}
+-- Only used if DBM is set to debug mode, raw log of all state updates including duplicates and no reset between events
+mod.debugStateTracking = {
+	alliance = {},
+	horde = {},
+}
 
 function mod:resetStateTracking()
-	self.stateTracking = {
-		alliance = {},
-		horde = {},
-	}
+	table.wipe(self.stateTracking.alliance)
+	table.wipe(self.stateTracking.horde)
 end
-mod:resetStateTracking()
 
 ---@return number|nil
 ---@return number|nil
@@ -76,7 +82,7 @@ function mod:updateStartTimer()
 	end
 	-- TODO: we can use the estimates to estimate the start time, this should yield the same result if the estimate is good
 	-- TODO: some people on reddit claimed that once one faction reaches 100% their progress gets added to the other one
-	-- but all events that I've seen since I started on this code have been very balanced, so I couldn't observe this effect
+	-- this does not seem to be true as far as i can tell
 	local remaining = math.max(aRemaining, hRemaining)
 	local total = math.max(aTotal, hTotal)
 	if total > 6 * 60 * 60 then -- estimates of > 6 hours total time are probably bad and useless anyways
@@ -91,19 +97,32 @@ function mod:updateStartTimer()
 	end
 end
 
+function mod:setupHealthTracking(hideFrame)
+	local generalMod = DBM:GetModByName("PvPGeneral")
+	generalMod:StopTrackHealth()
+	generalMod:TrackHealth(212804, "RunestoneBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
+	generalMod:TrackHealth(212707, "GlaiveBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
+	generalMod:TrackHealth(212803, "ResearchBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
+	generalMod:TrackHealth(212970, "MoonwellBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
+	generalMod:TrackHealth(212801, "ShredderBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
+	generalMod:TrackHealth(212730, "CatapultBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
+	generalMod:TrackHealth(212802, "LumberBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
+	generalMod:TrackHealth(212969, "BonfireBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
+	if hideFrame then
+		DBM.InfoFrame:Hide() -- still participate in syncing, just don't show the frame
+	end
+end
+
+function mod:healthFrameOptionChanged()
+	if self.eventRunning then
+		self:setupHealthTracking(not self.Options.HealthFrame)
+	end
+end
+
 function mod:startEvent()
 	DBM:Debug("Detected start of Ashenvale event")
 	startTimer:Stop()
-	local generalMod = DBM:GetModByName("PvPGeneral")
-	generalMod:StopTrackHealth()
-	generalMod:TrackHealth(212804, "RunestoneBoss", true, "YELL", BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212707, "GlaiveBoss", true, "YELL", BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212803, "ResearchBoss", true, "YELL", BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212970, "MoonwellBoss", true, "YELL", BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212801, "ShredderBoss", true, "YELL", RED_FONT_COLOR)
-	generalMod:TrackHealth(212730, "CatapultBoss", true, "YELL", RED_FONT_COLOR)
-	generalMod:TrackHealth(212802, "LumberBoss", true, "YELL", RED_FONT_COLOR)
-	generalMod:TrackHealth(212969, "BonfireBoss", true, "YELL", RED_FONT_COLOR)
+	self:setupHealthTracking(not self.Options.HealthFrame)
 end
 
 function mod:stopEvent()
@@ -139,10 +158,14 @@ function mod:UPDATE_UI_WIDGET(tbl)
 		local percent = info and info.text and info.text:match("(%d+)")
 		if percent then
 			percent = tonumber(percent)
-			if percent < 5 then
+			if DBM.Options.DebugMode then
+				local data = tbl.widgetID == 5360 and self.debugStateTracking.alliance or self.debugStateTracking.horde
+				data[#data + 1] = {time = GetTime(), percent = percent}
+			end
+			if percent < 4 then
 				-- progress seems to reset a few times when the prep phase is starting
 				-- i guess this may be related to different layers finishing resetting it?
-				-- anyways, let's just start at 5% to avoid reporting nonsense at the beginning
+				-- anyways, let's just start at 4% to avoid reporting nonsense at the beginning
 				return
 			end
 			local data = tbl.widgetID == 5360 and self.stateTracking.alliance or self.stateTracking.horde
@@ -153,6 +176,15 @@ function mod:UPDATE_UI_WIDGET(tbl)
 			-- sometimes it drops by exactly one percent, usually only for half a second, so just ignore drops by exactly one in general
 			if data[#data] and data[#data].percent == percent + 1 then
 				return
+			end
+			-- Sometimes it just randomly drops by several percent, e.g.,
+			-- https://docs.google.com/spreadsheets/d/15K8YfAKg0_cho0Ebj8iOlCCFbwoWj-QLcrDpZBpmuaA/edit#gid=331144407
+			if data[#data] and data[#data].percent - percent >= 3 then
+				-- I've seen it randomly jump around between two different values for a minute or so, don't spam the user in this case
+				if startTimer:IsStarted() and self:AntiSpam(120, 1) then
+					self:AddMsg(L.ErrorSuddenDrop, L.InfoMsgPrefix)
+				end
+				self:resetStateTracking()
 			end
 			local time = GetTime()
 			-- Updates sometimes trigger multiple times with the new and old value mixed together
@@ -192,11 +224,12 @@ mod.PLAYER_ENTERING_WORLD   = mod.ZoneChanged
 mod.OnInitialize            = mod.ZoneChanged
 
 function mod:DebugExportState()
+	local state = DBM.Options.DebugMode and self.debugStateTracking or self.stateTracking
 	local export = {"Time,Alliance,Horde"}
 	local a, h = 1, 1
 	while true do
-		local entryA = self.stateTracking.alliance[a]
-		local entryH = self.stateTracking.horde[h]
+		local entryA = state.alliance[a]
+		local entryH = state.horde[h]
 		if not entryA and not entryH then
 			break
 		end
