@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "deploy",
+			"type": "process",
+			"command": "bash",
+			"args": [
+				"deploy.sh",
+				"${config:wow.base_path}"
+			],
+			"hide": true,
+			"presentation": {
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+			}
+		}
+	]
+}

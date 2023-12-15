@@ -113,7 +113,7 @@ L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
 	EstimatedStartTimer = "Zeige Timer für geschätzte Startzeit des Events",
-	HealthFrame         = "Zeige Infoframe mit Lebenspunkten der Bosses. Das Infoframe wird über deinen Raid und den Yell Chat synchronisiert. Aufgrund von API-Einschränkungen funktioniert diese Option nur zuverlässig wenn dein Raid über mehrere Bosse verteilt ist."
+	HealthFrame         = "Zeige Infoframe mit Lebenspunkten der Bosses. Das Infoframe wird über deinen Raid und den Yell Chat mit anderen Raids synchronisiert. Diese Option funktioniert nur zuverlässig wenn mindestens ein Raid in der Zone über mehrere Bosse verteilt ist und genug Spieler DBM-PvP installiert haben."
 })
 
 L:SetMiscLocalization({

@@ -85,7 +85,7 @@ function mod:updateStartTimer()
 	-- this does not seem to be true as far as i can tell
 	local remaining = math.max(aRemaining, hRemaining)
 	local total = math.max(aTotal, hTotal)
-	if total > 6 * 60 * 60 then -- estimates of > 6 hours total time are probably bad and useless anyways
+	if total > 8 * 60 * 60 then -- estimates of > 8 hours total time are probably bad and useless anyways
 		DBM:Debug("Got total time estimate of " .. total .. ", discarding")
 		return
 	end
@@ -97,17 +97,23 @@ function mod:updateStartTimer()
 	end
 end
 
-function mod:setupHealthTracking(hideFrame)
+function mod:setupHealthTracking(hideFrame, forceRecreate)
 	local generalMod = DBM:GetModByName("PvPGeneral")
-	generalMod:StopTrackHealth()
-	generalMod:TrackHealth(212804, "RunestoneBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212707, "GlaiveBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212803, "ResearchBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212970, "MoonwellBoss", true, {"YELL", "RAID"}, BLUE_FONT_COLOR)
-	generalMod:TrackHealth(212801, "ShredderBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
-	generalMod:TrackHealth(212730, "CatapultBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
-	generalMod:TrackHealth(212802, "LumberBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
-	generalMod:TrackHealth(212969, "BonfireBoss", true, {"YELL", "RAID"}, RED_FONT_COLOR)
+	if forceRecreate and self.tracker then
+		self.tracker:Cancel()
+		self.tracker = nil
+	end
+	if not self.tracker then
+		self.tracker = generalMod:NewHealthTracker({"YELL", "RAID"}, true)
+		self.tracker:TrackHealth(212804, "RunestoneBoss", BLUE_FONT_COLOR)
+		self.tracker:TrackHealth(212707, "GlaiveBoss", BLUE_FONT_COLOR)
+		self.tracker:TrackHealth(212803, "ResearchBoss", BLUE_FONT_COLOR)
+		self.tracker:TrackHealth(212970, "MoonwellBoss", BLUE_FONT_COLOR)
+		self.tracker:TrackHealth(212801, "ShredderBoss", RED_FONT_COLOR)
+		self.tracker:TrackHealth(212730, "CatapultBoss", RED_FONT_COLOR)
+		self.tracker:TrackHealth(212802, "LumberBoss", RED_FONT_COLOR)
+		self.tracker:TrackHealth(212969, "BonfireBoss", RED_FONT_COLOR)
+	end
 	if hideFrame then
 		DBM.InfoFrame:Hide() -- still participate in syncing, just don't show the frame
 	end
@@ -115,7 +121,7 @@ end
 
 function mod:healthFrameOptionChanged()
 	if self.eventRunning then
-		self:setupHealthTracking(not self.Options.HealthFrame)
+		self:setupHealthTracking(not self.Options.HealthFrame, true)
 	end
 end
 
@@ -128,8 +134,10 @@ end
 function mod:stopEvent()
 	DBM:Debug("Detected end of Ashenvale event or leaving zone")
 	startTimer:Stop()
-	local generalMod = DBM:GetModByName("PvPGeneral")
-	generalMod:StopTrackHealth()
+	if self.tracker then
+		self.tracker:Cancel()
+		self.tracker = nil
+	end
 	self:resetStateTracking()
 end
 
@@ -153,6 +161,9 @@ function mod:UPDATE_UI_WIDGET(tbl)
 	if tbl and widgetIDs[tbl.widgetID] then
 		self:checkEventState()
 	end
+	-- There's a lot of messy logic that evaluates all kind of weird data that I've observed, some of this can likely
+	-- be deleted once these fixes land:
+	-- https://www.bluetracker.gg/wow/topic/us-en/1742396-update-on-the-battle-for-ashenvale-and-layers-12142023/
 	if tbl.widgetID == 5360 or tbl.widgetID == 5361 then
 		local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(tbl.widgetID)
 		local percent = info and info.text and info.text:match("(%d+)")
@@ -179,6 +190,7 @@ function mod:UPDATE_UI_WIDGET(tbl)
 			end
 			-- Sometimes it just randomly drops by several percent, e.g.,
 			-- https://docs.google.com/spreadsheets/d/15K8YfAKg0_cho0Ebj8iOlCCFbwoWj-QLcrDpZBpmuaA/edit#gid=331144407
+			-- This should no longer happen since Dec 15th 2023
 			if data[#data] and data[#data].percent - percent >= 3 then
 				-- I've seen it randomly jump around between two different values for a minute or so, don't spam the user in this case
 				if startTimer:IsStarted() and self:AntiSpam(120, 1) then
