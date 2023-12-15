@@ -32,6 +32,9 @@ globals = {
 	"strsplit",
 	"time",
 	"table.wipe",
+	"tContains",
+	"tinsert",
+	"tremove",
 
 	-- API functions
 	"C_AreaPoiInfo",

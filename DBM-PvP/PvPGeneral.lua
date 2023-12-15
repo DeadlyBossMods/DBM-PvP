@@ -118,37 +118,7 @@ do
 end
 
 do
-	local strsplit, format, twipe = strsplit, string.format, table.wipe
-	local UnitGUID, UnitHealth, UnitHealthMax, SendAddonMessage, RegisterAddonMessagePrefix, IsAddonMessagePrefixRegistered, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.SendAddonMessage, C_ChatInfo.RegisterAddonMessagePrefix, C_ChatInfo.IsAddonMessagePrefixRegistered, C_Timer.NewTicker
-	local healthScan, trackedUnits, trackedUnitsCount, syncTrackedUnits, sortedTrackedUnits = nil, {}, 0, {}, {}
-
-	local function UpdateInfoFrame()
-		local lines, sortedLines = {}, {}
-		for _, cid in ipairs(sortedTrackedUnits) do
-			local health = syncTrackedUnits[cid]
-			local hp = health and health.hp or 100
-			local lastUpdate = GetTime() - (health and health.time or 0)
-			local name = trackedUnits[cid].name
-			local color = NORMAL_FONT_COLOR
-			if trackedUnits[cid].color then
-				color = trackedUnits[cid].color
-				name = color:GenerateHexColorMarkup() .. name .. "|r"
-			end
-			if lastUpdate < 60 then
-				lines[name] = ("%s%d%%|r"):format(
-					color:GenerateHexColorMarkup(),
-					hp
-				)
-			else
-				lines[name] = ("%s(stale) %d%%|r"):format(
-					GRAY_FONT_COLOR:GenerateHexColorMarkup(),
-					hp
-				)
-			end
-			sortedLines[#sortedLines + 1] = name
-		end
-		return lines, sortedLines
-	end
+	local UnitGUID, UnitHealth, UnitHealthMax, SendAddonMessage, RegisterAddonMessagePrefix, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.SendAddonMessage, C_ChatInfo.RegisterAddonMessagePrefix, C_Timer.NewTicker
 
 	local scanTargetsRaid = {"target"}
 	local scanTargetsWithNameplates = {"target"}
@@ -158,107 +128,213 @@ do
 		scanTargetsWithNameplates[#scanTargetsWithNameplates + 1] = "nameplate" .. i
 	end
 
-	local function sendSync(cid, hp)
-		local lastSync = syncTrackedUnits[cid] and syncTrackedUnits[cid].hp
-		-- only send if we either haven't seen a sync for it yet, if the hp is decreasing
-		-- or if it is increasing by more than 10% or if it jumps back to 100 (boss reset)
-		if not lastSync or hp - lastSync < 0 or hp - lastSync > 10 or lastSync ~= 100 and hp == 100 then
-			for c in pairs(mod.syncChannel) do
-				SendAddonMessage("DBM-PvP", format("%s:%d", cid, hp), c)
-			end
-		end
-	end
+	---@class HealthTracker
+	local healthTracker = {}
 
-	local function HealthScanFunc()
-		local syncs, syncCount = {}, 0
-		for _, target in ipairs(mod.scanNameplates and scanTargetsWithNameplates or scanTargetsRaid) do
-			if syncCount >= trackedUnitsCount then -- We've already scanned all our tracked units, exit out to save CPU
+	---@alias TrackingState "NONE"|"OBSERVED"|"SYNCED"
+
+	function healthTracker:scan()
+		local seen = {}
+		local seenCount = 0
+		for _, target in ipairs(self.scanNameplates and scanTargetsWithNameplates or scanTargetsRaid) do
+			if seenCount >= #self.trackedUnits then
 				break
 			end
 			local guid = UnitGUID(target)
 			if guid then
 				local cid = mod:GetCIDFromGUID(guid)
-				if trackedUnits[cid] and not syncs[cid] then
-					syncs[cid] = true
-					syncCount = syncCount + 1
-					local percent = math.floor(UnitHealth(target) / UnitHealthMax(target) * 100 + 0.5)
-					C_Timer.After(mod.syncDelay, function()
-						sendSync(cid, percent)
-					end)
+				if self.trackedUnitsByCid[cid] and not seen[cid] then
+					seen[cid] = true
+					seenCount = seenCount + 1
+					local hp = math.floor(UnitHealth(target) / UnitHealthMax(target) * 100 + 0.5)
+					local trackedUnit = self.trackedUnitsByCid[cid]
+					-- display state, always the latest no matter the source
+					trackedUnit.hp = hp
+					trackedUnit.updateTime = GetTime()
+					trackedUnit.state = "OBSERVED"
+					-- per-channel state (where "observed"" is handled just like a channel)
+					trackedUnit.observed = {
+						updateTime = GetTime(),
+						hp = hp,
+					}
+				end
+			end
+		end
+		C_Timer.After(self.syncDelay, function() self:sendSync() end)
+	end
+
+	-- Acceptable updates are decreasing health, > 10% jumps upwards and resets to 100 (wipe or kited too far)
+	local function isGoodUpdate(newHp, oldHp)
+		if not newHp or not oldHp or newHp < 0 or newHp > 100 then
+			return false
+		end
+		return newHp - oldHp < 0 or newHp - oldHp > 10 or oldHp < 98 and newHp == 100
+	end
+
+	function healthTracker:sendSync()
+		local syncsByChannel = {}
+		for _, trackedUnit in ipairs(self.trackedUnits) do
+			for _, channel in ipairs(self.syncChannels) do
+				syncsByChannel[channel] = syncsByChannel[channel] or {}
+				local syncs = syncsByChannel[channel]
+				local channelState = trackedUnit[channel]
+				-- note that this gets sycned no matter where we got it from
+				if trackedUnit.hp and (not channelState or isGoodUpdate(trackedUnit.hp, channelState.hp)) and GetTime() - trackedUnit.updateTime <= #self.syncChannels + 1 then
+					syncs[#syncs + 1] = trackedUnit.cid .. ":" .. trackedUnit.hp
+				end
+			end
+		end
+		for channel, msg in pairs(syncsByChannel) do
+			if #msg > 0 then
+				local encoded = table.concat(msg, ":")
+				DBM:Debug("Sending sync " .. encoded .. " to " .. channel, 3)
+				SendAddonMessage("DBM-PvP", encoded, channel)
+			end
+		end
+	end
+
+	function healthTracker:receiveSync(args, channel, from)
+		if not tContains(self.syncChannels, channel) then
+			return
+		end
+		for _, entry in ipairs(args) do
+			local trackedUnit = self.trackedUnitsByCid[entry.cid]
+			DBM:Debug("Received sync " .. entry.cid .. ":" .. entry.hp .. " on " .. channel .. " from " .. tostring(from), 3)
+			if trackedUnit then
+				if not trackedUnit.hp or isGoodUpdate(entry.hp, trackedUnit.hp) then
+					trackedUnit.hp = entry.hp
+					trackedUnit.updateTime = GetTime()
+					trackedUnit.state = "SYNCED"
+				end
+				if not trackedUnit[channel] or isGoodUpdate(entry.hp, trackedUnit[channel].hp) then
+					trackedUnit[channel] = trackedUnit[channel] or {}
+					trackedUnit[channel].hp = entry.hp
+					trackedUnit[channel].updateTime = GetTime()
 				end
 			end
 		end
 	end
 
-	---@param color ColorMixin
-	function mod:TrackHealth(cid, name, scanNameplates, syncChannel, color)
-		self.scanNameplates = scanNameplates
-		syncChannel = syncChannel or {"INSTANCE_CHAT"}
-		local syncChannelSet = {}
-		for _, v in ipairs(syncChannel) do
-			syncChannelSet[v] = true
-		end
-		self.syncChannel = syncChannelSet
-		if not healthScan then
-			healthScan = NewTicker(1, HealthScanFunc)
-			RegisterAddonMessagePrefix("DBM-PvP")
-			if not IsAddonMessagePrefixRegistered("Capping") then
-				RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+	function healthTracker:updateInfoFrame()
+		local lines, sortedLines = {}, {}
+		for _, entry in ipairs(self.trackedUnits) do
+			local hp = entry.hp or 100
+			local lastUpdate = GetTime() - (entry.updateTime or 0)
+			local name = entry.name
+			local color = entry.color or NORMAL_FONT_COLOR
+			name = color:GenerateHexColorMarkup() .. name .. "|r"
+			if lastUpdate < 60 then
+				lines[name] = ("%s%d%%|r"):format(
+					color:GenerateHexColorMarkup(),
+					hp
+				)
+			else
+				local stale = ""
+				if hp > 0 then
+					stale = L.Stale
+				end
+				lines[name] = ("%s%s%d%%|r"):format(
+					GRAY_FONT_COLOR:GenerateHexColorMarkup(), stale, hp
+				)
 			end
+			sortedLines[#sortedLines + 1] = name
 		end
-		trackedUnits[cid] = {
+		return lines, sortedLines
+	end
+
+	---@param color ColorMixin
+	function healthTracker:TrackHealth(cid, name, color)
+		if self.ticker:IsCancelled() then
+			error("tried to call TrackHealth on cancelled tracker")
+		end
+		local entry = {
+			cid = cid,
 			name = L[name] or name,
 			color = color
 		}
-		trackedUnitsCount = trackedUnitsCount + 1
-		sortedTrackedUnits[#sortedTrackedUnits + 1] = cid
-		self:RegisterShortTermEvents("CHAT_MSG_ADDON")
-		if not DBM.InfoFrame:IsShown() then
-			DBM.InfoFrame:SetHeader(L.InfoFrameHeader)
-			DBM.InfoFrame:Show(42, "function", UpdateInfoFrame, false, false)
-			DBM.InfoFrame:SetColumns(1)
-		end
-		if not self.syncDelay then
-			local h = 0
-			-- simple hash to give everyone a unique delay of up to 1 second, updates are only posted if we are the first to post a specific update
-			-- this is effectively a poor man's leader election scheme to avoid spamming yell chat when multiple raids are present
-			-- i originally hoped that the effectively random scanning interval together with the anti-stomping is sufficient, but most updates were duplicated multiple times
-			local playerName = UnitName("player") or ""
-			for i = 1, #playerName do
-				h = h * 31 + playerName:byte(i, i)
-				h = h % 4294967311
-			end
-			self.syncDelay = (h % 1000) / 1000
-		end
+		tinsert(self.trackedUnits, entry)
+		self.trackedUnitsByCid[cid] = entry
+		DBM.InfoFrame:SetHeader(L.InfoFrameHeader)
+		-- 9 lines at most to avoid seemingly buggy 2 column mode
+		DBM.InfoFrame:Show(9, "function", function() return self:updateInfoFrame() end, false, false)
+		DBM.InfoFrame:SetColumns(1)
 	end
 
-	function mod:StopTrackHealth()
-		if healthScan then
-			healthScan:Cancel()
-			healthScan = nil
+	local trackers = {} ---@type HealthTracker[]
+	--- Only a single health tracker can be active at a time.
+	function mod:NewHealthTracker(syncChannels, scanNameplates)
+		syncChannels = syncChannels or {"INSTANCE_CHAT"}
+		local hash = 0
+		-- simple hash to give everyone a unique delay of up to 1 second, updates are only posted if we are the first to post a specific update
+		-- this is effectively a poor man's leader election scheme to avoid spamming yell chat when multiple raids are present
+		-- i originally hoped that the effectively random scanning interval together with the anti-stomping is sufficient, but most updates were duplicated multiple times
+		local playerName = UnitName("player") or ""
+		for i = 1, #playerName do
+			hash = hash * 31 + playerName:byte(i, i)
+			hash = hash % 4294967311
 		end
-		trackedUnitsCount = 0
-		twipe(trackedUnits)
-		twipe(syncTrackedUnits)
-		twipe(sortedTrackedUnits)
-		self.scanNameplates = nil
-		self.syncChannel = nil
-		self:UnregisterShortTermEvents()
+		mod:RegisterShortTermEvents("CHAT_MSG_ADDON")
+		RegisterAddonMessagePrefix("DBM-PvP")
+		RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+		---@class HealthTracker
+		local tracker = setmetatable({
+			syncChannels = syncChannels,
+			scanNameplates = scanNameplates,
+			trackedUnits = {},  -- tracks state for each sync channel separately
+			trackedUnitsByCid = {},
+			syncDelay = (hash % 1000) / 1000,
+		}, {__index = healthTracker})
+		-- This sends up to one sync message per channel per invocation, there seem to be heavy rate limits in place to ~10 messages/second (per channel?)
+		-- TODO: figure out what works
+		tracker.ticker = NewTicker(#syncChannels, function() tracker:scan() end)
+		trackers[#trackers + 1] = tracker
+		return tracker
+	end
+
+	--- Cancels health tracking, it cannot be re-started on this object.
+	function healthTracker:Cancel()
+		self.ticker:Cancel()
+		for i, v in ipairs(trackers) do
+			if v == self then
+				tremove(trackers, i)
+				break
+			end
+		end
+		mod:UnregisterShortTermEvents()
 		DBM.InfoFrame:Hide()
 	end
 
-	function mod:CHAT_MSG_ADDON(prefix, msg, channel)
-		if not self.syncChannel or not self.syncChannel[channel] or (prefix ~= "DBM-PvP" and prefix ~= "Capping") then -- Lets listen to capping as well, for extra data.
+	-- format is cid1:hp1:cid2:hp2... for backwards compatibility with old single-entry message
+	local function parseMessage(...)
+		local n = select("#", ...)
+		if n % 2 ~= 0 then
 			return
 		end
-		local cid, hp = strsplit(":", msg)
-		if cid and tonumber(cid) and hp and tonumber(hp) and tonumber(hp) >= 0 and tonumber(hp) <= 100 then
-			hp = tonumber(hp)
-			cid = tonumber(cid)
-			local tbl = syncTrackedUnits[cid] or {}
-			syncTrackedUnits[cid] = tbl
-			tbl.hp = math.floor(hp + 0.5)
-			tbl.time = GetTime()
+		local result = {}
+		for i = 1, n, 2 do
+			local cid = tonumber((select(i, ...)))
+			local hp = tonumber((select(i + 1, ...)))
+			if not cid or not hp or hp > 100 or hp < 0 then
+				return
+			end
+			result[#result + 1] = {
+				cid = cid,
+				hp = hp
+			}
+		end
+		return result
+	end
+
+	function mod:CHAT_MSG_ADDON(prefix, msg, channel, from)
+		if prefix ~= "DBM-PvP" and prefix ~= "Capping" then
+			return
+		end
+		local args = parseMessage((":"):split(msg))
+		if not args then
+			return
+		end
+		for _, tracker in ipairs(trackers) do
+			tracker:receiveSync(args, channel, from)
 		end
 	end
 end

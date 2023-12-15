@@ -72,7 +72,9 @@ L:SetMiscLocalization({
 	Tremblade			= "Grand Marshall Tremblade",
 	Volrath				= "High WArlord Volrath",
 	Fangraal			= "Fangraal",
-	Kronus				= "Kronus"
+	Kronus				= "Kronus",
+	-- Health sync frame
+	Stale               = "(stale) ",
 })
 
 ----------------------
@@ -192,7 +194,7 @@ L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
 	EstimatedStartTimer = "Show timer for estimated event start time",
-	HealthFrame         = "Show info frame with boss health, this works by syncing health across your raid and yell chat. This means this only works if someone with DBM-PvP in your raid is close to other bosses as yell chat has a low range/is unreliable."
+	HealthFrame         = "Show info frame with boss health, this works by syncing health across your raid and via yell chat to other raids. This means this only works if there are at least some raids distributed across bosses with DBM-PvP installed."
 })
 
 L:SetMiscLocalization({
