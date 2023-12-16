@@ -53,11 +53,21 @@ L:SetMiscLocalization({
 	Balinda				= "Капитан Балинда Каменный Очаг",
 	Ivus				= "Ивус Лесной Властелин",
 	Lokholar			= "Локолар Владыка Льда",
+	RunestoneBoss		= "Рунический камень",
+	GlaiveBoss			= "Глефа",
+	ResearchBoss		= "Исследование",
+	MoonwellBoss		= "Лунный колодец",
+	ShredderBoss		= "Шреддер",
+	CatapultBoss		= "Катапульта",
+	LumberBoss			= "Древесина",
+	BonfireBoss			= "Большой костер",
 	-- Ashran bosses
 	Tremblade			= "Верховный маршал Тремблейд",
 	Volrath				= "Верховный полководец Волрат",
 	Fangraal			= "Фанграал",
-	Kronus				= "Крон"
+	Kronus				= "Крон",
+	-- Health sync frame
+	Stale               = "(несвежий) "
 })
 
 ----------------------
@@ -70,7 +80,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSpawn	= "Показать таймер появления азерита"
+	TimerSpawn	= "Показать таймер появления Азерита"
 })
 
 ----------------------
@@ -112,7 +122,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPOI			= "Отсчет времени до захвата",
 	TimerSiegeEngine	= "Отсчет времени до создания Осадной машины",
 	WarnSiegeEngine		= "Предупреждение, когда создание Осадной машины завершено",
 	WarnSiegeEngineSoon	= "Предупреждение, когда создание Осадной машины почти завершено",
@@ -165,4 +174,21 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	OrbTaken	= "(%S+) захватывает (%S+) сферу!",
 	OrbReturn	= "(%S+) сфера возвращена!"
+})
+
+----------------
+--  Ashenvale --
+----------------
+L = DBM:GetModLocalization("m1440")
+
+L:SetOptionLocalization({
+	EstimatedStartTimer = "Показывать таймер примерного времени начала события",
+	HealthFrame         = "Показывать инфофрейм со здоровьем босса. Это работает за счет синхронизации здоровья в Вашем рейде и через чат 'криков' с другими рейдами. Это означает, что данная функция работает только в том случае, если есть хотя бы несколько рейдов, распределенных по боссам с установленным DBM-PvP."
+})
+
+L:SetMiscLocalization({
+	TimerEstimate   = "Начало события",
+	TimerSoon       = "Событие скоро начнется!",
+	ErrorSuddenDrop = "Обнаружено внезапное падение прогресса события, оценка пересчитывается, таймер обновится через 2-3 минуты.",
+	InfoMsgPrefix   = "DBM-PvP" -- По умолчанию для :AddMsg — это имя мода, которое просто 'Ясеневый лес', что не похоже на сообщение от DBM.
 })
