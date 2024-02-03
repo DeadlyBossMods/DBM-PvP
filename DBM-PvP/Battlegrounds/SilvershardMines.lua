@@ -8,7 +8,8 @@ mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
-	"ZONE_CHANGED_NEW_AREA"
+	"ZONE_CHANGED_NEW_AREA",
+	"PLAYER_ENTERING_WORLD"
 )
 
 do
