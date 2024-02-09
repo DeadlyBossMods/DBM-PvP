@@ -35,6 +35,7 @@ globals = {
 	"tContains",
 	"tinsert",
 	"tremove",
+	"date",
 
 	-- API functions
 	"C_AreaPoiInfo",
