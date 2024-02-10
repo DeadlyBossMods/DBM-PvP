@@ -182,10 +182,19 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
-	EstimatedStartTimer = "Показывать таймер примерного времени начала события",
+	EstimatedStartTimer = "Показывать таймер времени начала события",
 	HealthFrame         = "Показывать инфофрейм со здоровьем босса. Это работает за счет синхронизации здоровья в Вашем рейде и через чат 'криков' с другими рейдами. Это означает, что данная функция работает только в том случае, если есть хотя бы несколько рейдов, распределенных по боссам с установленным DBM-PvP."
 })
 
 L:SetTimerLocalization({
 	EstimatedStart = "Начало события"
+})
+
+-----------------
+--  Blood Moon --
+-----------------
+L = DBM:GetModLocalization("m1434")
+
+L:SetMiscLocalization({
+	ParseTimeFromWidget = "(%d+)",
 })
