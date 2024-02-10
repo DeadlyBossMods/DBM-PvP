@@ -200,3 +200,12 @@ L:SetOptionLocalization({
 L:SetTimerLocalization({
 	EstimatedStart = "Event starts"
 })
+
+-----------------
+--  Blood Moon --
+-----------------
+L = DBM:GetModLocalization("m1434")
+
+L:SetMiscLocalization({
+	ParseTimeFromWidget = "(%d+)",
+})

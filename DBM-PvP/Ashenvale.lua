@@ -31,7 +31,9 @@ function mod:updateStartTimer()
 		return
 	end
 	local time = date("*t", GetServerTime())
-	local hour = time.hour + time.min / 60 + time.sec / 60 / 60
+	local sec = time.sec
+	local hour, min = GetGameTime()
+	hour = hour + min / 60 + sec / 60 / 60
 	local remaining = (3 - (hour - 1) % 3) * 60 * 60
 	local total = 3 * 60 * 60
 	if remaining < 3.75 * 60 * 60 then

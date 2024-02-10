@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 std = "lua51"
 max_line_length = false
 exclude_files = {
@@ -63,6 +64,7 @@ globals = {
 	"GetRealmName",
 	"GetServerTime",
 	"GetTime",
+	"GetGameTime",
 	"IsInInstance",
 	"IsQuestCompletable",
 	"RepopMe",
