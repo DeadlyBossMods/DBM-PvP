@@ -25,8 +25,12 @@ local widgetIDs = {
 
 function mod:updateStartTimer()
 	-- C_DateAndTime.GetServerTimeLocal() returns a time zone that is neither the server's time nor my time?
+	-- GetServerTime() returns something that looks like local time?
+	-- GetGameTime() seems to be what determines when the event starts
 	local time = date("*t", GetServerTime())
-	local hour = time.hour + time.min / 60 + time.sec / 60 / 60
+	local sec = time.sec
+	local hour, min = GetGameTime()
+	hour = hour + min / 60 + sec / 60 / 60
 	local remaining = (3 - (hour % 3)) * 60 * 60
 	local total = 3 * 60 * 60
 	if remaining < 2.5 * 60 * 60 then
@@ -76,10 +80,10 @@ function mod:UPDATE_UI_WIDGET(tbl)
 	end
 	if tbl.widgetID == 5608 then
 		local info = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo(5608)
-		if info and info.state ~= Enum.IconAndTextWidgetState.Hidden then
+		if info and info.state ~= Enum.IconAndTextWidgetState.Hidden and info.text then
 			local timeRemaining = info.text:match(L.ParseTimeFromWidget)
 			timeRemaining = tonumber(timeRemaining) or -1
-			self:startEvent(timeRemaining + 1) -- Event goes on for a minute after it updates to 0 minutes remaining
+			self:startEvent(timeRemaining + 1.1) -- Event goes on for a bit longer than a minute after it updates to 0 minutes remaining
 		end
 	end
 end
