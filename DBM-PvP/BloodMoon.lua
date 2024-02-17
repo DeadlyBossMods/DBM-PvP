@@ -50,7 +50,7 @@ function mod:startEvent(timeRemaining)
 end
 
 function mod:stopEvent()
-	DBM:Debug("Detected end of Stranglethorn event or leaving zone")
+	DBM:Debug(("Detected end of Stranglethorn event or leaving zone, time remaining on timer: %.2f"):format(eventRunningTimer:GetRemaining()))
 	startTimer:Stop()
 	self.eventRunning = false
 end
@@ -83,7 +83,7 @@ function mod:UPDATE_UI_WIDGET(tbl)
 		if info and info.state ~= Enum.IconAndTextWidgetState.Hidden and info.text then
 			local timeRemaining = info.text:match(L.ParseTimeFromWidget)
 			timeRemaining = tonumber(timeRemaining) or -1
-			self:startEvent(timeRemaining - 0.05) -- Event ends a few seconds early
+			self:startEvent(timeRemaining - 50/60) -- Event ends almost a minute early
 		end
 	end
 end
