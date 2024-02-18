@@ -23,10 +23,23 @@ local widgetIDs = {
 	[5609] = true, -- Event not active
 }
 
+-- Observed start and end times (GetServerTime()), seems to be exactly 30 minutes
+-- 18:00:58 to 18:30:58
+-- 21:00:48 to 21:30:47
+
+-- Note on game time and server time.
+-- The event seems to be controlled by GetGameTime() which is only available with minute  granularity.
+-- The rollover of minutes on game time as visible by the API does not seem to be synchronized to actual time,
+-- however, this may just be a weird effect due to how the time between client and server are synchronized.
+-- The exact time at which the minute for GetGameTime updates changes between relogs, so there doesn't seem to be any
+-- meaning to the exact point in time when this happens.
+
 function mod:updateStartTimer()
 	-- C_DateAndTime.GetServerTimeLocal() returns a time zone that is neither the server's time nor my time?
-	-- GetServerTime() returns something that looks like local time?
-	-- GetGameTime() seems to be what determines when the event starts
+	-- GetServerTime() returns something that looks like local time and is 0.5-1.5 minutes ahead of GetGameTime()
+	-- GetGameTime() seems to be what determines when the event starts, but it's not very well synced (see note above)
+	-- Mixing these two time sources like this is obviously wrong, but by at most a minute.
+	-- Exact start time seems to be a bit random anyways, so that doesn't really matter.
 	local time = date("*t", GetServerTime())
 	local sec = time.sec
 	local hour, min = GetGameTime()
@@ -40,19 +53,39 @@ function mod:updateStartTimer()
 	end
 end
 
+local function debugTimeString()
+	local time = date("*t", GetServerTime())
+	local gameHour, gameMin = GetGameTime()
+	return ("server time %02d:%02d:%02d, game time %02d:%02d"):format(time.hour, time.min, time.sec, gameHour, gameMin)
+end
+
 function mod:startEvent(timeRemaining)
+	DBM:Debug("Start/update Stranglethorn event, " .. timeRemaining .. " minutes at " .. debugTimeString())
 	if not self.eventRunning then
-		DBM:Debug("Detected start/update of Stranglethorn event")
 		startTimer:Stop()
 	end
 	self.eventRunning = true
-	eventRunningTimer:Update((30 - timeRemaining) * 60, 30 * 60)
+	if not eventRunningTimer:IsStarted() then
+		-- Event starts triggers two updates at the exact same time two sometimes trigger at the exact same time when the event starts.
+		-- Event goes for exactly 30 minutes after we first see them
+		if timeRemaining == 31 or timeRemaining == 30 then
+			eventRunningTimer:Start()
+		else
+			-- We joined late, this is a bit messy because the update doesn't happen exactly once per minute
+			-- Subtracting actual seconds from the time seems to give a bit better timers?
+			local time = date("*t", GetServerTime())
+			eventRunningTimer:Update((30 - timeRemaining) * 60 - time.sec, 30 * 60)
+		end
+	end
 end
+
 
 function mod:stopEvent()
 	DBM:Debug(("Detected end of Stranglethorn event or leaving zone, time remaining on timer: %.2f"):format(eventRunningTimer:GetRemaining()))
 	startTimer:Stop()
+	eventRunningTimer:Stop()
 	self.eventRunning = false
+	DBM:Debug("Event stopped at " .. debugTimeString())
 end
 
 function mod:checkEventState()
@@ -83,7 +116,7 @@ function mod:UPDATE_UI_WIDGET(tbl)
 		if info and info.state ~= Enum.IconAndTextWidgetState.Hidden and info.text then
 			local timeRemaining = info.text:match(L.ParseTimeFromWidget)
 			timeRemaining = tonumber(timeRemaining) or -1
-			self:startEvent(timeRemaining - 50/60) -- Event ends almost a minute early
+			self:startEvent(timeRemaining)
 		end
 	end
 end
