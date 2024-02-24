@@ -28,7 +28,7 @@ mod:RegisterEvents(
 mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 mod:AddBoolOption("ShowRelativeGameTime", true)
---mod:AddBoolOption("ShowBasesToWin", false)
+mod:AddBoolOption("ShowBasesToWin", true)
 
 do
 	local IsInInstance, RepopMe, GetSelfResurrectOptions = IsInInstance, RepopMe, C_DeathInfo.GetSelfResurrectOptions
@@ -101,6 +101,7 @@ do
 			bgzone = false
 			self:UnregisterShortTermEvents()
 			self:Stop()
+			DBM.InfoFrame:Hide()
 			subscribedMapID = nil
 			if mod.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
@@ -447,6 +448,32 @@ do
 	end
 	]]--
 
+	local infoFrameState = {
+		allianceScore = 0,
+		hordeScore = 0,
+		maxScore = 0,
+		resPerSec = {},
+	}
+	local function updateInfoFrame()
+		local isAlly = playerFaction == "Alliance"
+		local ourScore = isAlly and infoFrameState.allianceScore or infoFrameState.hordeScore
+		local enemyScore = isAlly and infoFrameState.hordeScore or infoFrameState.allianceScore
+		for ourBases = 0, numObjectives do
+			local enemyBases = numObjectives - ourBases
+			local ourTime = mmin(infoFrameState.maxScore, (infoFrameState.maxScore - ourScore) / (infoFrameState.resPerSec[ourBases + 1] or 0))
+			local enemyTime = mmin(infoFrameState.maxScore, (infoFrameState.maxScore - enemyScore) / (infoFrameState.resPerSec[enemyBases + 1] or 0))
+			-- It would be very clever to also take current capping timers and time to cap into account here
+			-- But that'd be hard to test and not really necessary: it's pretty clear what this number means
+			-- even when it misses the very rare edge case that the time until you cap an extra base is relevant for the number
+			-- (it will just update to a higher number while you cap which is fine)
+			if enemyTime > ourTime then
+				local text = L.BasesToWin:format(ourBases)
+				return {[text] = ""}, {text}
+			end
+		end
+		return {}, {} -- shouldn't happen because you should always be able to win by capturing everything
+	end
+
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
 		local resPerSec = resourcesPerSec[numObjectives]
 		local gameTime = GetGametime()
@@ -467,45 +494,17 @@ do
 			winTimer:SetColor({r=0, g=0, b=1})
 			winTimer:UpdateIcon("132486") -- Interface\\Icons\\INV_BannerPVP_02.blp
 		end
-		--[[
-		CODE IS STILL TOO EXPERIMENTAL
-
-		local isAlliance = playerFaction == "Alliance"
-		if self.Options.ShowBasesToWin and (isAlliance and (allyTime > hordeTime) or (hordeTime > allyTime)) then
+		infoFrameState.allianceScore = allianceScore
+		infoFrameState.hordeScore = hordeScore
+		infoFrameState.maxScore = maxScore
+		infoFrameState.resPerSec = resPerSec
+		if self.Options.ShowBasesToWin then
 			if not DBM.InfoFrame:IsShown() then
-				DBM.InfoFrame:SetHeader("Bases to win")
-				DBM.InfoFrame:Show(42, "function", UpdateInfoFrame, false, false)
+				DBM.InfoFrame:SetHeader(L.BasesToWinHeader)
+				DBM.InfoFrame:Show(2, "function", updateInfoFrame, false, false)
 				DBM.InfoFrame:SetColumns(1)
 			end
-			-- X = us, Y = opposite faction
-			local lowerLimit, basesX, basesY, scoreX, scoreY, upperLimit = 1 -- lowerLimit is 1, everything else is nil
-			if isAlliance then
-				basesX, basesY, scoreX, scoreY, upperLimit = allianceBases, hordeBases, allianceScore, hordeScore, hordeTime
-			else
-				basesX, basesY, scoreX, scoreY, upperLimit = hordeBases, allianceBases, hordeScore, allianceScore, allyTime
-			end
-			for y = 1, numObjectives - basesX do
-				-- Opposite faction will either own their current basecount, or 5 - however many you own (aka whats left)
-				local _basesY = mmin(basesY, 5 - basesY)
-				for x = upperLimit, lowerLimit, -1 do
-					-- Calculate score x seconds in the future
-					local scoreX1, scoreY1 = resPerSec[basesX] * x + scoreX, resPerSec[basesY] * x + scoreY
-					-- Assume capping time
-					local scoreX2, scoreY2 = resPerSec[basesX] * 60 + scoreX1, resPerSec[_basesY] * 60 + scoreY1
-					-- Calculate time till max (with capping times)
-					local ttmX, ttmY = (maxScore - scoreX2) / resPerSec[basesX + y], (maxScore - scoreY2) / resPerSec[_basesY]
-					if ttmX < ttmY then
-						-- More bases will never have a "longer" time than less bases, efficiency for loops
-						lowerLimit = x
-						basesToWin[basesX + y] = ttmX
-						break
-					end
-				end
-			end
-		else
-			DBM.InfoFrame:Hide()
 		end
-		--]]
 	end
 
 	local ignoredAtlas = {

@@ -40,8 +40,9 @@ L:SetMiscLocalization({
 	ArenaStart30		= "Thirty seconds until the Arena battle begins!",
 	ArenaStart15		= "Fifteen seconds until the Arena battle begins!",
 	ArenaInvite			= "Arena invite",
-	BasesToWin			= "Bases to win: %d",
+	BasesToWin			= "Bases required to win: %d",
 	WinBarText			= "%s wins",
+	BasesToWinHeader	= "DBM-PvP",
 	-- TODO: Implement the flag carrying system
 	FlagReset			= "The flag has been reset!", -- Unused
 	FlagTaken			= "(.+) has taken the flag!", -- Unused
