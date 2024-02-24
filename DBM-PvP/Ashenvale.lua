@@ -24,19 +24,31 @@ local widgetIDs = {
 	[5378] = true, -- Event time remaining
 }
 
+-- Observed start times:
+-- 16:00:12
+
+-- See BloodMoon.lua for some comments on how timing works.
+local function getTimeUntilNextEvent()
+	local time = date("*t", GetServerTime())
+	local hour = time.hour + time.min / 60 + time.sec / 60 / 60
+	return (3 - ((hour - 1) % 3)) * 60 * 60 + 20
+end
+
+local function debugTimeString()
+	local time = date("*t", GetServerTime())
+	local gameHour, gameMin = GetGameTime()
+	return ("server time %02d:%02d:%02d, game time %02d:%02d"):format(time.hour, time.min, time.sec, gameHour, gameMin)
+end
+
 function mod:updateStartTimer()
 	if self.eventRunning then
 		-- prevent an update for the prep phase immediately after event start from re-starting timers
 		-- (yes, this happened)
 		return
 	end
-	local time = date("*t", GetServerTime())
-	local sec = time.sec
-	local hour, min = GetGameTime()
-	hour = hour + min / 60 + sec / 60 / 60
-	local remaining = (3 - (hour - 1) % 3) * 60 * 60
+	local remaining = getTimeUntilNextEvent()
 	local total = 3 * 60 * 60
-	if remaining < 3.75 * 60 * 60 then
+	if remaining < 2.75 * 60 * 60 then
 		startTimer:Update(total - remaining, total)
 	end
 end
@@ -70,7 +82,7 @@ function mod:healthFrameOptionChanged()
 end
 
 function mod:startEvent()
-	DBM:Debug("Detected start of Ashenvale event")
+	DBM:Debug("Detected start of Ashenvale event at " .. debugTimeString())
 	startTimer:Stop()
 	self:setupHealthTracking(not self.Options.HealthFrame)
 end

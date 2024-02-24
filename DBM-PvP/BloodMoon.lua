@@ -26,25 +26,29 @@ local widgetIDs = {
 -- Observed start and end times (GetServerTime()), seems to be exactly 30 minutes
 -- 18:00:58 to 18:30:58
 -- 21:00:48 to 21:30:47
+-- 12:00:?? to 12:30:36
+-- 21:00:38 to 21:30:38
+-- 00:00:?? to 00:30:36
+-- 12:00:16 to 12:30:17
+-- 15:00:12 to 15:30:12
 
 -- Note on game time and server time.
--- The event seems to be controlled by GetGameTime() which is only available with minute  granularity.
--- The rollover of minutes on game time as visible by the API does not seem to be synchronized to actual time,
--- however, this may just be a weird effect due to how the time between client and server are synchronized.
--- The exact time at which the minute for GetGameTime updates changes between relogs, so there doesn't seem to be any
--- meaning to the exact point in time when this happens.
+-- Contrary to popular opinion the event start time is not synced to GetGameTime(), it seems a bit random.
+-- Also, GetGameTime() is only available with minute granularity and the updates of minutes on game time as visible by the API does not seem to be synchronized to actual time.
+-- This GetGameTime() randomness seems to be just be a weird effect due to how the time between client and server are synchronized.
+-- The exact time at which the minute for GetGameTime updates changes between relogs, so there doesn't seem to be any meaning to the exact point in time when this happens.
+
+local function getTimeUntilNextEvent()
+	-- C_DateAndTime.GetServerTimeLocal() returns a time zone that is neither the server's time nor my time?
+	-- GetServerTime() returns something that looks like local time and is 0.5-1.5 minutes ahead of GetGameTime() (but GetGameTime() is somewhat random between relogs)
+	-- So we just show a timer targeting xx:00:30 ServerTime (whatever ServerTime means) because that seems to be close enough (+/- 30 seconds)
+	local time = date("*t", GetServerTime())
+	local hour = time.hour + time.min / 60 + time.sec / 60 / 60
+	return (3 - (hour % 3)) * 60 * 60 + 30
+end
 
 function mod:updateStartTimer()
-	-- C_DateAndTime.GetServerTimeLocal() returns a time zone that is neither the server's time nor my time?
-	-- GetServerTime() returns something that looks like local time and is 0.5-1.5 minutes ahead of GetGameTime()
-	-- GetGameTime() seems to be what determines when the event starts, but it's not very well synced (see note above)
-	-- Mixing these two time sources like this is obviously wrong, but by at most a minute.
-	-- Exact start time seems to be a bit random anyways, so that doesn't really matter.
-	local time = date("*t", GetServerTime())
-	local sec = time.sec
-	local hour, min = GetGameTime()
-	hour = hour + min / 60 + sec / 60 / 60
-	local remaining = (3 - (hour % 3)) * 60 * 60
+	local remaining = getTimeUntilNextEvent()
 	local total = 3 * 60 * 60
 	if remaining < 2.5 * 60 * 60 then
 		startTimer:Update(total - remaining, total)
@@ -66,15 +70,17 @@ function mod:startEvent(timeRemaining)
 	end
 	self.eventRunning = true
 	if not eventRunningTimer:IsStarted() then
-		-- Event starts triggers two updates at the exact same time two sometimes trigger at the exact same time when the event starts.
-		-- Event goes for exactly 30 minutes after we first see them
+		-- Event starts triggers two updates at the exact same time for 31 and 30
+		-- Event goes for exactly 30 minutes after we first see an update like this
 		if timeRemaining == 31 or timeRemaining == 30 then
 			eventRunningTimer:Start()
 		else
-			-- We joined late, this is a bit messy because the update doesn't happen exactly once per minute
-			-- Subtracting actual seconds from the time seems to give a bit better timers?
-			local time = date("*t", GetServerTime())
-			eventRunningTimer:Update((30 - timeRemaining) * 60 - time.sec, 30 * 60)
+			-- We joined late, this is a bit messy because the widget updates and time remaining is only poorly correlated with actual timings.
+			-- For example, event triggers like this are common:
+			-- 3 minute at 28:35 server time, 1 minute at 29:38 server time, ended at 30:36 (2 min update was just skipped)
+			-- 3 minute at 28:10 server time, 2 minute at 29:13 server time, 1 minute at 30:15 server time, ended at 30:17
+			local remaining = getTimeUntilNextEvent() - 2.5 * 60 * 60
+			eventRunningTimer:Update(30 * 60 - remaining, 30 * 60)
 		end
 	end
 end
