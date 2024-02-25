@@ -69,7 +69,7 @@ function mod:startEvent(timeRemaining)
 		startTimer:Stop()
 	end
 	self.eventRunning = true
-	if not eventRunningTimer:IsStarted() then
+	if not eventRunningTimer:IsStarted() and timeRemaining > 0 then -- Event start sometimes triggers for 0 minutes
 		-- Event starts triggers two updates at the exact same time for 31 and 30
 		-- Event goes for exactly 30 minutes after we first see an update like this
 		if timeRemaining == 31 or timeRemaining == 30 then
