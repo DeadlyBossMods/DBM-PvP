@@ -4,6 +4,8 @@ end
 local MAP_ASHENVALE = 1440
 local mod = DBM:NewMod("m" .. MAP_ASHENVALE, "DBM-PvP")
 
+local pvpMod = DBM:GetModByName("PvPGeneral")
+
 mod:SetRevision("@file-date-integer@")
 -- TODO: we could teach this thing to handle outdoor zones instead of only instances
 -- when implementing this make sure that the stop functions are called properly, i.e., that ZONE_CHANGED_NEW_AREA still fires when leaving
@@ -27,13 +29,6 @@ local widgetIDs = {
 -- Observed start times:
 -- 16:00:12
 
--- See BloodMoon.lua for some comments on how timing works.
-local function getTimeUntilNextEvent()
-	local time = date("*t", GetServerTime())
-	local hour = time.hour + time.min / 60 + time.sec / 60 / 60
-	return (3 - ((hour - 1) % 3)) * 60 * 60 + 20
-end
-
 local function debugTimeString()
 	local time = date("*t", GetServerTime())
 	local gameHour, gameMin = GetGameTime()
@@ -46,7 +41,7 @@ function mod:updateStartTimer()
 		-- (yes, this happened)
 		return
 	end
-	local remaining = getTimeUntilNextEvent()
+	local remaining = pvpMod:GetTimeUntilWorldPvpEvent(1)
 	local total = 3 * 60 * 60
 	if remaining < 2.75 * 60 * 60 then
 		startTimer:Update(total - remaining, total)

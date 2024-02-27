@@ -42,6 +42,7 @@ globals = {
 	"C_AreaPoiInfo",
 	"C_ChatInfo",
 	"C_CurrencyInfo",
+	"C_DateAndTime",
 	"C_DeathInfo",
 	"C_GossipInfo",
 	"C_Map",
