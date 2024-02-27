@@ -681,3 +681,45 @@ do
 	end
 	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED
 end
+
+-- Note on game time and server time.
+-- Contrary to popular opinion the event start time is not synced to GetGameTime(), it seems a bit random.
+-- Also, GetGameTime() is only available with minute granularity and the updates of minutes on game time as visible by the API does not seem to be synchronized to actual time.
+-- This GetGameTime() randomness seems to be just be a weird effect due to how the time between client and server are synchronized.
+-- The exact time at which the minute for GetGameTime updates changes between relogs, so there doesn't seem to be any meaning to the exact point in time when this happens.
+-- Earlier versions of this mod just used GetGameTime() and attempted to adjust for seconds from local but it was often off by a whole minute,
+-- this implementation is only off by at most 30 seconds, but usually at most 15 seconds (if your clock is synchronized)
+
+-- Get current time in server time zone
+function mod:GetServerTime()
+	-- C_DateAndTime.GetServerTimeLocal() returns a time zone that is neither the server's time nor my time?
+	-- GetGameTime() returns server time but is updated once per minute and the update interval is synchronized to actual server time, i.e., it will be off by up to a minute and the update time differs between relogs
+	-- Also there is GetLocalGameTime() which seems to be identical to GetGameTime()?
+	-- GetServerTime() looks like it returns local time, but good thing everyone has synchronized clocks nowadays, so this is fine to use
+	-- We just need to handle time zones, i.e., find the diff between what GetGameTime() says and what is local time
+	local gameHours, gameMinutes = GetGameTime()
+	-- The whole date logic could probably be avoided with some clever modular arithmetic, but whatever, we know the date
+	local gameDate = C_DateAndTime.GetTodaysDate() -- Yes, this is server date
+	local localSeconds = GetServerTime() -- Yes, that is local time
+	local gameSeconds = time({
+		year = gameDate.year,
+		month = gameDate.month,
+		day = gameDate.day,
+		hour = gameHours,
+		min = gameMinutes
+	})
+	local timeDiff = localSeconds - gameSeconds
+	-- Time zones can be in 15 minute increments, so round to that
+	return localSeconds - math.floor(timeDiff / (15 * 60) + 0.5) * 15 * 60
+end
+
+-- Time until world pvp events (Season of Discovery) that ocur every `interval` hours at an offset of `offet` hours
+---@return number
+function mod:GetTimeUntilWorldPvpEvent(offset, interval)
+	offset = offset or 0
+	interval = interval or 3
+	local time = date("*t", self:GetServerTime())
+	local hour = time.hour + time.min / 60 + time.sec / 60 / 60
+	return (interval - ((hour - offset) % interval)) * 60 * 60 + 30
+end
+
