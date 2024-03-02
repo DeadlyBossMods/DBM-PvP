@@ -16,14 +16,12 @@ mod:AddBoolOption("AutoTurnIn")
 do
 	local bgzone = false
 
-	local function Init(self)
+	function mod:Init()
 		local zoneID = DBM:GetCurrentArea()
 		if not bgzone and zoneID == 1191 then
 			bgzone = true
 			self:RegisterShortTermEvents(
-				"GOSSIP_SHOW",
-				"QUEST_PROGRESS",
-				"QUEST_COMPLETE"
+				"GOSSIP_SHOW"
 			)
 			if not self.tracker then
 				local generalMod = DBM:GetModByName("PvPGeneral")
@@ -35,7 +33,7 @@ do
 			end
 		elseif bgzone and zoneID ~= 1191 then
 			bgzone = false
-			self:UnregisterShormTermEvents()
+			self:UnregisterShortTermEvents()
 			if self.tracker then
 				self.tracker:Cancel()
 				self.tracker = nil
@@ -44,7 +42,7 @@ do
 	end
 
 	function mod:LOADING_SCREEN_DISABLED()
-		self:Schedule(1, Init, self)
+		self:ScheduleMethod(1, "Init")
 	end
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
 	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
