@@ -657,7 +657,9 @@ do
 			end
 			if widgetID == 1671 or widgetID == 2074 then -- Standard battleground score predictor: 1671. Deepwind rework: 2074
 				local info = GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
-				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+				if info then
+					self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+				end
 			end
 			if widgetID == 1893 or widgetID == 1894 then -- Classic Arathi Basin
 				local totalScore = isWrath and 1600 or 2000
@@ -665,18 +667,22 @@ do
 			end
 		elseif widgetID == 1683 then -- Temple Of Kotmogu
 			local widgetInfo = GetDoubleStateIconRowVisualizationInfo(1683)
-			for _, v in pairs(widgetInfo.leftIcons) do
-				if v.iconState == 1 then
-					allyBases = allyBases + 1
+			if widgetInfo then
+				for _, v in pairs(widgetInfo.leftIcons) do
+					if v.iconState == 1 then
+						allyBases = allyBases + 1
+					end
 				end
-			end
-			for _, v in pairs(widgetInfo.rightIcons) do
-				if v.iconState == 1 then
-					hordeBases = hordeBases + 1
+				for _, v in pairs(widgetInfo.rightIcons) do
+					if v.iconState == 1 then
+						hordeBases = hordeBases + 1
+					end
 				end
 			end
 			local info = GetDoubleStatusBarWidgetVisualizationInfo(1689)
-			self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+			if info then
+				self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
+			end
 		end
 	end
 	mod.UPDATE_UI_WIDGET = mod.AREA_POIS_UPDATED

@@ -13,8 +13,7 @@ mod:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
-	"UPDATE_UI_WIDGET",
-	"UNIT_AURA player"
+	"UPDATE_UI_WIDGET"
 )
 
 local startTimer = mod:NewNextTimer(0, 436097)

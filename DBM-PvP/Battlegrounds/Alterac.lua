@@ -14,7 +14,7 @@ mod:AddBoolOption("AutoTurnIn")
 do
 	local bgzone = false
 
-	local function Init(self)
+	function mod:Init()
 		local zoneID = DBM:GetCurrentArea()
 		if not bgzone and (zoneID == 30 or zoneID == 2197) then -- Regular AV (retail and classic), Korrak
 			bgzone = true
@@ -53,7 +53,7 @@ do
 	end
 
 	function mod:LOADING_SCREEN_DISABLED()
-		self:Schedule(1, Init, self)
+		self:ScheduleMethod(1, "Init")
 	end
 	mod.ZONE_CHANGED_NEW_AREA	= mod.LOADING_SCREEN_DISABLED
 	mod.PLAYER_ENTERING_WORLD	= mod.LOADING_SCREEN_DISABLED
@@ -103,7 +103,9 @@ do
 				end
 			end
 		elseif quest then
-			if GetItemCount(quest[1]) > quest[2] then
+			local questId = quest[1]
+			---@cast questId number
+			if GetItemCount(questId) > quest[2] then
 				SelectGossipAvailableQuest(1)
 			end
 		end
