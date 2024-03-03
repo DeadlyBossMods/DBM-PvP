@@ -210,4 +210,7 @@ L = DBM:GetModLocalization("m1434")
 
 L:SetMiscLocalization({
 	ParseTimeFromWidget = "(%d+)",
+	ResTimerSelf = "Show resurrection timer for you.",
+	ResTimerParty = "Show resurrection timer for your party members.",
+	ResTimerPartyClassColors = "Use class colors for resurrection timers of party members.",
 })
