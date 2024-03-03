@@ -198,4 +198,7 @@ L = DBM:GetModLocalization("m1434")
 
 L:SetMiscLocalization({
 	ParseTimeFromWidget = "(%d+)",
+	ResTimerSelf = "Показывать таймер воскрешения для Вас.",
+	ResTimerParty = "Показывать таймер воскрешения для членов Вашей группы.",
+	ResTimerPartyClassColors = "Использовать цвета классов для таймеров воскрешения членов группы."
 })
