@@ -169,3 +169,14 @@ L:SetOptionLocalization({
 L:SetTimerLocalization({
 	EstimatedStart = "Event startet"
 })
+
+-----------------
+--  Blood Moon --
+-----------------
+L = DBM:GetModLocalization("m1434")
+
+L:SetMiscLocalization({
+	ResTimerSelf = "Zeige Timer für Wiederbelebung.",
+	ResTimerParty = "Zeige Timer für Wiederbelebung von Partymitgliedern.",
+	ResTimerPartyClassColors = "Benutze Klassenfarben für Wiederbelebungstimer von Partymitgliedern.",
+})

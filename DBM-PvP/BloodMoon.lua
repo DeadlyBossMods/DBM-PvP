@@ -13,11 +13,24 @@ mod:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
-	"UPDATE_UI_WIDGET"
+	"UPDATE_UI_WIDGET",
+	"SPELL_AURA_APPLIED 441785"
 )
 
 local startTimer = mod:NewNextTimer(0, 436097)
 local eventRunningTimer = mod:NewBuffActiveTimer(30 * 60, 436097)
+local resTimerSelf = mod:NewBuffFadesTimer(20, 441785, nil, nil, "ResTimerSelf")
+local resTimerParty = mod:NewTargetTimer(20, 441785, nil, false, "ResTimerParty")
+
+mod:AddBoolOption("ResTimerPartyClassColors", true)
+
+-- FIXME: work-around for options until https://github.com/DeadlyBossMods/DBM-Unified/pull/447 is released
+local modLocale = DBM:GetModLocalization("m1434")
+modLocale:SetOptionLocalization({
+	ResTimerSelf = L.ResTimerSelf,
+	ResTimerParty = L.ResTimerParty,
+	ResTimerPartyClassColors = L.ResTimerPartyClassColors,
+})
 
 local widgetIDs = {
 	[5608] = true, -- Event active (shows up after ~5 minutes)
@@ -138,3 +151,38 @@ mod.LOADING_SCREEN_DISABLED = mod.ZoneChanged
 mod.ZONE_CHANGED_NEW_AREA   = mod.ZoneChanged
 mod.PLAYER_ENTERING_WORLD   = mod.ZoneChanged
 mod.OnInitialize            = mod.ZoneChanged
+
+-- "<25.40 00:30:28> [GOSSIP_SHOW] Creature-0-5208-0-20366-219822-0003E3B087#121411:Return me to life.",
+-- "<26.41 00:30:29> [CLEU] SPELL_AURA_APPLIED#Player-5826-020CBDBB#Tandanu#Player-5826-020CBDBB#Tandanu#441785#Drained of Blood#DEBUFF#nil",
+function mod:SPELL_AURA_APPLIED(args)
+	if not self.eventRunning then
+		return
+	end
+	if args:IsSpellID(441785) and args:IsDestTypePlayer() then
+		local isPartyOrMe = args:IsPlayer()	or bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_PARTY) ~= 0
+		if isPartyOrMe then
+			self:SendSync("Res", args.destName)
+		end
+	end
+end
+
+local playerName = UnitName("player")
+
+function mod:OnSync(msg, target, sender)
+	if msg ~= "Res" or type(target) ~= "string" or not DBM:GetRaidRoster(target) then
+		return
+	end
+	if target == playerName then
+		-- Only you can start the timer for you
+		-- This prevents some abuse because this timer is enabled by default and you are in a group with effectively random people
+		if sender == playerName then
+			resTimerSelf:Start()
+		end
+	elseif self.Options.ResTimerParty and not resTimerParty:IsStarted(target) then
+		resTimerParty:Start(target)
+		if self.Options.ResTimerPartyClassColors then
+			local color = RAID_CLASS_COLORS[DBM:GetRaidClass(target)]
+			resTimerParty:SetColor({r = color.r, g = color.g, b = color.b}, target)
+		end
+	end
+end

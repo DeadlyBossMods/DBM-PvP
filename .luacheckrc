@@ -28,6 +28,8 @@ globals = {
 	"BLUE_FONT_COLOR",
 	"RED_FONT_COLOR",
 	"GRAY_FONT_COLOR",
+	"COMBATLOG_OBJECT_AFFILIATION_PARTY",
+	"RAID_CLASS_COLORS",
 
 	-- Lua functions
 	"strsplit",
@@ -37,6 +39,7 @@ globals = {
 	"tinsert",
 	"tremove",
 	"date",
+	"bit",
 
 	-- API functions
 	"C_AreaPoiInfo",
