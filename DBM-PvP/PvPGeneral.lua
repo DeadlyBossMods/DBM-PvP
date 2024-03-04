@@ -405,14 +405,15 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		if self.Options.TimerStart and msg:find(L.BgStart120) then
-			startTimer:Update(isClassic and 1.5 or 0, 120)
-		elseif self.Options.TimerStart and (msg:find(L.BgStart60) or msg == L.ArenaStart60 or msg:find(L.ArenaStart60)) then
-			startTimer:Update(isClassic and 61.5 or 60, 120)
-		elseif self.Options.TimerStart and (msg:find(L.BgStart30) or msg == L.ArenaStart30 or msg:find(L.ArenaStart30)) then
-			startTimer:Update(isClassic and 91.5 or 90, 120)
+		-- in Classic era the chat msg is about 1.5 seconds early
+		if self.Options.TimerStart and (msg:find(L.BgStart120) or msg:find(L.BgStart120era)) then
+			startTimer:Update(0, 120)
+		elseif self.Options.TimerStart and (msg:find(L.BgStart60) or msg:find(L.BgStart60era) or msg == L.ArenaStart60 or msg:find(L.ArenaStart60)) then
+			startTimer:Update(isClassic and 58.5 or 60, 120)
+		elseif self.Options.TimerStart and (msg:find(L.BgStart30) or msg:find(L.BgStart30era) or msg == L.ArenaStart30 or msg:find(L.ArenaStart30)) then
+			startTimer:Update(isClassic and 88.5 or 90, 120)
 		elseif self.Options.TimerStart and (msg == L.ArenaStart15 or msg:find(L.ArenaStart15)) then
-			startTimer:Update(isClassic and 106.5 or 105, 120)
+			startTimer:Update(isClassic and 103.5 or 105, 120)
 		elseif not isClassic and (msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
 			vulnerableTimer:Start()
 		end

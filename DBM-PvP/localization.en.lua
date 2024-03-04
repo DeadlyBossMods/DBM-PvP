@@ -36,6 +36,10 @@ L:SetMiscLocalization({
 	BgStart120          = "The [bB]attle.*begin.*in 2 minutes.",
 	BgStart60           = "The [bB]attle.*begin.*in 1 minute.",
 	BgStart30           = "The [bB]attle.*begin.*in 30 seconds.",
+	-- Classic Era: 2 minutes until the battle for Alterac Valley begins.
+	BgStart120era       = "2 minutes until the [bB]attle.*begins.",
+	BgStart60era        = "1 minute until the [bB]attle.*begins.",
+	BgStart30era        = "30 seconds until the [bB]attle.*begins.",
 	ArenaStart60		= "One minute until the Arena battle begins!",
 	ArenaStart30		= "Thirty seconds until the Arena battle begins!",
 	ArenaStart15		= "Fifteen seconds until the Arena battle begins!",
