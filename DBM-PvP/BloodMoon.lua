@@ -54,9 +54,11 @@ function mod:updateStartTimer()
 	else
 		startTimer:Stop()
 	end
+	self:AddMsg(SOME_GLOBAL_THAT_DOESNT_EXIST)
 end
 
 local function debugTimeString()
+	gameTime = GetGameTime() -- oops, forgot local
 	local time = date("*t", GetServerTime())
 	local gameHour, gameMin = GetGameTime()
 	return ("server time %02d:%02d:%02d, game time %02d:%02d"):format(time.hour, time.min, time.sec, gameHour, gameMin)
