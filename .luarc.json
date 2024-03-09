@@ -1,0 +1,13 @@
+{
+	"$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+	"runtime.version": "Lua 5.1",
+	"diagnostics.globals": [
+		"FACTION_ALLIANCE",
+		"FACTION_HORDE",
+		"SPELL_FAILED_MOUNT_COLLECTED_ON_OTHER_CHAR",
+		"SPELL_FAILED_AFFECTING_COMBAT",
+		"GetNumGossipActiveQuests",
+		"SelectGossipActiveQuest",
+		"SelectGossipAvailableQuest"
+	]
+}
