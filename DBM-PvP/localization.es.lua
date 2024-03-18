@@ -25,10 +25,10 @@ L:SetOptionLocalization({
 	ShowBasesToWin          = "Mostrar bases necesarias para ganar",
 	TimerCap                = "Mostrar temporizador de captura",
 	TimerFlag               = "Mostrar temporizador de reaparición de bandera",
-	TimerStart              = "Mostrar temporizador hasta el inicio de la batalla",
+	TimerStart              = "Mostrar temporizador hasta el comienzo de la batalla",
 	TimerShadow             = "Mostrar temporizador para la visión de las sombras",
 	TimerWin                = "Mostrar temporizador de victoria",
-	ShowRelativeGameTime    = "Rellenar temporizador de victoria en relación con el tiempo de inicio del campo de batalla (Si está desactivado, la barra siempre se verá llena)"
+	ShowRelativeGameTime    = "Rellenar temporizador de victoria en relación con el tiempo de comienzo del campo de batalla (Si está desactivado, la barra siempre se verá llena)"
 })
 
 L:SetMiscLocalization({
@@ -163,7 +163,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
-	EstimatedStartTimer = "Mostrar temporizador para el inicio del evento",
+	EstimatedStartTimer = "Mostrar temporizador para el comienzo del evento",
 	HealthFrame = "Mostrar marco de información con la salud del jefe, esto funciona sincronizando la salud en tu banda y a través del chat de gritos a otras bandas. Esto significa que solo funciona si hay al menos algunas bandas distribuidas en jefes con DBM-PvP instalado."
 })
 
