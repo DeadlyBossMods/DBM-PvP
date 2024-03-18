@@ -58,7 +58,7 @@ L:SetMiscLocalization({
 	ExprFlagCaptured	= "¡(.+) ha capturado la bandera de la (%w+)!",
 	ExprFlagReturn		= "¡(.+) ha devuelto la bandera de la (%w+) a su base!",
 	Vulnerable1			= "¡Los portadores de las banderas se han vuelto vulnerables a los ataques!",
-	Vulnerable2			= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!"
+	Vulnerable2			= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!",
 	-- Alterac/IsleOfConquest/Ashenvale bosses
 	InfoFrameHeader		= "[DBM] Salud de jefe",
 	HordeBoss			= "Jefe de horda",
