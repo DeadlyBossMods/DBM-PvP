@@ -11,14 +11,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerInvite	= "%s"
+	TimerCap		= "%s",
+	TimerFlag		= "Reaparición de la bandera",
+	TimerInvite		= "%s",
+	TimerWin		= "Victoria en",
+	TimerStart		= "Comenzando en",
+	TimerShadow		= "Visión de las Sombras"
 })
 
 L:SetOptionLocalization({
-	ColorByClass		= "Mostrar nombres con el color de su clase en la tabla de estadísticas",
-	TimerInvite			= "Mostrar tiempo restante para unirse al campo de batalla",
 	AutoSpirit			= "Liberar espíritu automáticamente",
-	HideBossEmoteFrame	= "Ocultar marco de jefe de banda y botón de ciudadela en campos de batalla"
+	HideBossEmoteFrame	= "Ocultar marco de jefe de banda y botón de ciudadela en campos de batalla",
+	ShowBasesToWin          = "Mostrar bases necesarias para ganar",
+	TimerCap                = "Mostrar temporizador de captura",
+	TimerFlag               = "Mostrar temporizador de reaparición de bandera",
+	TimerStart              = "Mostrar temporizador hasta el inicio de la batalla",
+	TimerShadow             = "Mostrar temporizador para la visión de las sombras",
+	TimerWin                = "Mostrar temporizador de victoria",
+	ShowRelativeGameTime    = "Rellenar temporizador de victoria en relación con el tiempo de inicio del campo de batalla (Si está desactivado, la barra siempre se verá llena)"
 })
 
 L:SetMiscLocalization({
@@ -32,6 +42,7 @@ L:SetMiscLocalization({
 	Vulnerable2			= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!"
 })
 
+
 ----------------------
 --  Alterac Valley  --
 ----------------------
@@ -39,6 +50,7 @@ L = DBM:GetModLocalization("z30")
 
 L:SetOptionLocalization({
 	AutoTurnIn	= "Entregar misiones automáticamente"
+	TimerBoss 	= "Mostrar temporizador de tiempo restante del jefe"
 })
 
 ------------------------
@@ -91,8 +103,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Capture	= "ha capturado",
-	Arrived	= "has arived",
-	Begun	= "has begun"
+	Arrived	= "has llegado",
+	Begun	= "ha comenzado"
 })
 
 -------------------------
@@ -104,3 +116,30 @@ L:SetMiscLocalization({
 	OrbTaken	= "¡(%S+) se ha hecho con el orbe (%S+)!",
 	OrbReturn	= "¡El orbe (%S+) ha sido devuelto!"
 })
+
+----------------
+--  Ashenvale --
+----------------
+L = DBM:GetModLocalization("m1440")
+
+L:SetOptionLocalization({
+	EstimatedStartTimer = "Mostrar temporizador para el inicio del evento",
+	HealthFrame = "Mostrar marco de información con la salud del jefe, esto funciona sincronizando la salud en tu banda y a través del chat de gritos a otras bandas. Esto significa que solo funciona si hay al menos algunas bandas distribuidas en jefes con DBM-PvP instalado."
+})
+
+L:SetTimerLocalization({
+	EstimatedStart = "Evento comienza"
+})
+
+-----------------
+--  Blood Moon --
+-----------------
+L = DBM:GetModLocalization("m1434")
+
+L:SetMiscLocalization({
+	ParseTimeFromWidget = "(%d+)",
+	ResTimerSelf = "Mostrar temporizador de resurrección para ti.",
+	ResTimerParty = "Mostrar temporizador de resurrección para los miembros de tu grupo.",
+	ResTimerPartyClassColors = "Utilizar colores de clase para los temporizadores de resurrección de los miembros de tu grupo."
+})
+
