@@ -89,7 +89,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z30")
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "Entregar misiones automáticamente"
+	AutoTurnIn	= "Entregar misiones automáticamente",
 	TimerBoss 	= "Mostrar temporizador de tiempo restante del jefe"
 })
 
