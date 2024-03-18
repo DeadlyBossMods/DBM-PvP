@@ -61,27 +61,27 @@ L:SetMiscLocalization({
 	Vulnerable2			= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!",
 	-- Alterac/IsleOfConquest/Ashenvale bosses
 	InfoFrameHeader		= "[DBM] Salud de jefe",
-	HordeBoss			= "Jefe de horda",
-	AllianceBoss		= "Jefe de alianza",
+	HordeBoss			= "Jefe de la Horda",
+	AllianceBoss		= "Jefe de la Alianza",
 	Galvangar			= "Galvangar",
 	Balinda				= "Balinda",
 	Ivus				= "Ivus",
 	Lokholar			= "Lokholar",
-	RunestoneBoss		= "Runestone",
-	GlaiveBoss			= "Glaive",
-	ResearchBoss		= "Research",
-	MoonwellBoss		= "Pozo de la luna",
-	ShredderBoss		= "Shredder",
-	CatapultBoss		= "Catapult",
-	LumberBoss			= "Lumber",
-	BonfireBoss			= "Bonfire",
+	RunestoneBoss		= "Piedras rúnicas",
+	GlaiveBoss			= "Gujas",
+	ResearchBoss		= "Dispositivos de investigación",
+	MoonwellBoss		= "Poza de la luna",
+	ShredderBoss		= "Trituradoras",
+	CatapultBoss		= "Catapultas",
+	LumberBoss			= "Aserraderos",
+	BonfireBoss			= "Fogata",
 	-- Ashran bosses
 	Tremblade			= "Gran mariscal Tremblade",
 	Volrath				= "Gran señor de la guerra Volrath",
 	Fangraal			= "Fangraal",
 	Kronus				= "Kronus",
 	-- Health sync frame
-	Stale               = "(stale) ",
+	Stale               = "(vacío) ",
 })
 ----------------------
 --  Alterac Valley  --
