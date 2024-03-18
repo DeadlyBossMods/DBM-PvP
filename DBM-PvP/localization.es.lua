@@ -20,8 +20,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	AutoSpirit			= "Liberar espíritu automáticamente",
-	HideBossEmoteFrame	= "Ocultar marco de jefe de banda y botón de ciudadela en campos de batalla",
+	AutoSpirit				= "Liberar espíritu automáticamente",
+	HideBossEmoteFrame		= "Ocultar marco de jefe de banda y botón de ciudadela en campos de batalla",
 	ShowBasesToWin          = "Mostrar bases necesarias para ganar",
 	TimerCap                = "Mostrar temporizador de captura",
 	TimerFlag               = "Mostrar temporizador de reaparición de bandera",
@@ -32,17 +32,57 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	-- Supports "The battle begins in 2 minutes." and "The battle for Wintergrasp begins in 2 minutes." (Because.. wrath classic)
+	-- SoD: "The Battle for Arathi Basin will begin in 1 minute."
+	BgStart120          = "La batalla comenzará en 2 minutos.",
 	BgStart60			= "La batalla comenzará en 1 minuto.",
 	BgStart30			= "La batalla comenzará en 30 segundos.",
+	-- Classic Era: 2 minutes until the battle for Alterac Valley begins.
+	BgStart120era       = "La batalla comenzará en 2 minutos.",
+	BgStart60era        = "La batalla comenzará en 1 minuto.",
+	BgStart30era        = "La batalla comenzará en 30 segundos.",
+	ArenaStart60		= "One minute until the Arena battle begins!",
+	ArenaStart30		= "Thirty seconds until the Arena battle begins!",
+	ArenaStart15		= "Fifteen seconds until the Arena battle begins!",
 	ArenaInvite			= "Invitación a la arena",
+	BasesToWin			= "Bases necesarias para ganar: %d",
+	WinBarText			= "%s gana",
+	BasesToWinHeader	= "DBM-JcJ",
+	-- TODO: Implement the flag carrying system
+	FlagReset			= "The flag has been reset!", -- Unused
+	FlagTaken			= "(.+) has taken the flag!", -- Unused
+	FlagCaptured		= "The .+ ha%w+ captured the flag!",
+	FlagDropped			= "The flag has been dropped!", -- Unused
+	--
 	ExprFlagPickUp		= "¡(.+) ha cogido la bandera de la (%w+)!",
 	ExprFlagCaptured	= "¡(.+) ha capturado la bandera de la (%w+)!",
 	ExprFlagReturn		= "¡(.+) ha devuelto la bandera de la (%w+) a su base!",
 	Vulnerable1			= "¡Los portadores de las banderas se han vuelto vulnerables a los ataques!",
 	Vulnerable2			= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!"
+	-- Alterac/IsleOfConquest/Ashenvale bosses
+	InfoFrameHeader		= "[DBM] Salud de jefe",
+	HordeBoss			= "Jefe de horda",
+	AllianceBoss		= "Jefe de alianza",
+	Galvangar			= "Galvangar",
+	Balinda				= "Balinda",
+	Ivus				= "Ivus",
+	Lokholar			= "Lokholar",
+	RunestoneBoss		= "Runestone",
+	GlaiveBoss			= "Glaive",
+	ResearchBoss		= "Research",
+	MoonwellBoss		= "Pozo de la luna",
+	ShredderBoss		= "Shredder",
+	CatapultBoss		= "Catapult",
+	LumberBoss			= "Lumber",
+	BonfireBoss			= "Bonfire",
+	-- Ashran bosses
+	Tremblade			= "Gran mariscal Tremblade",
+	Volrath				= "Gran señor de la guerra Volrath",
+	Fangraal			= "Fangraal",
+	Kronus				= "Kronus",
+	-- Health sync frame
+	Stale               = "(stale) ",
 })
-
-
 ----------------------
 --  Alterac Valley  --
 ----------------------
@@ -103,7 +143,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Capture	= "ha capturado",
-	Arrived	= "has llegado",
+	Arrived	= "ha llegado",
 	Begun	= "ha comenzado"
 })
 
