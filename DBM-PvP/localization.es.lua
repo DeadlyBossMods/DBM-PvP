@@ -46,7 +46,7 @@ L:SetMiscLocalization({
 	ArenaStart15		= "Fifteen seconds until the Arena battle begins!",
 	ArenaInvite			= "Invitación a la arena",
 	BasesToWin			= "Bases necesarias para ganar: %d",
-	WinBarText			= "%s gana",
+	WinBarText			= "Gana la %s",
 	BasesToWinHeader	= "DBM-JcJ",
 	-- TODO: Implement the flag carrying system
 	FlagReset			= "The flag has been reset!", -- Unused
