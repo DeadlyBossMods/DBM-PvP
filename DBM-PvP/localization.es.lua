@@ -164,7 +164,7 @@ L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
 	EstimatedStartTimer = "Mostrar temporizador para el comienzo del evento",
-	HealthFrame = "Mostrar marco de información con la salud del jefe, esto funciona sincronizando la salud en tu banda y a través del chat de gritos a otras bandas. Esto significa que solo funciona si hay al menos algunas bandas distribuidas en jefes con DBM-PvP instalado."
+	HealthFrame = "Mostrar marco de información con la salud del jefe, esto funciona sincronizando la salud en tu banda y a través del chat de gritos a otras bandas. Esto significa que solo funciona si hay al menos algunas bandas distribuidas en jefes con DBM-JcJ instalado."
 })
 
 L:SetTimerLocalization({
