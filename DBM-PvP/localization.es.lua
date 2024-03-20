@@ -25,10 +25,10 @@ L:SetOptionLocalization({
 	ShowBasesToWin          = "Mostrar bases necesarias para ganar",
 	TimerCap                = "Mostrar temporizador de captura",
 	TimerFlag               = "Mostrar temporizador de reaparición de bandera",
-	TimerStart              = "Mostrar temporizador hasta el inicio de la batalla",
+	TimerStart              = "Mostrar temporizador hasta el comienzo de la batalla",
 	TimerShadow             = "Mostrar temporizador para la visión de las sombras",
 	TimerWin                = "Mostrar temporizador de victoria",
-	ShowRelativeGameTime    = "Rellenar temporizador de victoria en relación con el tiempo de inicio del campo de batalla (Si está desactivado, la barra siempre se verá llena)"
+	ShowRelativeGameTime    = "Rellenar temporizador de victoria en relación con el tiempo de comienzo del campo de batalla (Si está desactivado, la barra siempre se verá llena)"
 })
 
 L:SetMiscLocalization({
@@ -46,7 +46,7 @@ L:SetMiscLocalization({
 	ArenaStart15		= "Fifteen seconds until the Arena battle begins!",
 	ArenaInvite			= "Invitación a la arena",
 	BasesToWin			= "Bases necesarias para ganar: %d",
-	WinBarText			= "%s gana",
+	WinBarText			= "¡%s gana!",
 	BasesToWinHeader	= "DBM-JcJ",
 	-- TODO: Implement the flag carrying system
 	FlagReset			= "The flag has been reset!", -- Unused
@@ -61,27 +61,27 @@ L:SetMiscLocalization({
 	Vulnerable2			= "¡Los portadores de las banderas se han vuelto más vulnerables a los ataques!",
 	-- Alterac/IsleOfConquest/Ashenvale bosses
 	InfoFrameHeader		= "[DBM] Salud de jefe",
-	HordeBoss			= "Jefe de horda",
-	AllianceBoss		= "Jefe de alianza",
+	HordeBoss			= "Jefe de la Horda",
+	AllianceBoss		= "Jefe de la Alianza",
 	Galvangar			= "Galvangar",
 	Balinda				= "Balinda",
 	Ivus				= "Ivus",
 	Lokholar			= "Lokholar",
-	RunestoneBoss		= "Runestone",
-	GlaiveBoss			= "Glaive",
-	ResearchBoss		= "Research",
-	MoonwellBoss		= "Pozo de la luna",
-	ShredderBoss		= "Shredder",
-	CatapultBoss		= "Catapult",
-	LumberBoss			= "Lumber",
-	BonfireBoss			= "Bonfire",
+	RunestoneBoss		= "Piedras rúnicas",
+	GlaiveBoss			= "Gujas",
+	ResearchBoss		= "Dispositivos de investigación",
+	MoonwellBoss		= "Poza de la luna",
+	ShredderBoss		= "Trituradoras",
+	CatapultBoss		= "Catapultas",
+	LumberBoss			= "Aserraderos",
+	BonfireBoss			= "Fogata",
 	-- Ashran bosses
 	Tremblade			= "Gran mariscal Tremblade",
 	Volrath				= "Gran señor de la guerra Volrath",
 	Fangraal			= "Fangraal",
 	Kronus				= "Kronus",
 	-- Health sync frame
-	Stale               = "(stale) ",
+	Stale               = "(vacío) ",
 })
 ----------------------
 --  Alterac Valley  --
@@ -163,8 +163,8 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("m1440")
 
 L:SetOptionLocalization({
-	EstimatedStartTimer = "Mostrar temporizador para el inicio del evento",
-	HealthFrame = "Mostrar marco de información con la salud del jefe, esto funciona sincronizando la salud en tu banda y a través del chat de gritos a otras bandas. Esto significa que solo funciona si hay al menos algunas bandas distribuidas en jefes con DBM-PvP instalado."
+	EstimatedStartTimer = "Mostrar temporizador para el comienzo del evento",
+	HealthFrame = "Mostrar marco de información con la salud del jefe, esto funciona sincronizando la salud en tu banda y a través del chat de gritos a otras bandas. Esto significa que solo funciona si hay al menos algunas bandas distribuidas en jefes con DBM-JcJ instalado."
 })
 
 L:SetTimerLocalization({
