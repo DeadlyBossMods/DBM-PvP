@@ -261,6 +261,12 @@ do
 		DBM.InfoFrame:SetColumns(1)
 	end
 
+	function healthTracker:ShowInfoFrame()
+		if not DBM.InfoFrame:IsShown() then
+			DBM.InfoFrame:Show(9, "function", function() return self:updateInfoFrame() end, false, false)
+		end
+	end
+
 	local trackers = {} ---@type HealthTracker[]
 	--- Only a single health tracker can be active at a time.
 	function mod:NewHealthTracker(syncChannels, scanNameplates)

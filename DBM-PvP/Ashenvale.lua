@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
-	"UPDATE_UI_WIDGET"
+	"UPDATE_UI_WIDGET",
+	"UNIT_AURA player"
 )
 
 mod:AddBoolOption("HealthFrame", nil, nil, function() mod:healthFrameOptionChanged() end)
@@ -73,6 +74,22 @@ end
 function mod:healthFrameOptionChanged()
 	if self.eventRunning then
 		self:setupHealthTracking(not self.Options.HealthFrame, true)
+	end
+end
+
+function mod:UNIT_AURA(target)
+	if target ~= "player" then return end
+	local wasInDream = self.inEmeraldDream
+	self.inEmeraldDream = not not C_UnitAuras.GetPlayerAuraBySpellID(444759)
+	if self.inZone and self.eventRunning then
+		if self.tracker and self.Options.HealthFrame and not self.inEmeraldDream then
+			-- Only re-show it if we left the Emerald Dream to avoid re-showing it if it was hidden via the dropdown menu
+			if wasInDream then
+				self.tracker:ShowInfoFrame()
+			end
+		else
+			DBM.InfoFrame:Hide()
+		end
 	end
 end
 
