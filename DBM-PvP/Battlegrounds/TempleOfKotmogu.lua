@@ -1,7 +1,4 @@
-if WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) then -- Added in MoP
-	return
-end
-local mod	= DBM:NewMod("z998", "DBM-PvP")
+local mod	= DBM:NewMod("z998", "DBM-PvP") -- Added in MoP
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)

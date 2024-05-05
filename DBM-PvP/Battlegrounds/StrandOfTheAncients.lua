@@ -1,7 +1,4 @@
-if WOW_PROJECT_ID ~= (WOW_PROJECT_WRATH_CLASSIC or 11) then -- Added in Wrath, removed in BfA
-	return
-end
-local mod	= DBM:NewMod("z607", "DBM-PvP")
+local mod	= DBM:NewMod("z607", "DBM-PvP") -- Added in Wrath, Removed in BfA
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)

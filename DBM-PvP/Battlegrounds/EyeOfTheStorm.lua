@@ -1,7 +1,4 @@
-if WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2) then -- Added in TBC
-	return
-end
-local mod	= DBM:NewMod("z566", "DBM-PvP")
+local mod	= DBM:NewMod("z566", "DBM-PvP") -- Added in TBC
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)

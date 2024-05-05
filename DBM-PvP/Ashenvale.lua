@@ -1,4 +1,4 @@
-if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC or not C_Seasons or C_Seasons.GetActiveSeason() ~= 2 then
+if not C_Seasons or C_Seasons.GetActiveSeason() ~= 2 then
 	return
 end
 local MAP_ASHENVALE = 1440
