@@ -15,7 +15,8 @@ do
 		local zoneID = DBM:GetCurrentArea()
 		if not bgzone and zoneID == 998 then
 			bgzone = true
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(0, 4)
+			local pvpGeneral = DBM:GetModByName("PvPGeneral")
+			pvpGeneral:SubscribeAssault(0, 4)
 		elseif bgzone and zoneID ~= 998 then
 			bgzone = false
 		end
