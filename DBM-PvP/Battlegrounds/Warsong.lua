@@ -15,7 +15,8 @@ do
 		local zoneID = DBM:GetCurrentArea()
 		if not bgzone and (zoneID == 489 or zoneID == 2106) then -- Classic, Retail
 			bgzone = true
-			DBM:GetModByName("PvPGeneral"):SubscribeFlags()
+			local pvpGeneral = DBM:GetModByName("PvPGeneral")
+			pvpGeneral:SubscribeFlags()
 		elseif bgzone and (zoneID ~= 489 and zoneID ~= 2106) then
 			bgzone = false
 		end

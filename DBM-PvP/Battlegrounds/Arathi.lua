@@ -25,7 +25,8 @@ do
 			elseif zoneID == 2177 then
 				assaultID = 1383
 			end
-			DBM:GetModByName("PvPGeneral"):SubscribeAssault(assaultID, 5)
+			local pvpGeneral = DBM:GetModByName("PvPGeneral")
+			pvpGeneral:SubscribeAssault(assaultID, 5)
 		elseif bgzone and (zoneID ~= 529 and zoneID ~= 1681 and zoneID ~= 2107 and zoneID ~= 2177) then
 			bgzone = false
 		end
