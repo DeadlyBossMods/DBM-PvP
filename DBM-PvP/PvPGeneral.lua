@@ -523,7 +523,7 @@ do
 		-- retail av
 		[91]    = 243,
 		-- classic av
-		[1459]  = (isBCC or isWrath) and 243 or 304,
+		[1459]  = isClassic and 304 or 243,
 		-- korrak
 		[1537]  = 243
 	}
