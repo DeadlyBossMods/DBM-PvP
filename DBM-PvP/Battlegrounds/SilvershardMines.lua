@@ -152,9 +152,8 @@ do
 		end
 		local closestID, distance = 0, 1000
 		for d = 1, GetNumBattlefieldVehicles() do
-			local x, y = GetBattlefieldVehicleInfo(d, 423)
-			x = x * 100
-			y = y * 100
+			local vInfo = GetBattlefieldVehicleInfo(d, 423)
+			local x, y = vInfo.x * 100, vInfo.y * 100
 			local dist = GetDistance(56.87, 47.117, x, y)
 			if dist < distance then
 				local used = false
@@ -171,9 +170,9 @@ do
 			end
 		end
 		if closestID ~= 0 then
-			local x, y = GetBattlefieldVehicleInfo(closestID, 423)
-			cart.x		= x * 100
-			cart.y		= y * 100
+			local vInfo = GetBattlefieldVehicleInfo(closestID, 423)
+			cart.x		= vInfo.x * 100
+			cart.y		= vInfo.y * 100
 			cart.dir	= IdentifyCartCoord(cart.x, cart.y)
 		end
 	end
@@ -182,9 +181,7 @@ do
 		local cache = {}
 		for i = 1, GetNumBattlefieldVehicles() do
 			local vInfo = GetBattlefieldVehicleInfo(i, 423)
-			local x, y = vInfo.x, vInfo.y
-			x = x * 100
-			y = y * 100
+			local x, y = vInfo.x * 100, vInfo.y * 100
 			cache[i] = {
 				x	= x,
 				y	= y,
