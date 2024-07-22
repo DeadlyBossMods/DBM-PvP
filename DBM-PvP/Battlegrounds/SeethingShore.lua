@@ -64,7 +64,7 @@ do
 			if vignette and vignette.vignetteGUID then
 				local poss = C_VignetteInfo.GetVignettePosition(vignette.vignetteGUID, 907)
 				if not poss or poss.x == 0 or poss.y == 0 then
-					DBM:Debug(("Hello? Vignette position is empty. X: %f, Y: %f"):format(poss and poss.x or "nil", poss and poss.y or "nil"))
+					DBM:Debug(("Hello? Vignette position is empty. X: %f, Y: %f"):format(poss and poss.x or 0, poss and poss.y or 0))
 					return
 				end
 				local pos = Round(poss.x) .. ":" .. Round(poss.y)
