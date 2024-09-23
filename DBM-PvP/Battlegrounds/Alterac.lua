@@ -92,12 +92,14 @@ do
 		local quest = quests[self:GetCIDFromGUID(UnitGUID("target") or "") or 0]
 		if quest and type(quest[1]) == "table" then
 			for _, v in ipairs(quest) do
-				local num = GetItemCount(v[1])
+				local questId = quest[1]
+				---@cast questId number
+				local num = GetItemCount(questId)
 				if num > 0 then
 					if GetNumGossipActiveQuests() == 1 then
-						SelectGossipActiveQuest(1)
+						SelectGossipActiveQuest(questId)
 					else
-						SelectGossipAvailableQuest((v[2] == 5 and num >= 5) and 2 or 1)
+						SelectGossipAvailableQuest(questId)
 					end
 					break
 				end
@@ -106,7 +108,7 @@ do
 			local questId = quest[1]
 			---@cast questId number
 			if GetItemCount(questId) > quest[2] then
-				SelectGossipAvailableQuest(1)
+				SelectGossipAvailableQuest(questId)
 			end
 		end
 	end
