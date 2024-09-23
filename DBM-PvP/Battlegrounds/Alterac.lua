@@ -19,10 +19,10 @@ do
 		if not bgzone and (zoneID == 30 or zoneID == 2197) then -- Regular AV (retail and classic), Korrak
 			bgzone = true
 			self:RegisterShortTermEvents(
-				"CHAT_MSG_MONSTER_YELL",
-				"GOSSIP_SHOW",
-				"QUEST_PROGRESS",
-				"QUEST_COMPLETE"
+				"CHAT_MSG_MONSTER_YELL"
+				--"GOSSIP_SHOW",
+				--"QUEST_PROGRESS",
+				--"QUEST_COMPLETE"
 			)
 			local assaultID
 			if zoneID == 30 then
