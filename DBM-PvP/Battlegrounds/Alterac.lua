@@ -60,6 +60,7 @@ do
 	mod.OnInitialize			= mod.LOADING_SCREEN_DISABLED
 end
 
+--[[
 do
 	local ipairs, type = ipairs, type
 	local UnitGUID, GetItemCount, GetNumGossipActiveQuests, SelectGossipActiveQuest, SelectGossipAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward = UnitGUID, GetItemCount, C_GossipInfo and C_GossipInfo.GetNumActiveQuests, C_GossipInfo and C_GossipInfo.SelectActiveQuest, C_GossipInfo and C_GossipInfo.SelectAvailableQuest, IsQuestCompletable, CompleteQuest, GetQuestReward
@@ -92,7 +93,7 @@ do
 		local quest = quests[self:GetCIDFromGUID(UnitGUID("target") or "") or 0]
 		if quest and type(quest[1]) == "table" then
 			for _, v in ipairs(quest) do
-				local questId = quest[1]
+				local questId = v[1]
 				---@cast questId number
 				local num = GetItemCount(questId)
 				if num > 0 then
@@ -124,6 +125,7 @@ do
 		GetQuestReward(0)
 	end
 end
+--]]
 
 do
 	local bossTimer	= mod:NewTimer(600, "TimerBoss")
