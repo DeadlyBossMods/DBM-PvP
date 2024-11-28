@@ -76,7 +76,7 @@ L:SetMiscLocalization({
 	BonfireBoss			= "Bonfire",
 	-- Ashran bosses
 	Tremblade			= "Grand Marshall Tremblade",
-	Volrath				= "High WArlord Volrath",
+	Volrath				= "High Warlord Volrath",
 	Fangraal			= "Fangraal",
 	Kronus				= "Kronus",
 	-- Health sync frame
