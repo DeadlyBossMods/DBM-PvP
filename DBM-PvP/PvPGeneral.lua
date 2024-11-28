@@ -84,14 +84,14 @@ function mod:SubscribeFlags()
 end
 
 do
-	local IsInInstance, SendAddonMessage = IsInInstance, C_ChatInfo.SendAddonMessage
+	local IsInInstance = IsInInstance
 	local bgzone = false
 
 	local function Init(self)
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
 			if not bgzone then
-				SendAddonMessage(isWrath and "D5WC" or isClassic and "D5C" or "D5", DBM5Prefix .. "H", "INSTANCE_CHAT")
+				ChatThrottleLib:SendAddonMessage("NORMAL", isWrath and "D5WC" or "D5", DBM5Prefix .. "H", "INSTANCE_CHAT")
 				self:Schedule(3, DBM.RequestTimers, DBM)
 				if self.Options.HideBossEmoteFrame then
 					DBM:HideBlizzardEvents(1, true)
@@ -120,7 +120,7 @@ do
 end
 
 do
-	local UnitGUID, UnitHealth, UnitHealthMax, SendAddonMessage, RegisterAddonMessagePrefix, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.SendAddonMessage, C_ChatInfo.RegisterAddonMessagePrefix, C_Timer.NewTicker
+	local UnitGUID, UnitHealth, UnitHealthMax, RegisterAddonMessagePrefix, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.RegisterAddonMessagePrefix, C_Timer.NewTicker
 
 	local scanTargetsRaid = {"target"}
 	local scanTargetsWithNameplates = {"target"}
@@ -190,7 +190,7 @@ do
 			if #msg > 0 then
 				local encoded = table.concat(msg, ":")
 				DBM:Debug("Sending sync " .. encoded .. " to " .. channel, 3)
-				SendAddonMessage("DBM-PvP", encoded, channel)
+				ChatThrottleLib:SendAddonMessage("NORMAL", "DBM-PvP", encoded, channel)
 			end
 		end
 	end
