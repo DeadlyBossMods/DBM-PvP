@@ -12,21 +12,22 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerCap		= "%s",
+	TimerFlag		= "Возрождение флага",
 	TimerInvite		= "%s",
-	TimerWin		= "Победа в", -- May need verification for a more accurate translation
-	TimerStart		= "Начиная с", -- May need verification for a more accurate translation
+	TimerWin		= "Победа через", -- May need verification for a more accurate translation
+	TimerStart		= "Начало через", -- May need verification for a more accurate translation
 	TimerShadow		= "Сумеречное зрение"
 })
 
 L:SetOptionLocalization({
-	ColorByClass		= "Показывать имена цветом класса в таблице очков",
-	TimerInvite			= "Отсчет времени до входа на поле боя",
 	AutoSpirit			= "Автоматически покидать тело",
 	HideBossEmoteFrame	= "Скрыть фрейм эмоций рейдового босса",
 	ShowBasesToWin		= "Показать базы, необходимые для победы",
 	TimerCap			= "Показать таймер захвата",
+	TimerFlag			= "Показать таймер возрождения флага",
 	TimerStart			= "Показать таймер до начала состязания",
-	TimerWin			= "Показать таймер выигрыша",
+	TimerShadow			= "Показать таймер для Сумеречного зрения",
+	TimerWin			= "Показать таймер выигрыша",	
 	ShowRelativeGameTime	= "Заполнение таймера выигрыша относительно времени начала БГ (если отключено, полоса всегда выглядит заполненной)"
 })
 
@@ -34,6 +35,9 @@ L:SetMiscLocalization({
 	BgStart120          = "Битва начнется через 2 минуты.",
 	BgStart60			= "Битва начнется через 1 минуту.",
 	BgStart30			= "Битва начнется через 30 секунд. Приготовиться!",
+	BgStart120era       = "Битва начнется через 2 минуты.",
+	BgStart60era        = "Битва начнется через 1 минуту.",
+	BgStart30era        = "Битва начнется через 30 секунд. Приготовиться!",
 	ArenaStart60		= "Одна минута до начала боя на Арене!",
 	ArenaStart30		= "Тридцать секунд до начала боя на Арене!",
 	ArenaStart15		= "Пятнадцать секунд до начала боя на Арене!",
@@ -41,13 +45,17 @@ L:SetMiscLocalization({
 	BasesToWin			= "Базы, необходимые для победы: %d",
 	WinBarText			= "%s выигрывает",
 	BasesToWinHeader	= "DBM-PvP",
-	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
+	FlagReset			= "Флаг был возвращен!", -- Не используется
+	FlagTaken			= "(.+) взял флаг!", -- Не используется
+	FlagCaptured		= ".+ ha%w+ захватил флаг!",
+	FlagDropped			= "Флаг был сброшен!", -- Не используется
+	ExprFlagPickUp		= "(.+) несет флаг (%w+)!", -- Не используется
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
-	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
+	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!", -- Не используется
 	Vulnerable1			= "Персонажи, несущие флаг, стали более уязвимы!",
 	Vulnerable2			= "Персонажи, несущие флаг, стали еще более уязвимы!",
 	-- Alterac/IsleOfConquest bosses
-	InfoFrameHeader		= "Здоровье босса",
+	InfoFrameHeader		= "[DBM] Здоровье босса",
 	HordeBoss			= "Босс Орды",
 	AllianceBoss		= "Босс Альянса",
 	Galvangar			= "Капитан Гальвангар",
@@ -88,6 +96,10 @@ L:SetOptionLocalization({
 --  Alterac Valley  --
 ----------------------
 L = DBM:GetModLocalization("z30")
+
+L:SetTimerLocalization({
+	TimerBoss	= "%s"
+})
 
 L:SetOptionLocalization({
 	AutoTurnIn	= "Автоматическая сдача заданий",
