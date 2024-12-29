@@ -1,6 +1,4 @@
-if not C_Seasons or C_Seasons.GetActiveSeason() ~= 2 then
-	return
-end
+if not DBM:IsSeasonal("SeasonOfDiscovery") then return end
 local MAP_STRANGLETHORN = 1434
 local mod = DBM:NewMod("m" .. MAP_STRANGLETHORN, "DBM-PvP")
 local L = mod:GetLocalizedStrings()
