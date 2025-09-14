@@ -1,4 +1,4 @@
-## Interface: 50500
+## Interface: 50500, 50501
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
