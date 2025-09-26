@@ -216,7 +216,7 @@ do
 					cart.x		= newCart.x
 					cart.y		= newCart.y
 					cart.c		= newCart.c
-				elseif prune and (cart.spawn + times[cart.dir] - time < -1) then
+				elseif prune and (cart.dir == 0 or (cart.spawn + times[cart.dir] - time < -1)) then
 					carts[i] = nil
 				end
 			end
