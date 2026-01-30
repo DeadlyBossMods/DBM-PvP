@@ -270,6 +270,9 @@ do
 	local trackers = {} ---@type HealthTracker[]
 	--- Only a single health tracker can be active at a time.
 	function mod:NewHealthTracker(syncChannels, scanNameplates)
+		if isRetail then
+			return
+		end
 		syncChannels = syncChannels or {"INSTANCE_CHAT"}
 		local hash = 0
 		-- simple hash to give everyone a unique delay of up to 1 second, updates are only posted if we are the first to post a specific update
