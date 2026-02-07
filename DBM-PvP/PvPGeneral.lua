@@ -643,10 +643,10 @@ do
 								capTimer:Start(capTime, infoName)
 							end
 							if isAllyCapping then
-								capTimer:SetColor({r=0, g=0, b=1}, infoName)
+								capTimer:SetColor({r=0, g=0, b=1}, nil, infoName)
 								capTimer:UpdateIcon("132486", infoName) -- Interface\\Icons\\INV_BannerPVP_02.blp
 							else
-								capTimer:SetColor({r=1, g=0, b=0}, infoName)
+								capTimer:SetColor({r=1, g=0, b=0}, nil, infoName)
 								capTimer:UpdateIcon("132485", infoName) -- Interface\\Icons\\INV_BannerPVP_01.blp
 							end
 						end
