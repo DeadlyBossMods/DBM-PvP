@@ -245,6 +245,9 @@ do
 
 	---@param color ColorMixin
 	function healthTracker:TrackHealth(cid, name, color)
+		if isRetail then
+			return
+		end
 		if self.ticker:IsCancelled() then
 			error("tried to call TrackHealth on cancelled tracker")
 		end
@@ -270,9 +273,6 @@ do
 	local trackers = {} ---@type HealthTracker[]
 	--- Only a single health tracker can be active at a time.
 	function mod:NewHealthTracker(syncChannels, scanNameplates)
-		if isRetail then
-			return
-		end
 		syncChannels = syncChannels or {"INSTANCE_CHAT"}
 		local hash = 0
 		-- simple hash to give everyone a unique delay of up to 1 second, updates are only posted if we are the first to post a specific update
@@ -283,9 +283,11 @@ do
 			hash = hash * 31 + playerName:byte(i, i)
 			hash = hash % 4294967311
 		end
-		mod:RegisterShortTermEvents("CHAT_MSG_ADDON")
-		RegisterAddonMessagePrefix("DBM-PvP")
-		RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+		if not isRetail then
+			mod:RegisterShortTermEvents("CHAT_MSG_ADDON")
+			RegisterAddonMessagePrefix("DBM-PvP")
+			RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
+		end
 		---@class HealthTracker
 		local tracker = setmetatable({
 			syncChannels = syncChannels,
@@ -296,13 +298,18 @@ do
 		}, {__index = healthTracker})
 		-- This sends up to one sync message per channel per invocation, there seem to be heavy rate limits in place to ~10 messages/second (per channel?)
 		-- TODO: figure out what works
-		tracker.ticker = NewTicker(#syncChannels, function() tracker:scan() end)
-		trackers[#trackers + 1] = tracker
+		if not isRetail then
+			tracker.ticker = NewTicker(#syncChannels, function() tracker:scan() end)
+			trackers[#trackers + 1] = tracker
+		end
 		return tracker
 	end
 
 	--- Cancels health tracking, it cannot be re-started on this object.
 	function healthTracker:Cancel()
+		if isRetail then
+			return
+		end
 		self.ticker:Cancel()
 		for i, v in ipairs(trackers) do
 			if v == self then
