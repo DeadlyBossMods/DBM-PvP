@@ -179,8 +179,11 @@ function mod:OnSync(msg, target, sender)
 	elseif self.Options.ResTimerParty and not resTimerParty:IsStarted(target) then
 		resTimerParty:Start(target)
 		if self.Options.ResTimerPartyClassColors then
-			local color = RAID_CLASS_COLORS[DBM:GetRaidClass(target)]
-			resTimerParty:SetColor({r = color.r, g = color.g, b = color.b}, nil, target)
+			local class = DBM:GetRaidClass(target)
+			if class and class ~= "UNKWOWN" then
+				local color = RAID_CLASS_COLORS[class]
+				resTimerParty:SetColor({r = color.r, g = color.g, b = color.b}, nil, target)
+			end
 		end
 	end
 end
