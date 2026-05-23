@@ -18,6 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: ./workspace
       - name: LuaLS check
         uses: DeadlyBossMods/LuaLS-config@main
