@@ -726,7 +726,7 @@ function mod:GetServerTime()
 	-- The whole date logic could probably be avoided with some clever modular arithmetic, but whatever, we know the date
 	local localSeconds = GetServerTime() -- Yes, that is local time
 	local gameSeconds
-	if C_DateAndTime and C_DateAndTime.GetTodaysDate then 
+	if C_DateAndTime and C_DateAndTime.GetTodaysDate then
 		local gameDate = C_DateAndTime.GetTodaysDate() -- Yes, this is server date
 		gameSeconds = time({
 			year = gameDate.year,
