@@ -724,15 +724,27 @@ function mod:GetServerTime()
 	-- We just need to handle time zones, i.e., find the diff between what GetGameTime() says and what is local time
 	local gameHours, gameMinutes = GetGameTime()
 	-- The whole date logic could probably be avoided with some clever modular arithmetic, but whatever, we know the date
-	local gameDate = C_DateAndTime.GetTodaysDate() -- Yes, this is server date
 	local localSeconds = GetServerTime() -- Yes, that is local time
-	local gameSeconds = time({
-		year = gameDate.year,
-		month = gameDate.month,
-		day = gameDate.day,
-		hour = gameHours,
-		min = gameMinutes
-	})
+	local gameSeconds
+	if C_DateAndTime and C_DateAndTime.GetTodaysDate then 
+		local gameDate = C_DateAndTime.GetTodaysDate() -- Yes, this is server date
+		gameSeconds = time({
+			year = gameDate.year,
+			month = gameDate.month,
+			day = gameDate.day,
+			hour = gameHours,
+			min = gameMinutes
+		})
+	else
+		local gameDate = C_DateAndTime.GetCurrentCalendarTime()
+		gameSeconds = time({
+			year = gameDate.year,
+			month = gameDate.month,
+			day = gameDate.monthDay,
+			hour = gameHours,
+			min = gameMinutes
+		})
+	end
 	local timeDiff = localSeconds - gameSeconds
 	-- Time zones can be in 15 minute increments, so round to that
 	return localSeconds - math.floor(timeDiff / (15 * 60) + 0.5) * 15 * 60
