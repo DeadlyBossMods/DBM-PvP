@@ -1,10 +1,5 @@
 ## AllowLoadGameType: classic, mainline
-## Interface: 11509 [AllowLoadGameType vanilla]
-## Interface: 20506 [AllowLoadGameType tbc]
-## Interface: 30405, 38002 [AllowLoadGameType wrath]
-## Interface: 40402 [AllowLoadGameType cata]
-## Interface: 50504 [AllowLoadGameType mists]
-## Interface: 120100 [AllowLoadGameType mainline]
+## Interface: 11509, 20506, 30405, 38002, 40402, 50504, 120100
 ## Category: DBM
 ## Title:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM Mod|r|cffffe00a>|r |cffff0000PvP|r
