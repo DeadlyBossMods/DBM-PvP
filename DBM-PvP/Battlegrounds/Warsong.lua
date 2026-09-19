@@ -1,4 +1,4 @@
-local mod = DBM:NewMod(WOW_PROJECT_ID ~= (WOW_PROJECT_MAINLINE or 1) and "z489" or "z2106", "DBM-PvP")
+local mod = DBM:NewMod(not DBM:IsRetail() and "z489" or "z2106", "DBM-PvP")
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
