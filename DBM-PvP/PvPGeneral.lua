@@ -5,7 +5,7 @@ local DBM = DBM
 local GetPlayerFactionGroup = GetPlayerFactionGroup or UnitFactionGroup -- Classic Compat fix
 
 local isRetail = DBM:IsRetail()
-local isClassic = DBM:IsVanillaEra()
+local isClassic = DBM:IsVanilla()
 local isBCC = DBM:IsTBC()
 local isWrath = DBM:IsWrath()
 local playerFaction = GetPlayerFactionGroup("player")
