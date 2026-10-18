@@ -9,6 +9,7 @@ local isClassic = DBM:IsVanilla()
 local isBCC = DBM:IsTBC()
 local isWrath = DBM:IsWrath()
 local playerFaction = GetPlayerFactionGroup("player")
+local startTimer, winTimer
 
 local DBM5Protocol = "1" -- DBM protocol version
 local DBM5Prefix = UnitName("player") .. "-" .. GetRealmName() .. "\t" .. DBM5Protocol .. "\t" -- Name-Realm\tProtocol version\t
@@ -87,6 +88,13 @@ do
 	local bgzone = false
 
 	local function Init(self)
+		-- Battlegrounds can assign a different faction each time we enter.
+		local faction = GetPlayerFactionGroup("player")
+		if faction ~= playerFaction then
+			playerFaction = faction
+			startTimer:UpdateIcon(playerFaction == "Alliance" and "132486" or "132485")
+			winTimer:UpdateIcon(playerFaction == "Alliance" and "132486" or "132485")
+		end
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" or instanceType == "arena" then
 			if not bgzone then
@@ -362,7 +370,7 @@ do
 	local FACTION_ALLIANCE = FACTION_ALLIANCE
 
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
-	local startTimer		= mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	startTimer				= mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local vulnerableTimer, timerShadow, timerDamp
 	if isRetail then
 		vulnerableTimer	= mod:NewNextTimer(60, 46392)
@@ -441,7 +449,7 @@ do
 	local GetAreaPOIInfo, GetAreaPOITimeLeft, GetAreaPOIForMap, GetDoubleStatusBarWidgetVisualizationInfo, GetIconAndTextWidgetVisualizationInfo, GetDoubleStateIconRowVisualizationInfo = C_AreaPoiInfo.GetAreaPOIInfo, C_AreaPoiInfo.GetAreaPOITimeLeft, C_AreaPoiInfo.GetAreaPOIForMap, C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo, C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo, C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo
 	local FACTION_HORDE, FACTION_ALLIANCE = FACTION_HORDE, FACTION_ALLIANCE
 
-	local winTimer = mod:NewTimer(30, "TimerWin", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	winTimer = mod:NewTimer(30, "TimerWin", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local resourcesPerSec = {
 		[3] = {1e-300, 0.5, 1.5, 2}, -- Gilneas
 		[4] = {1e-300, 1, 1.5, 2, 6}, -- TempleOfKotmogu/EyeOfTheStorm
