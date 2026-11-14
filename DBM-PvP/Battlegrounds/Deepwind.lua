@@ -1,6 +1,13 @@
-local mod	= DBM:NewMod("z2245", "DBM-PvP") -- Added in MoP
+-- 泰坦重铸时光服-时光2-法师-旺仔芒果/椰奶冻-2026.11.13--
+local mod	= DBM:NewMod("z2245", "DBM-PvP", nil, nil, function(t)
+	if not t or t == "" or t == "z2245" then
+		local L = DBM:GetModLocalization("z2245")
+		return (L and L.general and L.general.name) or "深风峡谷"
+	end
+	return t
+end) -- Added in MoP
 
-mod:SetRevision("@file-date-integer@")
+mod:SetRevision("20240515181211")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
