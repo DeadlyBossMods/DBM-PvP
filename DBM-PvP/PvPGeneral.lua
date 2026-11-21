@@ -8,11 +8,12 @@ local isRetail = DBM:IsRetail()
 local isClassic = DBM:IsVanilla()
 local isBCC = DBM:IsTBC()
 local isWrath = DBM:IsWrath()
+local isForever = DBM:IsForever()
 local playerFaction = GetPlayerFactionGroup("player")
 local startTimer, winTimer
 
 local DBM5Protocol = "1" -- DBM protocol version
-local DBM5Prefix = UnitName("player") .. "-" .. GetRealmName() .. "\t" .. DBM5Protocol .. "\t" -- Name-Realm\tProtocol version\t
+local DBM5Prefix = UnitName("player") .. (isForever and "" or "-" .. GetRealmName()) .. "\t" .. DBM5Protocol .. "\t" -- Name[-Realm]\tProtocol version\t
 
 mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
