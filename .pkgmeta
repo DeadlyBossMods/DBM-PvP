@@ -1,5 +1,8 @@
 package-as: DBM-PvP
 enable-nolib-creation: no
 
+required-dependencies:
+  - deadly-boss-mods
+
 move-folders:
   DBM-PvP/DBM-PvP: DBM-PvP
