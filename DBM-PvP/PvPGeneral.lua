@@ -128,6 +128,8 @@ do
 end
 
 do
+	-- Unit health is secret and addon chat is blocked during PvP matches on retail and Forever
+	local noHealthTracking = isRetail or isForever
 	local UnitGUID, UnitHealth, UnitHealthMax, RegisterAddonMessagePrefix, NewTicker = UnitGUID, UnitHealth, UnitHealthMax, C_ChatInfo.RegisterAddonMessagePrefix, C_Timer.NewTicker
 
 	local scanTargetsRaid = {"target"}
@@ -254,7 +256,7 @@ do
 
 	---@param color ColorMixin
 	function healthTracker:TrackHealth(cid, name, color)
-		if isRetail then
+		if noHealthTracking then
 			return
 		end
 		if self.ticker:IsCancelled() then
@@ -292,7 +294,7 @@ do
 			hash = hash * 31 + playerName:byte(i, i)
 			hash = hash % 4294967311
 		end
-		if not isRetail then
+		if not noHealthTracking then
 			mod:RegisterShortTermEvents("CHAT_MSG_ADDON")
 			RegisterAddonMessagePrefix("DBM-PvP")
 			RegisterAddonMessagePrefix("Capping") -- Listen to capping for extra data
@@ -307,7 +309,7 @@ do
 		}, {__index = healthTracker})
 		-- This sends up to one sync message per channel per invocation, there seem to be heavy rate limits in place to ~10 messages/second (per channel?)
 		-- TODO: figure out what works
-		if not isRetail then
+		if not noHealthTracking then
 			tracker.ticker = NewTicker(#syncChannels, function() tracker:scan() end)
 			trackers[#trackers + 1] = tracker
 		end
@@ -316,7 +318,7 @@ do
 
 	--- Cancels health tracking, it cannot be re-started on this object.
 	function healthTracker:Cancel()
-		if isRetail then
+		if noHealthTracking then
 			return
 		end
 		self.ticker:Cancel()
