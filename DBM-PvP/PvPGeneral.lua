@@ -551,17 +551,19 @@ do
 		["HORDE_CONTESTED"]     = 3,
 		["HORDE_CONTROLLED"]    = 4
 	}
+	-- Classic and TBC number the POI icons one lower; Forever uses the retail numbers (AreaPOI table, 1.60.1)
+	local oldIconNumbers = (isClassic or isBCC) and not isForever
 	local icons = {
 		-- Graveyard
-		[(isClassic or isBCC) and 3 or 4]   = State.ALLY_CONTESTED,
-		[(isClassic or isBCC) and 14 or 15] = State.ALLY_CONTROLLED,
-		[(isClassic or isBCC) and 13 or 14] = State.HORDE_CONTESTED,
-		[(isClassic or isBCC) and 12 or 13] = State.HORDE_CONTROLLED,
+		[oldIconNumbers and 3 or 4]   = State.ALLY_CONTESTED,
+		[oldIconNumbers and 14 or 15] = State.ALLY_CONTROLLED,
+		[oldIconNumbers and 13 or 14] = State.HORDE_CONTESTED,
+		[oldIconNumbers and 12 or 13] = State.HORDE_CONTROLLED,
 		-- Tower/Lighthouse
-		[(isClassic or isBCC) and 8 or 9]   = State.ALLY_CONTESTED,
-		[(isClassic or isBCC) and 10 or 11] = State.ALLY_CONTROLLED,
-		[(isClassic or isBCC) and 11 or 12] = State.HORDE_CONTESTED,
-		[(isClassic or isBCC) and 9 or 10]  = State.HORDE_CONTROLLED,
+		[oldIconNumbers and 8 or 9]   = State.ALLY_CONTESTED,
+		[oldIconNumbers and 10 or 11] = State.ALLY_CONTROLLED,
+		[oldIconNumbers and 11 or 12] = State.HORDE_CONTESTED,
+		[oldIconNumbers and 9 or 10]  = State.HORDE_CONTROLLED,
 		-- Mine/Quarry
 		[17]                        = State.ALLY_CONTESTED,
 		[18]                        = State.ALLY_CONTROLLED,
