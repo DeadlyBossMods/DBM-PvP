@@ -7,7 +7,7 @@ local mod	= DBM:NewMod("z2245", "DBM-PvP", nil, nil, function(t)
 	return t
 end) -- Added in MoP
 
-mod:SetRevision("20240515181211")
+mod:SetRevision("@file-date-integer@")
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 mod:RegisterEvents(
 	"LOADING_SCREEN_DISABLED",
