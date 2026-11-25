@@ -551,7 +551,7 @@ do
 		-- retail av
 		[91]    = 243,
 		-- classic av
-		[1459]  = isClassic and 304 or 243,
+		[1459]  = isForever and 301 or isClassic and 304 or 243, -- Forever: 300.6 s measured
 		-- korrak
 		[1537]  = 243
 	}
@@ -635,7 +635,9 @@ do
 		[219]                       = State.HORDE_CONTESTED,
 		[216]                       = State.HORDE_CONTROLLED
 	}
-	local capTimer = mod:NewTimer(isRetail and 60 or 64, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+	-- Forever: 60.5 to 61.4 s measured in Arathi Basin (14 captures)
+	local defaultCapTime = isRetail and 60 or isForever and 61 or 64
+	local capTimer = mod:NewTimer(defaultCapTime, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
@@ -659,7 +661,7 @@ do
 						capTimer:Stop(infoName)
 						objectivesStore[infoName] = (atlasName and atlasName or infoTexture)
 						if not ignoredAtlas[subscribedMapID] and (isAllyCapping or isHordeCapping) then
-							local capTime = GetAreaPOITimeLeft and GetAreaPOITimeLeft(areaPOIID) and GetAreaPOITimeLeft(areaPOIID) * 60 or overrideTimers[subscribedMapID] or isRetail and 60 or 64
+							local capTime = GetAreaPOITimeLeft and GetAreaPOITimeLeft(areaPOIID) and GetAreaPOITimeLeft(areaPOIID) * 60 or overrideTimers[subscribedMapID] or defaultCapTime
 							if capTime ~= 0 then
 								capTimer:Start(capTime, infoName)
 							end
@@ -693,7 +695,7 @@ do
 					end
 				end
 			end
-			if widgetID == 1671 or widgetID == 2074 then -- Standard battleground score predictor: 1671. Deepwind rework: 2074
+			if widgetID == 1671 or widgetID == 2074 or widgetID == 7467 then -- Standard battleground score predictor: 1671. Deepwind rework: 2074. Forever: 7467
 				local info = GetDoubleStatusBarWidgetVisualizationInfo(widgetID)
 				if info then
 					self:UpdateWinTimer(info.leftBarMax, info.leftBarValue, info.rightBarValue, allyBases, hordeBases)
