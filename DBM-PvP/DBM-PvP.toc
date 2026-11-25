@@ -30,7 +30,7 @@
 ## X-DBM-Mod-Name-esMX: JcJ
 ## X-DBM-Mod-Name-ptBR: JxJ
 ## X-DBM-Mod-MapID: 30,489,529,559,562,566,572,607,617,618,628,726,727,761,968,980,998,1105,1134,1170,1504,1505,1552,1672,1681,1803,1825,1911,2106,2107,2118,2167,2177,2197,2245,2373,2509,2511,2547,2563,m1440,m1434 [AllowLoadGameType vanilla]
-## X-DBM-Mod-MapID: 30,489,529,559,562,566,572,607,617,618,628,726,727,761,968,980,998,1105,1134,1170,1504,1505,1552,1672,1681,1803,1825,1911,2106,2107,2118,2167,2177,2197,2245,2373,2509,2511,2547,2563 [ExcludeLoadGameType vanilla]
+## X-DBM-Mod-MapID: 30,489,529,559,562,566,572,607,617,618,628,726,727,761,968,980,998,1105,1134,1170,1504,1505,1552,1672,1681,1803,1825,1911,2106,2107,2118,2167,2177,2197,2245,2373,2509,2511,2547,2563,2997 [ExcludeLoadGameType vanilla]
 ## X-DBM-Mod-MinCoreRevision: 20260522000000
 ## X-DBM-Mod-Sort: 254
 ## X-Curse-Project-ID: 61882
@@ -53,6 +53,7 @@ Ashenvale.lua [AllowLoadGameType vanilla]
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua
 Battlegrounds\Ashran.lua [AllowLoadGameType standard]
+Battlegrounds\DarkspearIslands.lua [ExcludeLoadGameType standard, vanilla, tbc, wrath, cata, mists]
 Battlegrounds\Deepwind.lua [AllowLoadGameType mists, standard]
 Battlegrounds\EyeofTheStorm.lua [AllowLoadGameType tbc, wrath, cata, mists, standard]
 Battlegrounds\Gilneas.lua [AllowLoadGameType cata, mists, standard]
