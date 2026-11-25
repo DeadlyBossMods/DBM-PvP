@@ -120,6 +120,21 @@ L:SetOptionLocalization({
 	AutoTurnIn	= "Автоматически сдавать задания"
 })
 
+-------------------------
+--  Darkspear Islands  --
+-------------------------
+L = DBM:GetModLocalization("z2997")
+
+L:SetTimerLocalization({
+	TimerCap	= "%s",
+	TimerFlag	= "Возрождение флага"
+})
+
+L:SetOptionLocalization({
+	TimerCap	= "Показывать таймер захвата",
+	TimerFlag	= "Показывать таймер возрождения флага"
+})
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------
