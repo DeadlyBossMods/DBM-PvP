@@ -124,6 +124,21 @@ L:SetOptionLocalization({
 	AutoTurnIn	= "Automatically turn-in quests"
 })
 
+-------------------------
+--  Darkspear Islands  --
+-------------------------
+L = DBM:GetModLocalization("z2997")
+
+L:SetTimerLocalization({
+	TimerCap	= "%s",
+	TimerFlag	= "Flag respawn"
+})
+
+L:SetOptionLocalization({
+	TimerCap	= "Show capture timer",
+	TimerFlag	= "Show flag respawn timer"
+})
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------

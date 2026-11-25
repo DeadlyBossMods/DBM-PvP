@@ -77,6 +77,14 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	UpdateGametime()
 end
 
+--- For battlegrounds whose mod reads the objectives from widgets itself: sets up the win timer without POI tracking.
+--- The mod then calls UpdateWinTimer.
+---@param objectsCount number
+function mod:SubscribeWinTimer(objectsCount)
+	numObjectives = objectsCount
+	UpdateGametime()
+end
+
 function mod:SubscribeFlags()
 	self:RegisterShortTermEvents(
 		"CHAT_MSG_BG_SYSTEM_ALLIANCE",
