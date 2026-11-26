@@ -15,9 +15,15 @@ local isForever = DBM:IsForever()
 do
 	local bgzone = false
 
+	if isForever then
+		-- Handing in quest items counts as a gossip action, so DBM's global auto gossip switch applies too
+		mod:AddGossipOption(true, "Action")
+	end
+
 	function mod:RegisterBattlegroundEvents()
 		self:RegisterShortTermEvents("CHAT_MSG_MONSTER_YELL")
-		if isForever and self.Options.AutoTurnIn then
+		if isForever then
+			-- Only inside the battleground; the handlers check the option, so toggling it takes effect at once
 			self:RegisterShortTermEvents(
 				"GOSSIP_SHOW",
 				"QUEST_GREETING",
@@ -26,15 +32,6 @@ do
 				"QUEST_COMPLETE"
 			)
 		end
-	end
-
-	if isForever then
-		mod:AddBoolOption("AutoTurnIn", false, nil, function()
-			if bgzone then
-				mod:UnregisterShortTermEvents()
-				mod:RegisterBattlegroundEvents()
-			end
-		end)
 	end
 
 	function mod:Init()
@@ -137,7 +134,7 @@ do
 
 	local function skip(self)
 		-- Shift (like Questie's default modifier) or DBM's global gossip opt-out keep the dialog manual
-		return not self.Options.AutoTurnIn or DBM.Options.DontAutoGossip or IsShiftKeyDown()
+		return not self.Options.AutoGossipAction or DBM.Options.DontAutoGossip or IsShiftKeyDown()
 	end
 
 	function mod:GOSSIP_SHOW()

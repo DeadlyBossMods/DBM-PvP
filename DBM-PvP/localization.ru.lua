@@ -102,7 +102,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "Автоматически сдавать задания",
 	TimerBoss	= "Показывать оставшийся таймер босса"
 })
 

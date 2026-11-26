@@ -62,15 +62,6 @@ L:SetOptionLocalization({
 	TimerSpawn	= "顯示戰場計時器"
 })
 
-----------------------
---  Alterac Valley  --
-----------------------
-L = DBM:GetModLocalization("z30")
-
-L:SetOptionLocalization({
-	AutoTurnIn	= "自動繳交任務物品"
-})
-
 --------------
 --  Ashran  --
 --------------

@@ -118,7 +118,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "自动递交任务物品",
 	TimerBoss	= "显示首领剩余时间计时条"
 })
 

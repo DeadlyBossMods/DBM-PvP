@@ -88,7 +88,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("z30")
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "Automatisches Abgeben der Quests im Alteractal",
 	TimerBoss	= "Zeige Timer für verbleibende Zeit für Bosse"
 })
 
