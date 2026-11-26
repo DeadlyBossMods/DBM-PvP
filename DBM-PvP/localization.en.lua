@@ -106,7 +106,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	AutoTurnIn	= "Automatically turn-in quests",
 	TimerBoss	= "Show boss remaining timer"
 })
 

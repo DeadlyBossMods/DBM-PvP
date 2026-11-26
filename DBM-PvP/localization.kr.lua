@@ -37,15 +37,6 @@ L:SetMiscLocalization({
 	Vulnerable2			= "약해져서"
 })
 
-----------------------
---  Alterac Valley  --
-----------------------
-L = DBM:GetModLocalization("z30")
-
-L:SetOptionLocalization({
-	AutoTurnIn	= "알터랙 계곡내 퀘스트 자동 완료"
-})
-
 ------------------------
 --  Isle of Conquest  --
 ------------------------

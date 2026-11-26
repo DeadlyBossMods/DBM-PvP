@@ -32,15 +32,6 @@ L:SetMiscLocalization({
 	Vulnerable2			= "Le porteur du drapeau devient encore plus vulnérable aux attaques!"
 })
 
----------------
---  Alterac  --
----------------
-L = DBM:GetModLocalization("z30")
-
-L:SetOptionLocalization({
-	AutoTurnIn	= "Fini automatiquement les quêtes dans la Vallée d'Alterac"
-})
-
 ------------------------
 --  Isle of Conquest  --
 ------------------------
