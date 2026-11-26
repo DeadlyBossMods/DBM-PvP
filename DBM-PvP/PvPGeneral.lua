@@ -64,7 +64,7 @@ do
 	end
 end
 
-local subscribedMapID, numObjectives, objectivesStore
+local subscribedMapID, numObjectives, objectivesStore, customResPerSec
 
 function mod:SubscribeAssault(mapID, objectsCount)
 	self:RegisterShortTermEvents(
@@ -74,14 +74,17 @@ function mod:SubscribeAssault(mapID, objectsCount)
 	subscribedMapID = mapID
 	objectivesStore = {}
 	numObjectives = objectsCount
+	customResPerSec = nil
 	UpdateGametime()
 end
 
 --- For battlegrounds whose mod reads the objectives from widgets itself: sets up the win timer without POI tracking.
 --- The mod then calls UpdateWinTimer.
 ---@param objectsCount number
-function mod:SubscribeWinTimer(objectsCount)
+---@param resPerSec number[]? Resources per second by bases held (index 1 = no base), if they differ from the usual ones
+function mod:SubscribeWinTimer(objectsCount, resPerSec)
 	numObjectives = objectsCount
+	customResPerSec = resPerSec
 	UpdateGametime()
 end
 
@@ -120,6 +123,7 @@ do
 			self:Stop()
 			DBM.InfoFrame:Hide()
 			subscribedMapID = nil
+			customResPerSec = nil
 			if mod.Options.HideBossEmoteFrame then
 				DBM:HideBlizzardEvents(0, true)
 			end
@@ -511,7 +515,7 @@ do
 	end
 
 	function mod:UpdateWinTimer(maxScore, allianceScore, hordeScore, allianceBases, hordeBases)
-		local resPerSec = resourcesPerSec[numObjectives]
+		local resPerSec = customResPerSec or resourcesPerSec[numObjectives]
 		local gameTime = GetGametime()
 		local allyTime = mfloor(mmin(maxScore, (maxScore - allianceScore) / resPerSec[allianceBases + 1]))
 		local hordeTime = mfloor(mmin(maxScore, (maxScore - hordeScore) / resPerSec[hordeBases + 1]))

@@ -14,14 +14,16 @@ local flagTimer	= mod:NewTimer(24, "TimerFlag", "132483") -- Interface\\icons\\i
 -- Everything comes from widgets, so this works in every locale (measured on Forever 1.60.1):
 -- * 7860: one icon row per faction. Each base has an icon in state 1 while that faction assaults it and 2 while it
 --   owns it; the flag icon (the one without a second tooltip) is in state 1 while that faction carries the flag.
--- * 7467: score bar, Alliance left. A flag capture adds 75 or more points at once, ticks add at most a few.
+-- * 7467: score bar, Alliance left. Bases add 2/3/4/50 points every 2 s (1 to 4 bases), a flag capture adds 75/85/100/200.
 local CAP_POINTS_WIDGET, SCORE_WIDGET = 7860, 7467
 local UI_MAP_ID = 2524
 local BASE_POIS = {8768, 8771, 8772, 8773} -- Camp, Ruins, Abandoned Tower, Shipwreck Cove
 local CAPTURE_TIME = 60
 local FLAG_RESPAWN_AFTER_CAPTURE = 24 -- 22.2 to 24.4 s observed
 local FLAG_RESPAWN_AFTER_DROP = 12
-local FLAG_CAPTURE_MIN_POINTS = 50
+local MAX_TICK_POINTS = 50 -- a bigger jump is a flag capture (possibly together with a tick)
+-- Resources per second by bases held, index 1 = no base
+local RES_PER_SEC = {1e-300, 1, 1.5, 2, 25}
 
 local GetDoubleStateIconRowVisualizationInfo = C_UIWidgetManager.GetDoubleStateIconRowVisualizationInfo
 local GetDoubleStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetDoubleStatusBarWidgetVisualizationInfo
@@ -66,11 +68,16 @@ local function startFlagTimer(time, side)
 	end
 end
 
-function mod:CheckFlagDrop(side)
-	-- A capture also resets the flag icon; the score bar (updated in the same frame) tells the two apart
-	local dropTime = lastDrop[side.faction]
-	if dropTime and math.abs(dropTime - (lastCapture[side.faction] or 0)) > 2 then
-		startFlagTimer(FLAG_RESPAWN_AFTER_DROP - (GetTime() - dropTime))
+-- Called shortly after the carrier's flag icon reset: a capture or a drop. The score bar (updated in the same frame)
+-- tells the two apart. Only this starts the flag timer, never the score alone.
+function mod:CheckFlagReset(side)
+	local resetTime = lastDrop[side.faction]
+	if not resetTime then return end
+	local elapsed = GetTime() - resetTime
+	if math.abs(resetTime - (lastCapture[side.faction] or 0)) <= 2 then
+		startFlagTimer(FLAG_RESPAWN_AFTER_CAPTURE - elapsed, side)
+	else
+		startFlagTimer(FLAG_RESPAWN_AFTER_DROP - elapsed)
 	end
 end
 
@@ -93,7 +100,7 @@ local function updateCapPoints(self)
 					flagTimer:Stop()
 				elseif not isCarrying and carrying[side.faction] then
 					lastDrop[side.faction] = GetTime()
-					self:ScheduleMethod(0.5, "CheckFlagDrop", side)
+					self:ScheduleMethod(0.5, "CheckFlagReset", side)
 				end
 				carrying[side.faction] = isCarrying
 			else
@@ -123,9 +130,8 @@ local function updateScores()
 	for _, side in ipairs(SIDES) do
 		local score = side.faction == "Alliance" and info.leftBarValue or info.rightBarValue
 		local previous = scores[side.faction]
-		if previous and score - previous >= FLAG_CAPTURE_MIN_POINTS then
+		if previous and score - previous > MAX_TICK_POINTS then
 			lastCapture[side.faction] = GetTime()
-			startFlagTimer(FLAG_RESPAWN_AFTER_CAPTURE, side)
 		end
 		scores[side.faction] = score
 	end
@@ -150,7 +156,7 @@ function mod:Init()
 		bgzone = true
 		resetState()
 		local generalMod = DBM:GetModByName("PvPGeneral")
-		generalMod:SubscribeWinTimer(#BASE_POIS)
+		generalMod:SubscribeWinTimer(#BASE_POIS, RES_PER_SEC)
 		local score = GetDoubleStatusBarWidgetVisualizationInfo(SCORE_WIDGET)
 		joinedRunningMatch = score ~= nil and (score.leftBarValue > 0 or score.rightBarValue > 0)
 		self:RegisterShortTermEvents("UPDATE_UI_WIDGET")
