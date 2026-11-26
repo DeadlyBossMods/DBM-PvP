@@ -106,8 +106,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	BossHorde	= "WHO DARES SUMMON LOKHOLAR?",
-	BossAlly	= "Wicked, wicked, mortals! The forest weeps. The elements recoil at the destruction. Ivus must purge you from this world!"
+	BossHorde	= "КТО СМЕЕТ ПРИЗЫВАТЬ ЛОКОЛАРА?",
+	BossAlly	= "Нечестивые смертные! Лес плачет! Стихии катятся к гибели! Ивус избавит мир от вашей скверны!"
 })
 
 --------------
@@ -119,6 +119,21 @@ L:SetOptionLocalization({
 	AutoTurnIn	= "Автоматически сдавать задания"
 })
 
+-------------------------
+--  Darkspear Islands  --
+-------------------------
+L = DBM:GetModLocalization("z2997")
+
+L:SetTimerLocalization({
+	TimerCap	= "%s",
+	TimerFlag	= "Возрождение флага"
+})
+
+L:SetOptionLocalization({
+	TimerCap	= "Показывать таймер захвата",
+	TimerFlag	= "Показывать таймер возрождения флага"
+})
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------
@@ -126,7 +141,7 @@ L = DBM:GetModLocalization("z628")
 
 L:SetWarningLocalization({
 	WarnSiegeEngine		= "Осадная машина готова!",
-	WarnSiegeEngineSoon	= "Осадная машина через ~10 сек"
+	WarnSiegeEngineSoon	= "Осадная машина через ~10 сек."
 })
 
 L:SetTimerLocalization({
@@ -137,7 +152,7 @@ L:SetOptionLocalization({
 	TimerSiegeEngine	= "Отсчет времени до создания Осадной машины",
 	WarnSiegeEngine		= "Показывать предупреждение, когда создание Осадной машины завершено",
 	WarnSiegeEngineSoon	= "Показывать предупреждение, когда создание Осадной машины почти завершено",
-	ShowGatesHealth		= "Отображать здоровье поврежденых ворот (значение здоровья может быть некорректным после захода в уже начавшееся поле боя!)"
+	ShowGatesHealth		= "Показывать здоровье поврежденых ворот (значение здоровья может быть некорректным после захода в уже начавшееся поле боя!)"
 })
 
 L:SetMiscLocalization({
