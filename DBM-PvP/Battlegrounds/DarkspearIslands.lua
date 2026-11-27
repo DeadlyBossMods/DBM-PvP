@@ -8,8 +8,18 @@ mod:RegisterEvents(
 	"PLAYER_ENTERING_WORLD"
 )
 
-local capTimer	= mod:NewTimer(60, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
-local flagTimer	= mod:NewTimer(24, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
+-- NewTimer with a timer type instead of the default "cd" (approximate, shown with "~"), e.g. "next" for exact timers
+---@param timerType string?
+---@param timer number
+---@param name string
+---@param icon string|number?
+local function newTypedTimer(timerType, timer, name, icon)
+	return mod:NewTimer(timer, name, icon, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, timerType)
+end
+
+-- "next": exact timers, no "~" (captures take 60.0 s, the flag respawns within about a second of the timer)
+local capTimer	= newTypedTimer("next", 60, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+local flagTimer	= newTypedTimer("next", 24, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
 
 -- Everything comes from widgets, so this works in every locale (measured on Forever 1.60.1):
 -- * 7860: one icon row per faction. Each base has an icon in state 1 while that faction assaults it and 2 while it
