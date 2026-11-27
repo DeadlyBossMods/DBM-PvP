@@ -11,6 +11,15 @@ local isWrath = DBM:IsWrath()
 local isForever = DBM:IsForever()
 -- Capture and start times are measured to within about a second on Forever; elsewhere they stay approximate ("~")
 local exactTimerType = isForever and "next" or nil
+
+-- NewTimer with a timer type instead of the default "cd" (approximate, shown with "~"), e.g. "next" for exact timers
+---@param timerType string?
+---@param timer number
+---@param name string
+---@param icon string|number?
+local function newTypedTimer(timerType, timer, name, icon)
+	return mod:NewTimer(timer, name, icon, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, timerType)
+end
 local playerFaction = GetPlayerFactionGroup("player")
 local startTimer, winTimer
 
@@ -387,7 +396,7 @@ do
 	local FACTION_ALLIANCE = FACTION_ALLIANCE
 
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
-	startTimer				= mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, exactTimerType) -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	startTimer				= newTypedTimer(exactTimerType, 120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local vulnerableTimer, timerShadow, timerDamp
 	if isRetail then
 		vulnerableTimer	= mod:NewNextTimer(60, 46392)
@@ -644,7 +653,7 @@ do
 	}
 	-- Forever: 60.5 to 61.4 s measured in Arathi Basin (14 captures)
 	local defaultCapTime = isRetail and 60 or isForever and 61 or 64
-	local capTimer = mod:NewTimer(defaultCapTime, "TimerCap", "136002", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, exactTimerType) -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+	local capTimer = newTypedTimer(exactTimerType, defaultCapTime, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
