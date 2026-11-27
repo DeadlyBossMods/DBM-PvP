@@ -9,6 +9,8 @@ local isClassic = DBM:IsVanilla()
 local isBCC = DBM:IsTBC()
 local isWrath = DBM:IsWrath()
 local isForever = DBM:IsForever()
+-- Capture and start times are measured to within about a second on Forever; elsewhere they stay approximate ("~")
+local exactTimerType = isForever and "next" or nil
 local playerFaction = GetPlayerFactionGroup("player")
 local startTimer, winTimer
 
@@ -385,7 +387,7 @@ do
 	local FACTION_ALLIANCE = FACTION_ALLIANCE
 
 	local flagTimer			= mod:NewTimer(12, "TimerFlag", "132483") -- Interface\\icons\\inv_banner_02.blp
-	startTimer				= mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485") -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
+	startTimer				= mod:NewTimer(120, "TimerStart", playerFaction == "Alliance" and "132486" or "132485", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, exactTimerType) -- Interface\\Icons\\INV_BannerPVP_02.blp || Interface\\Icons\\INV_BannerPVP_01.blp
 	local vulnerableTimer, timerShadow, timerDamp
 	if isRetail then
 		vulnerableTimer	= mod:NewNextTimer(60, 46392)
@@ -444,15 +446,16 @@ do
 	end
 
 	function mod:CHAT_MSG_BG_SYSTEM_NEUTRAL(msg)
-		-- in Classic era the chat msg is about 1.5 seconds early
+		-- in Classic era the chat msg is about 1.5 seconds early, on Forever it is on time
+		local early = isClassic and not isForever
 		if self.Options.TimerStart and (msg:find(L.BgStart120) or msg:find(L.BgStart120era)) then
 			startTimer:Update(0, 120)
 		elseif self.Options.TimerStart and (msg:find(L.BgStart60) or msg:find(L.BgStart60era) or msg == L.ArenaStart60 or msg:find(L.ArenaStart60)) then
-			startTimer:Update(isClassic and 58.5 or 60, 120)
+			startTimer:Update(early and 58.5 or 60, 120)
 		elseif self.Options.TimerStart and (msg:find(L.BgStart30) or msg:find(L.BgStart30era) or msg == L.ArenaStart30 or msg:find(L.ArenaStart30)) then
-			startTimer:Update(isClassic and 88.5 or 90, 120)
+			startTimer:Update(early and 88.5 or 90, 120)
 		elseif self.Options.TimerStart and (msg == L.ArenaStart15 or msg:find(L.ArenaStart15)) then
-			startTimer:Update(isClassic and 103.5 or 105, 120)
+			startTimer:Update(early and 103.5 or 105, 120)
 		elseif not isClassic and (msg == L.Vulnerable1 or msg == L.Vulnerable2 or msg:find(L.Vulnerable1) or msg:find(L.Vulnerable2)) then
 			vulnerableTimer:Start()
 		end
@@ -641,7 +644,7 @@ do
 	}
 	-- Forever: 60.5 to 61.4 s measured in Arathi Basin (14 captures)
 	local defaultCapTime = isRetail and 60 or isForever and 61 or 64
-	local capTimer = mod:NewTimer(defaultCapTime, "TimerCap", "136002") -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
+	local capTimer = mod:NewTimer(defaultCapTime, "TimerCap", "136002", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, exactTimerType) -- Interface\\icons\\spell_misc_hellifrepvphonorholdfavor.blp
 
 	function mod:AREA_POIS_UPDATED(widget)
 		local allyBases, hordeBases = 0, 0
